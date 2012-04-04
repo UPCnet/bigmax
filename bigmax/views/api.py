@@ -1,5 +1,6 @@
 from pyramid.security import authenticated_userid
 from pyramid.renderers import get_renderer
+from bigmax.utils import normalize_userdn
 
 
 class TemplateAPI(object):
@@ -15,7 +16,7 @@ class TemplateAPI(object):
 
     @property
     def authenticatedUser(self):
-        return authenticated_userid(self.request)
+        return normalize_userdn(authenticated_userid(self.request))
 
     _snippets = None
 

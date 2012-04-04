@@ -2,9 +2,13 @@ from pyramid.config import Configurator
 
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid_who.whov2 import WhoV2AuthenticationPolicy
+from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 
 from bigmax.resources import Root, loadMAXSettings
+
+import ldap
+from pyramid_ldap import groupfinder
 
 import pymongo
 
@@ -14,9 +18,14 @@ def main(global_config, **settings):
     """
     # Security
     my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet')
-    whoconfig_file = settings['whoconfig_file']
+    enable_ldap = settings['enable_ldap']
     identifier_id = 'auth_tkt'
-    authn_policy = WhoV2AuthenticationPolicy(whoconfig_file, identifier_id)
+
+    if enable_ldap:
+        authn_policy = AuthTktAuthenticationPolicy(identifier_id, callback=groupfinder)
+    else:
+        authn_policy = AuthTktAuthenticationPolicy(identifier_id)
+
     authz_policy = ACLAuthorizationPolicy()
 
     # App config
@@ -25,6 +34,27 @@ def main(global_config, **settings):
                           session_factory=my_session_factory,
                           authentication_policy=authn_policy,
                           authorization_policy=authz_policy)
+
+    # LDAP (conditional)
+    if enable_ldap:
+        config.include('pyramid_ldap')
+
+        config.ldap_setup('ldaps://ldap.upc.edu',
+                          bind='cn=ldap.upc,ou=users,dc=upc,dc=edu',
+                          passwd='conldapnexio'
+                         )
+
+        config.ldap_set_login_query(base_dn='ou=users,dc=upc,dc=edu',
+                                    filter_tmpl='(cn=%(login)s)',
+                                    scope=ldap.SCOPE_ONELEVEL,
+                                   )
+
+        config.ldap_set_groups_query(base_dn='ou=groups,dc=upc,dc=edu',
+                                     filter_tmpl='(&(objectClass=groupOfNames)(member=%(userdn)s))',
+                                     scope=ldap.SCOPE_SUBTREE,
+                                     cache_period=600,
+                                    )
+
     config.add_static_view('static', 'bigmax:static')
     config.add_static_view('css', 'bigmax:css')
     config.add_static_view('less', 'bigmax:less')

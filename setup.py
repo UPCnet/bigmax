@@ -11,7 +11,7 @@ requires = [
     'pyramid',
     'pyramid_tm',
     'pyramid_debugtoolbar',
-    'pyramid_who',
+    'pyramid_ldap',
     'pymongo',
     'rfc3339',
     'requests',
@@ -20,7 +20,7 @@ requires = [
 test_requires = ['WebTest', 'mock', ]
 
 setup(name='bigmax',
-      version='2.0',
+      version='3.0',
       description='Big MAX - MAX Web Administration Interface',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -32,7 +32,7 @@ setup(name='bigmax',
       author='UPCnet Content Management Team',
       author_email='victor.fernandez@upcnet.es',
       url='http://github.com/upcnet/bigmax',
-      keywords='web pylons pyramid',
+      keywords='web pylons pyramid mongodb',
       packages=['bigmax'],
       include_package_data=True,
       zip_safe=False,

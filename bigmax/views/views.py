@@ -8,7 +8,7 @@ from urllib2 import urlparse
 
 from bigmax.resources import Root
 from bigmax.views.api import TemplateAPI
-#from bigmax.rest.services import WADL
+from bigmax.utils import normalize_userdn
 
 
 @view_config(context=Root, renderer='bigmax:templates/activityStream.pt', permission='restricted')
@@ -34,13 +34,13 @@ def rootView(context, request):
 @view_config(name='variables.js', context=Root, renderer='bigmax:templates/js_variables.js.pt', permission='restricted')
 def js_variables(context, request):
 
-    username = authenticated_userid(request)
-    config = context.db.config.find_one()
+    username = normalize_userdn(authenticated_userid(request))
+    config = request.registry.max_settings
 
     variables = {'username': username,
                 'token': request.session.get('oauth_token'),
                 'server': config.get('max_server'),
-                'grant': config.get('oauth_grant_type'),
+                'grant': config.get('max_oauth_grant_type'),
 
     }
     return dict(variables=variables)
