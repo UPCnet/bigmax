@@ -68,7 +68,7 @@ def delObj(context, request):
         return HTTPBadRequest()
 
 
-@view_config(name="explorer", renderer='max:templates/explorer.pt', permission='restricted')
+@view_config(name="explorer", renderer='bigmax:templates/explorer.pt', permission='restricted')
 def explorerView(context, request):
     page_title = "MAX Server DB Explorer"
     maxserver = request.registry.max_settings['max_server']
