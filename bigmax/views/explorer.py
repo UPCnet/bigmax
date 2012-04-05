@@ -33,13 +33,13 @@ def addNew(context, request):
                       twitterUsername=request.params.get('twitterUsername'),
                       permissions=dict(read=request.params.get('read', 'public'), write=request.params.get('write', 'public')),
                    )
-            req = requests.post('%s/contexts' % maxserver, data=json.dumps(data), auth=('operations', 'operations'))
+            req = requests.post('%s/contexts' % maxserver, data=json.dumps(data), auth=('operations', 'operations'), verify=False)
 
         if objectType == 'user':
             data = dict(
                       displayName=request.params.get('displayName'),
                    )
-            req = requests.post('%s/people/%s' % (maxserver, request.params.get('username')), data=json.dumps(data), auth=('operations', 'operations'))
+            req = requests.post('%s/people/%s' % (maxserver, request.params.get('username')), data=json.dumps(data), auth=('operations', 'operations'), verify=False)
 
         if req.status_code in [200, 201]:
             return HTTPOk()
@@ -57,7 +57,7 @@ def delObj(context, request):
         objectId = request.params.get('objectId', None)
         if objectId:
             dbmap = dict(user='people', context='contexts', activity='activities')
-            req = requests.delete('%s/admin/%s/%s' % (maxserver, dbmap[objectType], objectId), auth=('operations', 'operations'))
+            req = requests.delete('%s/admin/%s/%s' % (maxserver, dbmap[objectType], objectId), auth=('operations', 'operations'), verify=False)
             if req.status_code == 204:
                 return HTTPOk()
             else:
@@ -96,9 +96,9 @@ def explorerView(context, request):
 
     auth = ('operations', 'operations')
 
-    users_dump = json.loads(requests.get('%s/admin/people' % maxserver, auth=auth).text)['items']
-    activities_dump = json.loads(requests.get('%s/admin/activities' % maxserver, auth=auth).text)['items']
-    contexts_dump = json.loads(requests.get('%s/admin/contexts' % maxserver, auth=auth).text)['items']
+    users_dump = json.loads(requests.get('%s/admin/people' % maxserver, auth=auth, verify=False).text)['items']
+    activities_dump = json.loads(requests.get('%s/admin/activities' % maxserver, auth=auth, verify=False).text)['items']
+    contexts_dump = json.loads(requests.get('%s/admin/contexts' % maxserver, auth=auth, verify=False).text)['items']
 
     user_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in user_cols_ids] for entry in users_dump]
     activity_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in activity_cols_ids] for entry in activities_dump]
