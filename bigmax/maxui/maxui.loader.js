@@ -9,15 +9,8 @@
 window._MAXUI.onReady = function() {
     // This is called when the code has loaded.
 
-    literals_ca = {'new_activity_text': 'Escriu alguna cosa ...',
-                   'new_activity_post': "Envia l'activitat",
-                   'toggle_comments': "Comentaris",
-                   'new_comment_post': "Envia el comentari",
-                   'load_more': "Carrega'n més"
-                 }
-
     var settings = {
-           'literals': literals_ca,
+           'language': 'ca',
            'username' : window._MAXUI.username,
            'oAuthToken' : window._MAXUI.token,
            'oAuthGrantType' : window._MAXUI.grant,
