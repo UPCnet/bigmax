@@ -33,6 +33,7 @@ def addNew(context, request):
                       twitterUsername=request.params.get('twitterUsername'),
                       permissions=dict(read=request.params.get('read', 'public'), write=request.params.get('write', 'public')),
                    )
+            data = {key: value for key, value in data.items() if value}
             req = requests.post('%s/contexts' % maxserver, data=json.dumps(data), auth=('operations', 'operations'), verify=False)
 
         if objectType == 'user':
