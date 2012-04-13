@@ -17,7 +17,7 @@ window._MAXUI.onReady = function() {
            'maxServerURL' : window._MAXUI.server,
            'maxServerURLAlias' : '',
            'avatarURLpattern' : '',
-           'readContext': "https://max.upc.edu",
+           'readContext': window._MAXUI.server,
            'activitySource': 'activities'
            }
 
@@ -32,7 +32,7 @@ window._MAXUI.onReady = function() {
 */
 
 (function(d){
-var mui_location = 'https://max.upc.edu/maxui/maxui.js'
+var mui_location = window._MAXUI.server+'/maxui/maxui.js'
 var mui = d.createElement('script'); mui.type = 'text/javascript'; mui.async = true;
 mui.src = mui_location
 var s = d.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mui, s);
