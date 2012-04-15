@@ -10,7 +10,8 @@ DEFAULT_MAX_USERNAME = 'operations'
 DEFAULT_MAX_PASSWORD = 'operations'
 
 
-@view_config(name="control_panel", renderer='bigmax:templates/config.pt', permission='restricted')
+# Config view in da fridge!
+#@view_config(name="control_panel", renderer='bigmax:templates/config.pt', permission='restricted')
 def configView(context, request):
     page_title = "BIG MAX Server Config"
     api = TemplateAPI(context, request, page_title)

@@ -8,13 +8,12 @@ from pyramid.view import forbidden_view_config
 from pyramid.security import remember, forget
 from pyramid.settings import asbool
 
-import datetime
-
 from pyramid_ldap import get_ldap_connector
 from bigmax.views.api import TemplateAPI
 from bigmax.utils import normalize_userdn
 import requests
 import json
+import logging
 
 
 @view_config(name='login', renderer='bigmax:templates/login.pt')
@@ -26,6 +25,8 @@ def login(context, request):
     page_title = "BIG MAX Login"
     api = TemplateAPI(context, request, page_title)
     enable_ldap = asbool(request.registry.settings.get('enable_ldap'))
+    max_settings = request.registry.max_settings
+    logger = logging.getLogger('bigmax')
 
     login_url = resource_url(request.context, request, 'login')
     referrer = request.url
@@ -75,42 +76,29 @@ def login(context, request):
             auth_user = "maxupcnet"
             headers = remember(request, auth_user)
 
-        # If it's the first time the user log in the system, then create the local user structure
-        user = context.db.users.find_one({'username': auth_user})
+        # Access the MAX API to look for the auth user
+        requser = requests.post('%s/people/%s' % (max_settings.max_server, auth_user), "", auth=(max_settings.max_ops_username, max_settings.max.ops_password))
 
-        if user:
-            # User exist in database, update login time and continue
-            user['last_login'] = datetime.datetime.now()
-            context.db.users.save(user)
+        if requser.status_code == 201:
+            logger.info("User %s created successfully in MAX server." % auth_user)
+        elif requser.status_code == 200:
+            logger.info("User %s logged in." % auth_user)
         else:
-            # No userid found in the database, then create an instance
-            newuser = {'username': auth_user,
-                       'last_login': datetime.datetime.now(),
-                       'following': {'items': [], },
-                       'subscribedTo': {'items': [], }
-                       }
-            context.db.users.save(newuser)
+            logger.info("Something wrong happened while accessing MAX server." % auth_user)
 
-        OAUTH_SERVER = 'https://oauth.upc.edu'
-        GRANT_TYPE = 'password'
-        CLIENT_ID = 'MAX'
-        SCOPE = 'widgetcli'
-
-        username = login
-
-        REQUEST_TOKEN_ENDPOINT = '%s/token' % (OAUTH_SERVER)
-
-        payload = {"grant_type": GRANT_TYPE,
-                   "client_id": CLIENT_ID,
-                   "scope": SCOPE,
-                   "username": username,
+        # Request token for auth user
+        payload = {"grant_type": max_settings.max_oauth_grant_type,
+                   "client_id": max_settings.max_oauth_clientid,
+                   "scope": max_settings.oauth_scope,
+                   "username": auth_user,
                    "password": password
                    }
 
-        req = requests.post(REQUEST_TOKEN_ENDPOINT, data=payload, verify=False)
+        req = requests.post(max_settings.max_oauth_token_endpoint, data=payload, verify=False)
         response = json.loads(req.text)
         oauth_token = response.get("oauth_token")
 
+        # Store the user's oauth token in the current session
         request.session['oauth_token'] = oauth_token
 
         # Finally, return the authenticated view

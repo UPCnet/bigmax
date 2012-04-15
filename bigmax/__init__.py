@@ -1,9 +1,9 @@
 from pyramid.config import Configurator
 
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
-from pyramid_who.whov2 import WhoV2AuthenticationPolicy
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
+from pyramid_beaker import session_factory_from_settings
 
 from bigmax.resources import Root, loadMAXSettings
 
@@ -17,7 +17,7 @@ def main(global_config, **settings):
     """ This function returns a WSGI application.
     """
     # Security
-    my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet')
+    session_factory = session_factory_from_settings(settings)
     enable_ldap = settings['enable_ldap']
     identifier_id = 'auth_tkt'
 
@@ -31,7 +31,7 @@ def main(global_config, **settings):
     # App config
     config = Configurator(settings=settings,
                           root_factory=Root,
-                          session_factory=my_session_factory,
+                          session_factory=session_factory,
                           authentication_policy=authn_policy,
                           authorization_policy=authz_policy)
 
