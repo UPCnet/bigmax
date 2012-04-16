@@ -84,7 +84,7 @@ def login(context, request):
         elif requser.status_code == 200:
             logger.info("User %s logged in." % auth_user)
         else:
-            logger.info("Something wrong happened while accessing MAX server." % auth_user)
+            logger.info("Something wrong happened while accessing MAX server and authenticating %s user." % auth_user)
 
         # Request token for auth user
         payload = {"grant_type": max_settings.get('max_oauth_grant_type'),
