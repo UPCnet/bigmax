@@ -77,7 +77,7 @@ def login(context, request):
             headers = remember(request, auth_user)
 
         # Access the MAX API to look for the auth user
-        requser = requests.post('%s/people/%s' % (max_settings.get('max_server'), auth_user), "", auth=(max_settings.get('max_ops_username'), max_settings.get('max.ops_password')))
+        requser = requests.post('%s/people/%s' % (max_settings.get('max_server'), auth_user), "", auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')))
 
         if requser.status_code == 201:
             logger.info("User %s created successfully in MAX server." % auth_user)
@@ -89,11 +89,11 @@ def login(context, request):
         # Request token for auth user
         payload = {"grant_type": max_settings.get('max_oauth_grant_type'),
                    "client_id": max_settings.get('max_oauth_clientid'),
-                   "scope": max_settings.get('oauth_scope'),
+                   "scope": max_settings.get('max_oauth_scope'),
                    "username": auth_user,
                    "password": password
                    }
-
+        import ipdb;ipdb.set_trace()
         req = requests.post(max_settings.get('max_oauth_token_endpoint'), data=payload, verify=False)
         response = json.loads(req.text)
         oauth_token = response.get("oauth_token")
