@@ -93,7 +93,7 @@ def login(context, request):
                    "username": auth_user,
                    "password": password
                    }
-        import ipdb;ipdb.set_trace()
+
         req = requests.post(max_settings.get('max_oauth_token_endpoint'), data=payload, verify=False)
         response = json.loads(req.text)
         oauth_token = response.get("oauth_token")
