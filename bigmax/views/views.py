@@ -31,7 +31,7 @@ def rootView(context, request):
 #     return response
 
 
-@view_config(name='variables.js', context=Root, renderer='bigmax:templates/js_variables.js.pt', permission='restricted')
+@view_config(name='variables.js', context=Root, renderer='bigmax:templates/js_variables.js.pt')
 def js_variables(context, request):
 
     username = normalize_userdn(authenticated_userid(request))
@@ -41,8 +41,8 @@ def js_variables(context, request):
                 'token': request.session.get('oauth_token'),
                 'server': config.get('max_server'),
                 'grant': config.get('max_oauth_grant_type'),
-
     }
+    request.response.content_type = 'text/javascript'
     return dict(variables=variables)
 
 

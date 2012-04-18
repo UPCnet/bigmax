@@ -7,9 +7,9 @@ class Root(object):
     __parent__ = __name__ = None
     __acl__ = [
         (Allow, Everyone, 'anonymous'),
-        (Allow, Authenticated, 'restricted'),
-        (Allow, 'operations', 'operations'),
-        (Allow, 'admin', 'admin')
+        (Allow, u'cn=UPCnet.Plone.Admins,ou=UPCNET,ou=Groups,dc=upc,dc=edu', 'restricted'),
+        (Allow, 'victor.fernandez', 'restricted'),
+        (Allow, 'carles.bruguera', 'restricted'),
         ]
 
     def __init__(self, request):

@@ -19,7 +19,7 @@ import logging
 @view_config(name='login', renderer='bigmax:templates/login.pt')
 @forbidden_view_config(renderer='bigmax:templates/login.pt')
 def login(context, request):
-    """ The login view - pyramid_who enabled with the forbidden view logic.
+    """ The login view - pyramid_ldap enabled with the forbidden view logic.
     """
 
     page_title = "BIG MAX Login"
@@ -73,18 +73,30 @@ def login(context, request):
         else:
             # Harcoded developer user
             # Try to suck less here in the future...
-            auth_user = "maxupcnet"
+            auth_user = login
             headers = remember(request, auth_user)
 
         # Access the MAX API to look for the auth user
-        requser = requests.post('%s/people/%s' % (max_settings.get('max_server'), auth_user), "", auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')))
+        requser = requests.post('%s/people/%s' % (max_settings.get('max_server'), auth_user), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
 
         if requser.status_code == 201:
             logger.info("User %s created successfully in MAX server." % auth_user)
         elif requser.status_code == 200:
             logger.info("User %s logged in." % auth_user)
         else:
-            logger.info("Something wrong happened while accessing MAX server and authenticating %s user." % auth_user)
+            logger.error("Something wrong happened while accessing MAX server and authenticating %s user." % auth_user)
+
+        subs_payload = {"object": {"url": max_settings.get('max_server'), "objectType": "context"}}
+
+        # Subscribe automatically the logged in user to the default context
+        reqsubs = requests.post('%s/people/%s/subscriptions' % (max_settings.get('max_server'), auth_user), data=json.dumps(subs_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
+
+        if reqsubs.status_code == 201:
+            logger.info("User %s subscribed successfully in default MAX context." % auth_user)
+        elif requser.status_code == 400:
+            logger.info("User %s already subscribed to default context." % auth_user)
+        else:
+            logger.error("Something wrong happened while accessing MAX server and subcribing %s user to default context." % auth_user)
 
         # Request token for auth user
         payload = {"grant_type": max_settings.get('max_oauth_grant_type'),
