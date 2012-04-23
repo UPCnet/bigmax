@@ -26,8 +26,11 @@ def activityView(context, request):
 def profilesView(context, request):
 
     username = request.matchdict['username']
+    page_title = "%s's User Profile" % username
+    api = TemplateAPI(context, request, page_title)
     max_settings = request.registry.max_settings
-    current_username = authenticated_userid(request)
+
+    current_username = api.authenticatedUser()
     user_token = request.session.get('oauth_token')
 
     # Access the MAX API to look for the auth user
@@ -57,6 +60,4 @@ def profilesView(context, request):
 
     followinfo = {'showFollowButton': showFollowButton, 'isFollowing': isFollowing}
 
-    page_title = "%s's User Profile" % userprofile
-    api = TemplateAPI(context, request, page_title)
     return dict(api=api, userprofile=userprofile, followinfo=followinfo)
