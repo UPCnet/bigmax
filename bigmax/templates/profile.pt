@@ -6,45 +6,39 @@
 
 <!--    <div metal:use-macro="api.snippets.macros['statusMessage']"/>-->
     <div class="row">
-        <div class="cell width-6 position-3">
-            <h1 tal:attributes="userid userprofile._id; username userprofile.username" tal:content="userprofile.username">User</h1>
+        <div class="span1 offset2">
+            <img tal:attributes="src python:'%s/people/%s/avatar' % (api.application_url, userprofile.username)" />
+        </div>
+        <div class="span1">
+            <h1 tal:attributes="userid userprofile.id; username userprofile.username" tal:content="userprofile.username">User</h1>
         </div>
     </div>
     <div class="row">
-        <div class="cell width-6 position-3">
+        <div class="span6 offset3">
             <section id="user_properties">
                 <ul>
-                    <li>User ID: <span tal:content="userprofile._id"></span></li>
+                    <li>User ID: <span tal:content="userprofile.id"></span></li>
                     <li>Following: <span tal:content="userprofile.following['items']"></span></li>
                     <li>Subscribed to: <span tal:content="userprofile.subscribedTo['items']"></span></li>
                 </ul>
             </section>
         </div>
     </div>
+
     <div class="row">
-        <div class="cell width-6 position-3">
+        <div class="span6 offset3">
             <button tal:condition="followinfo.showFollowButton"
                     tal:content="followinfo.isFollowing and 'Unfollow' or 'Follow'"
                     class="followButton">Follow</button>
         </div>
     </div>
-<!--     <div class="row">
-        <div class="cell width-6 position-3">
-            <div id="activityBoxContainer">
-                <textarea class="activityBox"></textarea>
-            </div>
-            <div class="button-container">
-                <button class="send">Envia</button>
-            </div>
+    <div class="row">
+        <div class="span6 offset3">
+            <button tal:condition="not followinfo.showFollowButton"
+                    tal:content="followinfo.isFollowing and 'Unfollow' or 'Follow'"
+                    class="followButton">Follow</button>
         </div>
     </div>
-    <div class="row">
-        <div class="cell width-6 position-3">
-            <section id="activityContainer">
-
-            </section>
-        </div>
-    </div> -->
     </metal:main>
 </body>
 </html>

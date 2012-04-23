@@ -10,3 +10,7 @@ def normalize_userdn(dn):
         return re.search(regex, dn).groups()[1]
     else:
         return None
+
+
+def oauth2Header(username, token):
+    return {"X-Oauth-Token": token, "X-Oauth-Username": username, "X-Oauth-Scope": "widgetcli"}
