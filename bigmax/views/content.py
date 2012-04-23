@@ -30,7 +30,7 @@ def profilesView(context, request):
     api = TemplateAPI(context, request, page_title)
     max_settings = request.registry.max_settings
 
-    current_username = api.authenticatedUser()
+    current_username = api.authenticatedUser
     user_token = request.session.get('oauth_token')
 
     # Access the MAX API to look for the auth user
