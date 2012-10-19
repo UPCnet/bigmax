@@ -26,20 +26,20 @@ def addNew(context, request):
     objectType = request.params.get('type', None)
     if objectType in ['context', 'user', 'activity']:
         if objectType == 'context':
-            data = dict(
-                      url=request.params.get('url'),
-                      displayName=request.params.get('displayName'),
-                      twitterHashtag=request.params.get('twitterHashtag'),
-                      twitterUsername=request.params.get('twitterUsername'),
-                      permissions=dict(read=request.params.get('read', 'public'), write=request.params.get('write', 'public')),
-                   )
+            data = dict(object=dict(url=request.params.get('url'),
+                                    twitterHashtag=request.params.get('twitterHashtag'),
+                                    twitterUsername=request.params.get('twitterUsername'),
+                                    objectType='uri'
+                                    ),
+                        displayName=request.params.get('displayName'),
+                        permissions=dict(read=request.params.get('read', 'public'), write=request.params.get('write', 'public')),
+                        )
             data = {key: value for key, value in data.items() if value}
             req = requests.post('%s/contexts' % maxserver, data=json.dumps(data), auth=('operations', 'operations'), verify=False)
 
         if objectType == 'user':
-            data = dict(
-                      displayName=request.params.get('displayName'),
-                   )
+            data = dict(displayName=request.params.get('displayName'),
+                        )
             req = requests.post('%s/people/%s' % (maxserver, request.params.get('username')), data=json.dumps(data), auth=('operations', 'operations'), verify=False)
 
         if req.status_code in [200, 201]:
