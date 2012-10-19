@@ -46,7 +46,7 @@ def login(context, request):
         if login is u'' or password is u'':
             return dict(
                     message='You need to suply an username and a password.',
-                    url=api.application_url + '/login',
+                    url='http://sheldon:8101/login',
                     came_from=came_from,
                     login=login,
                     password=password,
@@ -64,7 +64,7 @@ def login(context, request):
             else:
                 return dict(
                         message='Login failed. Please try again.',
-                        url=api.application_url + '/login',
+                        url='http://sheldon:8081/login',
                         came_from=came_from,
                         login=login,
                         password=password,
@@ -118,7 +118,7 @@ def login(context, request):
 
     return dict(
             message=message,
-            url=api.application_url + '/login',
+            url='http://sheldon.upc.es:8081/login',
             came_from=came_from,
             login=login,
             password=password,
