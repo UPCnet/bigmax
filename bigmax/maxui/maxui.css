@@ -9,12 +9,20 @@
 #maxui-container {text-shadow: 0 1px #fff; font:13px/18px Arial, "HelveticaNeue","Helvetica Neue",Helvetica,sans-serif;color:#333;}
 
 #maxui-preload {height:0px;}
-.activities .maxui-activity {border-top: 1px #fff solid;border-bottom: 1px #ccc solid;width:100%;float:left;padding:8px 0;padding-left:0; min-height:51px;}
-
+.activities .maxui-activity {border-top: 1px #fff solid;border-bottom: 1px #ccc solid;width:100%;padding:8px 0;padding-left:0; min-height:51px;}
+.activities .maxui-conversation {border-top: 1px #fff solid;border-bottom: 1px #ccc solid;width:100%;padding:8px 0;padding-left:0; min-height:51px;}
 #maxui-timeline .wrapper {}
 
 #maxui-newactivity {padding:10px; position:relative; background: #f2f2f2 url('https://max.upc.edu/maxui/bgact.gif') 0 0 repeat;}
 #maxui-newactivity:after {content: "";display: block;height: 0;clear: both;}
+
+#maxui-newactivity #maxui-sections {
+	margin-left:57px;
+	margin-top:-24px;
+
+}
+
+
 
 #maxui-newactivity textarea, .maxui-comments textarea {
 width:100%;
@@ -90,12 +98,15 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 
 
 #maxui-timeline {clear:both;margin:0;overflow: hidden; padding:0 10px; background:#fff;}
+#maxui-conversations {clear:both;margin:0;overflow: hidden; padding:0 10px; background:#fff;}
 
 	.activities .maxui-avatar img {float:left;}
 	.maxui-avatar img {width:48px;
 		-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;
 		-moz-box-shadow:0 1px #fff;-webkit-box-shadow:0 1px #fff;box-shadow:0 1px #fff;
 	}
+
+
 
 .activities .maxui-activity-content {margin:-5px 0 0 55px;}
 	.activities .maxui-comments .maxui-activity-content {
@@ -121,12 +132,18 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 p.maxui-body {margin:0;font-size:13px;}
 	.maxui-comment .maxui-activity-content p.maxui-body {font-size:12px !important;}
 
-.maxui-publisheddate{
+.maxui-topright{
 font-size:11px;
 color:  #6e6e6e;
 float:right;
 padding-top:1px;
+text-align: right;
 }
+.maxui-enterconversation{
+float:right;
+padding-top:6px;
+}
+
 
 .maxui-actions a, .maxui-origin{
 display:inline;
@@ -294,6 +311,51 @@ img { -ms-interpolation-mode: bicubic; image-rendering: optimizeQuality;}
 	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(0,123,192,.5) !important;
 	box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(0,123,192,.5) !important;
  }
+
+#maxui-mainpanel {
+	overflow: hidden;
+}
+
+#maxui-conversations {
+	position:relative;
+}
+
+ #maxui-messages {
+ 	width:400px;
+ 	position:absolute;
+ 	top:0px;
+ 	left:400px;
+ 	background-color: #fff;
+
+ }
+
+.maxui-message {
+position:relative;
+min-height:30px;
+}
+
+
+.maxui-message.user { text-align: right; padding-right: 40px }
+.maxui-message.user .maxui-avatar { right:5px; left:auto; }
+.maxui-message.user .maxui-body { margin-left:80px; }
+.maxui-message.user .maxui-publisheddate { position: absolute; top:0px; left:10px; }
+
+
+.maxui-message.anyone { text-align: left; padding-left:40px; }
+.maxui-message.anyone .maxui-avatar{ left:5px; }
+.maxui-message.anyone .maxui-body{ margin-right:80px }
+.maxui-message.anyone .maxui-publisheddate { position: absolute; top:0px; right:10px; }
+
+.maxui-message .maxui-avatar {top:0px;}
+.maxui-message .maxui-avatar img { width:30px;height:30px; }
+.maxui-message .maxui-publisheddate { font-size: 10px; font-style: italic; color: #ccc; }
+
+.maxui-message .maxui-body {
+	padding: 5px;
+	-moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px;
+	border:1px solid #ddd;
+	margin-top:5px;
+}
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 	only screen and (-o-min-device-pixel-ratio: 3/2),
