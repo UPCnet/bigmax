@@ -10,6 +10,7 @@ class Root(object):
         (Allow, u'cn=UPCnet.Plone.Admins,ou=UPCNET,ou=Groups,dc=upc,dc=edu', 'restricted'),
         (Allow, 'victor.fernandez', 'restricted'),
         (Allow, 'carles.bruguera', 'restricted'),
+        (Allow, Authenticated, 'activitystream')
         ]
 
     def __init__(self, request):

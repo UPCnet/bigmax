@@ -11,7 +11,7 @@ from bigmax.views.api import TemplateAPI
 from bigmax.utils import normalize_userdn
 
 
-@view_config(context=Root, renderer='bigmax:templates/activityStream.pt', permission='restricted')
+@view_config(context=Root, renderer='bigmax:templates/activityStream.pt', permission='activitystream')
 def rootView(context, request):
 
     username = authenticated_userid(request)
