@@ -16,13 +16,60 @@
 #maxui-newactivity {padding:10px; position:relative; background: #f2f2f2 url('https://max.upc.edu/maxui/bgact.gif') 0 0 repeat;}
 #maxui-newactivity:after {content: "";display: block;height: 0;clear: both;}
 
-#maxui-newactivity #maxui-sections {
-	margin-left:57px;
-	margin-top:-24px;
+#maxui-predictive {
+width:200px;
+background-color: white;
+margin-top:-32px;
+margin-left:57px;
+position:absolute;
+z-index: 100;
+border: 1px #b2b2b2 solid;;
+-moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
+}
+
+#maxui-predictive ul {
+
+list-style: none;
+margin:0px;
+padding:1px;
+}
+
+li.maxui-prediction {
+	padding:0px 4px 2px 0px;
+	cursor:pointer;
 
 }
 
+li.maxui-prediction.selected {
+background-color: #ddd;
+}
 
+#maxui-show-timeline {
+	padding-bottom:3px;
+	text-align:center;
+	background: #f2f2f2 url('https://max.upc.edu/maxui/bgact.gif') 0 0 repeat;
+	border-top: 1px #b2b2b2 solid;
+	height:18px;
+
+}
+
+#maxui-back-conversations, #maxui-show-conversations {
+	padding-bottom:3px;
+	text-align:center;
+	background: #f2f2f2 url('https://max.upc.edu/maxui/bgact.gif') 0 0 repeat;
+	border-bottom: 1px #b2b2b2 solid;
+	height:18px;
+}
+
+.maxui-togglebar a{
+    color:#929292 !important;
+    font-weight: bold;
+}
+
+.maxui-togglebar a:hover {
+	color:#555 !important;
+	text-decoration: none !important;
+}
 
 #maxui-newactivity textarea, .maxui-comments textarea {
 width:100%;
@@ -37,6 +84,11 @@ font-family: Arial, Helvetica, sans-serif;
 font-size: 13px;line-height: 18px;
 overflow: auto;resize: vertical ;
 }
+
+#maxui-newactivity textarea.error {
+
+}
+
 #maxui-newactivity textarea:focus, .maxui-comments textarea:focus {color:#333;}
 
 .maxui-newcommentBoxContainer {padding-right:0 5px;padding-top:5px;}
@@ -98,8 +150,11 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 
 
 #maxui-timeline {clear:both;margin:0;overflow: hidden; padding:0 10px; background:#fff;}
-#maxui-conversations {clear:both;margin:0;overflow: hidden; padding:0 10px; background:#fff;}
+#maxui-conversations {clear:both;margin:0;overflow: hidden; padding:0 0 0 10px; background:#fff;  border-bottom:1px #ccc solid;}
 
+#maxui-conversations-list {
+	outline:none;
+}
 	.activities .maxui-avatar img {float:left;}
 	.maxui-avatar img {width:48px;
 		-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;
@@ -122,6 +177,7 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 
 #maxui-newactivity .maxui-avatar img {*position:absolute;}
 #maxui-newactivity #maxui-newactivity-box {margin-left:56px;text-align:right;}
+#maxui-newactivity #maxui-newactivity-box textarea{position:relative;}
 
 .maxui-clear {clear:both;float:none;}
 
@@ -302,10 +358,19 @@ img { -ms-interpolation-mode: bicubic; image-rendering: optimizeQuality;}
 
 #maxui-container textarea:focus, #maxui-container input[type="search"]:focus {
 	border: 1px solid #4999cb !important;
-	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(0,123,192,.5) !important;
-	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(0,123,192,.5) !important;
-	box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(0,123,192,.5) !important;
+	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(100,123,192,.5) !important;
+	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(100,123,192,.5) !important;
+	box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(100,123,192,.5) !important;
  }
+
+ #maxui-container textarea.error:focus {
+	border: 1px solid red !important;
+	-webkit-box-shadow: inset 0 1px 3px rgba(255,0,0,.05),0 0 8px rgba(255,123,192,.5) !important;
+	-moz-box-shadow: inset 0 1px 3px rgba(255,0,0,.05),0 0 8px rgba(255,123,192,.5) !important;
+	box-shadow: inset 0 1px 3px rgba(255,0,0,.05),0 0 8px rgba(255,123,192,.5) !important;
+
+ }
+
 #maxui-container input:focus {
 	-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(0,123,192,.5) !important;
 	-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(0,123,192,.5) !important;
@@ -348,7 +413,7 @@ min-height:30px;
 
 .maxui-message .maxui-avatar {top:0px;}
 .maxui-message .maxui-avatar img { width:30px;height:30px; }
-.maxui-message .maxui-publisheddate { font-size: 10px; font-style: italic; color: #ccc; }
+.maxui-message .maxui-publisheddate { font-size: 10px; font-style: italic; color: #888; }
 
 .maxui-message .maxui-body {
 	padding: 5px;
@@ -370,3 +435,153 @@ min-height:30px;
 			}
 }
 html { -webkit-text-size-adjust:none; }
+
+.maxui-message-count {
+-moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
+background-color: #3A87AD;
+color:white;
+font-size: 10px;
+padding:0px 1px;
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+display:inline-block;
+min-width: 17px;
+text-align: center;
+}
+
+/*
+ * CSS Styles that are needed by jScrollPane for it to operate correctly.
+ *
+ * Include this stylesheet in your site or copy and paste the styles below into your stylesheet - jScrollPane
+ * may not operate correctly without them.
+ */
+
+
+.jspContainer
+{
+    overflow: hidden;
+    position: relative;
+}
+
+.jspPane
+{
+    position: absolute;
+}
+
+.jspVerticalBar
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background: red;
+    width:10px; border-left:1px #eee solid;
+    -webkit-transition: .3s ease-in-out;
+    -moz-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+
+.jspVerticalBar:hover {
+	width:10px; border-left:1px #bbb solid;
+}
+
+.jspHorizontalBar
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    background: red;
+}
+
+.jspVerticalBar *,
+.jspHorizontalBar *
+{
+    margin: 0;
+    padding: 0;
+}
+
+.jspCap
+{
+    display: none;
+}
+
+.jspHorizontalBar .jspCap
+{
+    float: left;
+}
+
+.jspTrack
+{
+    background: white;
+    position: relative;
+}
+
+.jspVerticalBar:hover .jspDrag{
+	background: #999;
+
+}
+
+.jspDrag {
+    background: #bbb;
+    position: relative;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    -webkit-transition: .1s ease-in-out;
+    -moz-transition: .1s ease-in-out;
+    transition: .1s ease-in-out;
+	margin: 0px 2px;
+    -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px;
+}
+
+.jspHorizontalBar .jspTrack,
+.jspHorizontalBar .jspDrag
+{
+    float: left;
+    height: 100%;
+}
+
+.jspArrow
+{
+    background: #50506d;
+    text-indent: -20000px;
+    display: block;
+    cursor: pointer;
+}
+
+.jspArrow.jspDisabled
+{
+    cursor: default;
+    background: #80808d;
+}
+
+.jspVerticalBar .jspArrow
+{
+    height: 16px;
+}
+
+.jspHorizontalBar .jspArrow
+{
+    width: 16px;
+    float: left;
+    height: 100%;
+}
+
+.jspVerticalBar .jspArrow:focus
+{
+    outline: none;
+}
+
+.jspCorner
+{
+    background: #eeeef4;
+    float: left;
+    height: 100%;
+}
+
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .jspCorner
+{
+    margin: 0 -3px 0 0;
+}
