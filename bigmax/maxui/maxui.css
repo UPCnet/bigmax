@@ -377,10 +377,10 @@ img { -ms-interpolation-mode: bicubic; image-rendering: optimizeQuality;}
 	box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 0 8px rgba(0,123,192,.5) !important;
  }
 
-#maxui-mainpanel {
+/*#maxui-mainpanel {
 	overflow: hidden;
 }
-
+*/
 #maxui-conversations {
 	position:relative;
 }
