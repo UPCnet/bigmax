@@ -2,7 +2,6 @@ from pyramid.security import authenticated_userid
 from pyramid.renderers import get_renderer
 from bigmax.utils import normalize_userdn
 
-
 class TemplateAPI(object):
 
     def __init__(self, context, request, page_title=None):

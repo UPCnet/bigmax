@@ -14,6 +14,12 @@ from bigmax.utils import normalize_userdn
 import requests
 import json
 import logging
+import re
+
+def real_request_url(request):
+    request_scheme = re.search(r'(https?)://', request.url).groups()[0]
+    real_scheme = re.search(r'(https?)://', request.get('HTTP_X_VIRTUAL_HOST_URI')).groups()[0]
+    return request.url.replace(request_scheme, real_scheme)
 
 
 @view_config(name='login', renderer='bigmax:templates/login.pt')
@@ -21,17 +27,16 @@ import logging
 def login(context, request):
     """ The login view - pyramid_ldap enabled with the forbidden view logic.
     """
-
     page_title = "BIG MAX Login"
     api = TemplateAPI(context, request, page_title)
     enable_ldap = asbool(request.registry.settings.get('enable_ldap'))
     max_settings = request.registry.max_settings
     logger = logging.getLogger('bigmax')
-
-    login_url = resource_url(request.context, request, 'login')
-    referrer = request.url
-    if referrer == login_url:
-        referrer = '/'  # never use the login form itself as came_from
+    
+    login_url = api.application_url+'/login'
+    referrer = real_request_url(request)
+    if referrer.endswith('login'):
+        referrer = api.application_url  # never use the login form itself as came_from
 
     came_from = request.params.get('came_from', referrer)
     message = ''
@@ -46,7 +51,7 @@ def login(context, request):
         if login is u'' or password is u'':
             return dict(
                     message='You need to suply an username and a password.',
-                    url='http://sheldon:8101/login',
+                    url=api.application_url+'/login',
                     came_from=came_from,
                     login=login,
                     password=password,
@@ -64,7 +69,7 @@ def login(context, request):
             else:
                 return dict(
                         message='Login failed. Please try again.',
-                        url='http://sheldon:8081/login',
+                        url=api.application_url+'/login',
                         came_from=came_from,
                         login=login,
                         password=password,
@@ -112,13 +117,13 @@ def login(context, request):
 
         # Store the user's oauth token in the current session
         request.session['oauth_token'] = oauth_token
-
+  
         # Finally, return the authenticated view
         return HTTPFound(headers=headers, location=came_from)
 
     return dict(
             message=message,
-            url='http://sheldon.upc.es:8081/login',
+            url=api.application_url+'/login',
             came_from=came_from,
             login=login,
             password=password,
@@ -129,4 +134,4 @@ def login(context, request):
 @view_config(name='logout')
 def logout(request):
     headers = forget(request)
-    return HTTPFound(location=request.resource_url(request.context), headers=headers)
+    return HTTPFound(location=request.headers.get('X-Virtual-Host-Uri', '/'),  headers=headers)
