@@ -16,10 +16,14 @@ import json
 import logging
 import re
 
+
 def real_request_url(request):
     request_scheme = re.search(r'(https?)://', request.url).groups()[0]
-    real_scheme = re.search(r'(https?)://', request.get('HTTP_X_VIRTUAL_HOST_URI')).groups()[0]
-    return request.url.replace(request_scheme, real_scheme)
+    if request.get('HTTP_X_VIRTUAL_HOST_URI'):
+        real_scheme = re.search(r'(https?)://', request.get('HTTP_X_VIRTUAL_HOST_URI')).groups()[0]
+        return request.url.replace(request_scheme, real_scheme)
+    else:
+        return request.url
 
 
 @view_config(name='login', renderer='bigmax:templates/login.pt')
@@ -32,8 +36,8 @@ def login(context, request):
     enable_ldap = asbool(request.registry.settings.get('enable_ldap'))
     max_settings = request.registry.max_settings
     logger = logging.getLogger('bigmax')
-    
-    login_url = api.application_url+'/login'
+
+    login_url = api.application_url + '/login'
     referrer = real_request_url(request)
     if referrer.endswith('login'):
         referrer = api.application_url  # never use the login form itself as came_from
@@ -117,7 +121,7 @@ def login(context, request):
 
         # Store the user's oauth token in the current session
         request.session['oauth_token'] = oauth_token
-  
+
         # Finally, return the authenticated view
         return HTTPFound(headers=headers, location=came_from)
 

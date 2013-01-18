@@ -55,8 +55,7 @@ def main(global_config, **settings):
                                     )
 
     config.add_static_view('static', 'bigmax:static')
-    config.add_static_view('css', 'bigmax:css')
-    config.add_static_view('less', 'bigmax:less')
+    config.add_static_view('stylesheets', 'bigmax:stylesheets')
     config.add_static_view('js', 'bigmax:js')
     config.add_static_view('fonts', 'bigmax:static/fonts')
     config.add_static_view('maxui', 'bigmax:maxui')
