@@ -37,7 +37,7 @@ def login(context, request):
     max_settings = request.registry.max_settings
     logger = logging.getLogger('bigmax')
 
-    login_url = api.application_url + '/login'
+    login_url = '%s/login' % api.application_url,
     referrer = real_request_url(request)
     if referrer.endswith('login'):
         referrer = api.application_url  # never use the login form itself as came_from
@@ -55,7 +55,7 @@ def login(context, request):
         if login is u'' or password is u'':
             return dict(
                     message='You need to suply an username and a password.',
-                    url=api.application_url+'/login',
+                    url='%s/login' % api.application_url,
                     came_from=came_from,
                     login=login,
                     password=password,
@@ -73,7 +73,7 @@ def login(context, request):
             else:
                 return dict(
                         message='Login failed. Please try again.',
-                        url=api.application_url+'/login',
+                        url='%s/login' % api.application_url,
                         came_from=came_from,
                         login=login,
                         password=password,
@@ -95,7 +95,7 @@ def login(context, request):
         else:
             logger.error("Something wrong happened while accessing MAX server and authenticating %s user." % auth_user)
 
-        subs_payload = {"object": {"url": max_settings.get('max_server'), "objectType": "context"}}
+        subs_payload = {"object": {"url": max_settings.get('max_server'), "objectType": "uri"}}
 
         # Subscribe automatically the logged in user to the default context
         reqsubs = requests.post('%s/people/%s/subscriptions' % (max_settings.get('max_server'), auth_user), data=json.dumps(subs_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
@@ -127,7 +127,7 @@ def login(context, request):
 
     return dict(
             message=message,
-            url=api.application_url+'/login',
+            url='%s/login' % api.application_url,
             came_from=came_from,
             login=login,
             password=password,

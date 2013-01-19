@@ -1,5 +1,6 @@
 from pyramid.config import Configurator
 
+from pyramid.settings import asbool
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid_beaker import session_factory_from_settings
@@ -17,7 +18,7 @@ def main(global_config, **settings):
     """
     # Security
     session_factory = session_factory_from_settings(settings)
-    enable_ldap = settings['enable_ldap']
+    enable_ldap = asbool(settings['enable_ldap'])
     identifier_id = 'auth_tkt'
 
     if enable_ldap:
