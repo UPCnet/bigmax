@@ -38,10 +38,24 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
           <ul class="nav pull-right" tal:condition="api.authenticatedUser">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Contexts
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>Elouuu</li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav pull-right" tal:condition="api.authenticatedUser">
             <!-- <li><a href="#">Link</a></li> -->
             <!-- <li class="divider-vertical"></li> -->
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:content="api.authenticatedUser">Username<b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <tal:username content="api.authenticatedUser">Username</tal:username>
+                <b class="caret"></b>
+              </a>
               <ul class="dropdown-menu">
                 <li><a tal:attributes="href '/profiles/'+api.authenticatedUser">Profile</a></li>
                 <li><a href="/control_panel">Setup Server</a></li>
