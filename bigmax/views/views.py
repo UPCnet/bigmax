@@ -10,6 +10,8 @@ from bigmax.resources import Root
 from bigmax.views.api import TemplateAPI
 from bigmax.utils import normalize_userdn
 
+from maxclient import MaxClient
+
 
 @view_config(context=Root, renderer='bigmax:templates/activityStream.pt', permission='activitystream')
 def rootView(context, request):
@@ -17,7 +19,13 @@ def rootView(context, request):
     username = authenticated_userid(request)
     page_title = "%s's Activity Stream" % username
     api = TemplateAPI(context, request, page_title)
-    return dict(api=api)
+    max_settings = request.registry.max_settings
+
+    req = MaxClient(max_settings.get('max_server'), actor=username, auth_method='oauth2')
+    req.setOAuth2Auth(request.session['oauth_token'])
+    subscribed = req.subscribed()
+
+    return dict(api=api, subscribed=subscribed['items'][0]['subscribedTo']['items'])
 
 
 # @view_config(route_name="wadl", context=Root)
