@@ -16,6 +16,8 @@ import json
 import logging
 import re
 
+logger = logging.getLogger('bigmax')
+
 
 def real_request_url(request):
     request_scheme = re.search(r'(https?)://', request.url).groups()[0]
@@ -35,7 +37,6 @@ def login(context, request):
     api = TemplateAPI(context, request, page_title)
     enable_ldap = asbool(request.registry.settings.get('enable_ldap'))
     max_settings = request.registry.max_settings
-    logger = logging.getLogger('bigmax')
 
     login_url = '%s/login' % api.application_url,
     referrer = real_request_url(request)
@@ -96,6 +97,12 @@ def login(context, request):
             logger.error("Something wrong happened while accessing MAX server and authenticating %s user." % auth_user)
 
         subs_payload = {"object": {"url": max_settings.get('max_server'), "objectType": "uri"}}
+
+        # Create the default context (if needed)
+        defcontext_payload = {'object': {'url': max_settings.get('max_server'), 'objectType': 'uri'}, 'displayName': 'Default MAX context'}
+        reqdefcontext = requests.post('%s/contexts' % max_settings.get('max_server'), json.dumps(defcontext_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
+        if reqdefcontext.status_code == 201:
+            logger.info("Created default MAX context at %s" % max_settings.get('max_server'))
 
         # Subscribe automatically the logged in user to the default context
         reqsubs = requests.post('%s/people/%s/subscriptions' % (max_settings.get('max_server'), auth_user), data=json.dumps(subs_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
