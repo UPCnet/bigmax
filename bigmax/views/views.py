@@ -21,8 +21,8 @@ def rootView(context, request):
     api = TemplateAPI(context, request, page_title)
     max_settings = request.registry.max_settings
 
-    req = MaxClient(max_settings.get('max_server'), actor=username, auth_method='oauth2')
-    req.setOAuth2Auth(request.session['oauth_token'])
+    req = MaxClient(max_settings.get('max_server'), actor=username)
+    req.setToken(request.session['oauth_token'])
     subscribed = req.subscribed()
 
     return dict(api=api, subscribed=subscribed['items'][0]['subscribedTo']['items'])

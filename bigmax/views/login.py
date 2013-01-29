@@ -87,32 +87,32 @@ def login(context, request):
             headers = remember(request, auth_user)
 
         # Access the MAX API to look for the auth user
-        requser = requests.post('%s/people/%s' % (max_settings.get('max_server'), auth_user), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
+        # requser = requests.post('%s/people/%s' % (max_settings.get('max_server'), auth_user), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
 
-        if requser.status_code == 201:
-            logger.info("User %s created successfully in MAX server." % auth_user)
-        elif requser.status_code == 200:
-            logger.info("User %s logged in." % auth_user)
-        else:
-            logger.error("Something wrong happened while accessing MAX server and authenticating %s user." % auth_user)
+        # if requser.status_code == 201:
+        #     logger.info("User %s created successfully in MAX server." % auth_user)
+        # elif requser.status_code == 200:
+        #     logger.info("User %s logged in." % auth_user)
+        # else:
+        #     logger.error("Something wrong happened while accessing MAX server and authenticating %s user." % auth_user)
 
-        subs_payload = {"object": {"url": max_settings.get('max_server'), "objectType": "uri"}}
+        # subs_payload = {"object": {"url": max_settings.get('max_server'), "objectType": "uri"}}
 
         # Create the default context (if needed)
-        defcontext_payload = {'object': {'url': max_settings.get('max_server'), 'objectType': 'uri'}, 'displayName': 'Default MAX context'}
-        reqdefcontext = requests.post('%s/contexts' % max_settings.get('max_server'), json.dumps(defcontext_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
-        if reqdefcontext.status_code == 201:
-            logger.info("Created default MAX context at %s" % max_settings.get('max_server'))
+        # defcontext_payload = {'object': {'url': max_settings.get('max_server'), 'objectType': 'uri'}, 'displayName': 'Default MAX context'}
+        # reqdefcontext = requests.post('%s/contexts' % max_settings.get('max_server'), json.dumps(defcontext_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
+        # if reqdefcontext.status_code == 201:
+        #     logger.info("Created default MAX context at %s" % max_settings.get('max_server'))
 
         # Subscribe automatically the logged in user to the default context
-        reqsubs = requests.post('%s/people/%s/subscriptions' % (max_settings.get('max_server'), auth_user), data=json.dumps(subs_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
+        # reqsubs = requests.post('%s/people/%s/subscriptions' % (max_settings.get('max_server'), auth_user), data=json.dumps(subs_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
 
-        if reqsubs.status_code == 201:
-            logger.info("User %s subscribed successfully in default MAX context." % auth_user)
-        elif requser.status_code == 400:
-            logger.info("User %s already subscribed to default context." % auth_user)
-        else:
-            logger.error("Something wrong happened while accessing MAX server and subcribing %s user to default context." % auth_user)
+        # if reqsubs.status_code == 201:
+        #     logger.info("User %s subscribed successfully in default MAX context." % auth_user)
+        # elif requser.status_code == 400:
+        #     logger.info("User %s already subscribed to default context." % auth_user)
+        # else:
+        #     logger.error("Something wrong happened while accessing MAX server and subcribing %s user to default context." % auth_user)
 
         # Request token for auth user
         payload = {"grant_type": max_settings.get('max_oauth_grant_type'),

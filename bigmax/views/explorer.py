@@ -3,6 +3,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPBadRequest, HTTPOk
 
 from bigmax.views.api import TemplateAPI
+from maxclient import MaxClient
 
 import requests
 import json
@@ -95,15 +96,21 @@ def explorerView(context, request):
     activity_cols_ids = [a['id'] for a in activity_cols]
     context_cols_ids = [a['id'] for a in context_cols]
 
-    auth = ('operations', 'operations')
+    client = MaxClient(maxserver)
+    client.setActor(api.authenticatedUser)
+    client.setToken(request.session.get('oauth_token'))
 
-    users_dump = json.loads(requests.get('%s/admin/people' % maxserver, auth=auth, verify=False).text)['items']
-    activities_dump = json.loads(requests.get('%s/admin/activities' % maxserver, auth=auth, verify=False).text)['items']
-    contexts_dump = json.loads(requests.get('%s/admin/contexts' % maxserver, auth=auth, verify=False).text)['items']
+    users_dump = client.getUsers()
+    activities_dump = client.getActivities()
+    contexts_dump = client.getContexts()
 
-    user_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in user_cols_ids] for entry in users_dump]
-    activity_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in activity_cols_ids] for entry in activities_dump]
-    context_data = [[dict(id=field, value=getFieldByName(field, entry))  for field in context_cols_ids] for entry in contexts_dump]
+    # users_dump = json.loads(requests.get('%s/admin/people' % maxserver, auth=auth, verify=False).text)['items']
+    # activities_dump = json.loads(requests.get('%s/admin/activities' % maxserver, auth=auth, verify=False).text)['items']
+    # contexts_dump = json.loads(requests.get('%s/admin/contexts' % maxserver, auth=auth, verify=False).text)['items']
+
+    user_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in user_cols_ids] for entry in users_dump['items']]
+    activity_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in activity_cols_ids] for entry in activities_dump['items']]
+    context_data = [[dict(id=field, value=getFieldByName(field, entry))  for field in context_cols_ids] for entry in contexts_dump['items']]
 
     collections = [dict(id="users", objectType='user', title="Usuaris", data=user_data, icon="user", cols=user_cols),
                    dict(id="activities", objectType='activity', title="Activitats", data=activity_data, icon="star", cols=activity_cols),

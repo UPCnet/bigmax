@@ -60,3 +60,7 @@ class TemplateAPI(object):
 
     def getVirtualHost(self):
         return self.request.headers.get('X-Virtual-Host-Uri', None)
+
+    @property
+    def show_user_contexts(self):
+        return self.request.view_name == u''
