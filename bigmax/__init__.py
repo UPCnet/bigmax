@@ -10,6 +10,8 @@ from bigmax.resources import Root, loadMAXSettings
 import ldap
 from pyramid_ldap import groupfinder
 
+from maxclient import MaxClient
+
 import pymongo
 
 
@@ -71,6 +73,9 @@ def main(global_config, **settings):
 
     # Set MAX settings
     config.registry.max_settings = loadMAXSettings(settings, config)
+
+    # Set a MaxClient Facility
+    config.registry.maxclient = MaxClient(config.registry.max_settings['max_server'], config.registry.max_settings['max_oauth_server'])
 
     config.scan('bigmax', ignore='max.tests')
 

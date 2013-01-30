@@ -73,7 +73,7 @@ def delObj(context, request):
 @view_config(name="explorer", renderer='bigmax:templates/explorer.pt', permission='restricted')
 def explorerView(context, request):
     page_title = "MAX Server DB Explorer"
-    maxserver = request.registry.max_settings['max_server']
+    max_settings = request.registry.max_settings
     api = TemplateAPI(context, request, page_title)
     success = False
     message = ''
@@ -96,7 +96,7 @@ def explorerView(context, request):
     activity_cols_ids = [a['id'] for a in activity_cols]
     context_cols_ids = [a['id'] for a in context_cols]
 
-    client = MaxClient(maxserver)
+    client = request.registry.maxclient
     client.setActor(api.authenticatedUser)
     client.setToken(request.session.get('oauth_token'))
 
@@ -110,7 +110,7 @@ def explorerView(context, request):
 
     user_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in user_cols_ids] for entry in users_dump['items']]
     activity_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in activity_cols_ids] for entry in activities_dump['items']]
-    context_data = [[dict(id=field, value=getFieldByName(field, entry))  for field in context_cols_ids] for entry in contexts_dump['items']]
+    context_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in context_cols_ids] for entry in contexts_dump['items']]
 
     collections = [dict(id="users", objectType='user', title="Usuaris", data=user_data, icon="user", cols=user_cols),
                    dict(id="activities", objectType='activity', title="Activitats", data=activity_data, icon="star", cols=activity_cols),
