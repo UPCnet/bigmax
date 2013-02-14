@@ -18,7 +18,7 @@ window._MAXUI.onReady = function() {
            'maxServerURLAlias' : '',
            'avatarURLpattern' : '',
            'readContext': window._MAXUI.server,
-           'activitySource': 'activities'
+           'activitySource': 'timeline'
            }
 
     $('#activityStream').maxUI(settings)

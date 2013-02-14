@@ -16,10 +16,16 @@ import json
 import logging
 import re
 
+logger = logging.getLogger('bigmax')
+
+
 def real_request_url(request):
     request_scheme = re.search(r'(https?)://', request.url).groups()[0]
-    real_scheme = re.search(r'(https?)://', request.get('HTTP_X_VIRTUAL_HOST_URI')).groups()[0]
-    return request.url.replace(request_scheme, real_scheme)
+    if request.get('HTTP_X_VIRTUAL_HOST_URI'):
+        real_scheme = re.search(r'(https?)://', request.get('HTTP_X_VIRTUAL_HOST_URI')).groups()[0]
+        return request.url.replace(request_scheme, real_scheme)
+    else:
+        return request.url
 
 
 @view_config(name='login', renderer='bigmax:templates/login.pt')
@@ -31,9 +37,8 @@ def login(context, request):
     api = TemplateAPI(context, request, page_title)
     enable_ldap = asbool(request.registry.settings.get('enable_ldap'))
     max_settings = request.registry.max_settings
-    logger = logging.getLogger('bigmax')
-    
-    login_url = api.application_url+'/login'
+
+    login_url = '%s/login' % api.application_url,
     referrer = real_request_url(request)
     if referrer.endswith('login'):
         referrer = api.application_url  # never use the login form itself as came_from
@@ -51,7 +56,7 @@ def login(context, request):
         if login is u'' or password is u'':
             return dict(
                     message='You need to suply an username and a password.',
-                    url=api.application_url+'/login',
+                    url='%s/login' % api.application_url,
                     came_from=came_from,
                     login=login,
                     password=password,
@@ -69,7 +74,7 @@ def login(context, request):
             else:
                 return dict(
                         message='Login failed. Please try again.',
-                        url=api.application_url+'/login',
+                        url='%s/login' % api.application_url,
                         came_from=came_from,
                         login=login,
                         password=password,
@@ -91,7 +96,13 @@ def login(context, request):
         else:
             logger.error("Something wrong happened while accessing MAX server and authenticating %s user." % auth_user)
 
-        subs_payload = {"object": {"url": max_settings.get('max_server'), "objectType": "context"}}
+        subs_payload = {"object": {"url": max_settings.get('max_server'), "objectType": "uri"}}
+
+        # Create the default context (if needed)
+        defcontext_payload = {'object': {'url': max_settings.get('max_server'), 'objectType': 'uri'}, 'displayName': 'Default MAX context'}
+        reqdefcontext = requests.post('%s/contexts' % max_settings.get('max_server'), json.dumps(defcontext_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
+        if reqdefcontext.status_code == 201:
+            logger.info("Created default MAX context at %s" % max_settings.get('max_server'))
 
         # Subscribe automatically the logged in user to the default context
         reqsubs = requests.post('%s/people/%s/subscriptions' % (max_settings.get('max_server'), auth_user), data=json.dumps(subs_payload), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
@@ -117,13 +128,13 @@ def login(context, request):
 
         # Store the user's oauth token in the current session
         request.session['oauth_token'] = oauth_token
-  
+
         # Finally, return the authenticated view
         return HTTPFound(headers=headers, location=came_from)
 
     return dict(
             message=message,
-            url=api.application_url+'/login',
+            url='%s/login' % api.application_url,
             came_from=came_from,
             login=login,
             password=password,

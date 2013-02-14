@@ -16,6 +16,7 @@ requires = [
     'pymongo',
     'rfc3339',
     'requests',
+    'waitress'
     ]
 
 test_requires = ['WebTest', 'mock', ]
