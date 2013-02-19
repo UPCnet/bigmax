@@ -23,7 +23,11 @@ def getFieldByName(field, obj, default='--'):
 
 @view_config(name="addNew", permission='restricted')
 def addNew(context, request):
-    maxserver = request.registry.max_settings['max_server']
+    api = TemplateAPI(context, request, '')
+    client = request.registry.maxclient
+    client.setActor(api.authenticatedUser)
+    client.setToken(request.session.get('oauth_token'))
+
     objectType = request.params.get('type', None)
     if objectType in ['context', 'user', 'activity']:
         if objectType == 'context':
@@ -41,9 +45,9 @@ def addNew(context, request):
         if objectType == 'user':
             data = dict(displayName=request.params.get('displayName'),
                         )
-            req = requests.post('%s/people/%s' % (maxserver, request.params.get('username')), data=json.dumps(data), auth=('operations', 'operations'), verify=False)
+            (success, code, response) = client.addUser(request.params.get('username'), **data)
 
-        if req.status_code in [200, 201]:
+        if code in [200, 201]:
             return HTTPOk()
         else:
             return HTTPBadRequest()

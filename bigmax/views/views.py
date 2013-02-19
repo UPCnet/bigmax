@@ -24,7 +24,10 @@ def rootView(context, request):
 
     subscribed = client.subscribed()
 
-    return dict(api=api, subscribed=subscribed['items'][0]['subscribedTo']['items'])
+    if subscribed:
+        subscribed = subscribed['items'][0]['subscribedTo']['items']
+
+    return dict(api=api, subscribed=subscribed)
 
 
 # @view_config(route_name="wadl", context=Root)

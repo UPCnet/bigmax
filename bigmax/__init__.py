@@ -3,7 +3,7 @@ from pyramid.config import Configurator
 from pyramid.settings import asbool
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
-from pyramid_beaker import session_factory_from_settings
+from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
 
 from bigmax.resources import Root, loadMAXSettings
 
@@ -20,6 +20,8 @@ def main(global_config, **settings):
     """
     # Security
     session_factory = session_factory_from_settings(settings)
+    set_cache_regions_from_settings(settings)
+
     enable_ldap = asbool(settings['enable_ldap'])
     identifier_id = 'auth_tkt'
 
