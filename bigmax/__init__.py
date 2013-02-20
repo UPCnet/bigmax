@@ -43,7 +43,7 @@ def main(global_config, **settings):
     if enable_ldap:
         config.include('pyramid_ldap')
 
-        config.ldap_setup('ldaps://ldap.upc.edu',
+        config.ldap_setup('ldaps://ldap-pre.upc.edu',
                           bind='cn=ldap.upc,ou=users,dc=upc,dc=edu',
                           passwd='conldapnexio'
                          )

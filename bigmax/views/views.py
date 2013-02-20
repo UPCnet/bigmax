@@ -50,6 +50,7 @@ def js_variables(context, request):
     variables = {'username': username,
                 'token': request.session.get('oauth_token'),
                 'server': config.get('max_server'),
+                'talk': config.get('max_talk'),
                 'grant': config.get('max_oauth_grant_type'),
     }
     request.response.content_type = 'text/javascript'
