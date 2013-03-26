@@ -25,7 +25,7 @@ def rootView(context, request):
     subscribed = client.subscribed()
 
     if subscribed:
-        subscribed = subscribed['items'][0]['subscribedTo']['items']
+        subscribed = subscribed['items']
 
     return dict(api=api, subscribed=subscribed)
 
