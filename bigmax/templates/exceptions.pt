@@ -1,0 +1,21 @@
+<!doctype html>
+<html metal:use-macro="api.masterTemplate.macros['master']">
+<head></head>
+<body>
+  <metal:main fill-slot="main">
+    <div class="row">
+        <div class="span10 offset1">
+            <h3>Hash de l'error <pre tal:content="exception_id"></pre></h3>
+            <h3>Data <pre tal:content="date"></pre></h3>
+
+            <h3>Petició HTTP</h3>
+            <div tal:replace="structure http_request"></div>
+
+            <h3>Traceback de l'error</h3>
+            <div tal:replace="structure traceback"></div>
+
+        </div>
+    </div>
+  </metal:main>
+</body>
+</html>

@@ -66,6 +66,7 @@ def main(global_config, **settings):
     config.add_static_view('maxui', 'bigmax:maxui')
 
     config.add_route('profiles', '/profiles/{username}')
+    config.add_route('exception', '/exceptions/{id}')
 
     # Store in registry
     db_uri = settings['mongodb.url']
