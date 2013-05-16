@@ -9,9 +9,9 @@
 #maxui-container {text-shadow: 0 1px #fff; font:13px/18px Arial, "HelveticaNeue","Helvetica Neue",Helvetica,sans-serif;color:#333;}
 
 #maxui-preload {height:0px;}
-.activities .maxui-activity {border-top: 1px #fff solid;border-bottom: 1px #ccc solid;width:100%;padding:8px 0;padding-left:0; min-height:51px;}
-.activities .maxui-conversation {border-top: 1px #fff solid;border-bottom: 1px #ccc solid;width:100%;padding:8px 0;padding-left:0; min-height:51px;}
-#maxui-timeline .wrapper {}
+.maxui-activities .maxui-activity {border-top: 1px #fff solid;border-bottom: 1px #ccc solid;width:100%;padding:8px 0;padding-left:0; min-height:51px;}
+.maxui-activities .maxui-conversation {border-top: 1px #fff solid;border-bottom: 1px #ccc solid;width:100%;padding:8px 0;padding-left:0; min-height:51px;}
+#maxui-timeline .maxui-wrapper {}
 
 #maxui-newactivity {padding:10px; position:relative; background: #f2f2f2 url('/maxui/img/bgact.gif') 0 0 repeat;}
 #maxui-newactivity:after {content: "";display: block;height: 0;clear: both;}
@@ -155,7 +155,7 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 #maxui-conversations-list {
 	outline:none;
 }
-	.activities .maxui-avatar img {float:left;}
+	.maxui-activities .maxui-avatar img {float:left;}
 	.maxui-avatar img {width:48px;
 		-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;
 		-moz-box-shadow:0 1px #fff;-webkit-box-shadow:0 1px #fff;box-shadow:0 1px #fff;
@@ -163,8 +163,8 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 
 
 
-.activities .maxui-activity-content {margin:-5px 0 0 55px;}
-	.activities .maxui-comments .maxui-activity-content {
+.maxui-activities .maxui-activity-content {margin:-5px 0 0 55px;}
+	.maxui-activities .maxui-comments .maxui-activity-content {
 		margin-left:41px;
 		margin-right:0;
 		margin-top:-5px;
@@ -172,7 +172,7 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 		position:relative;
 	}
 .maxui-activity-content a {position:relative;}
-.activities .maxui-footer {}
+.maxui-activities .maxui-footer {}
 #maxui-newactivity div {}
 
 #maxui-newactivity .maxui-avatar img {*position:absolute;}
@@ -387,10 +387,8 @@ img { -ms-interpolation-mode: bicubic; image-rendering: optimizeQuality;}
 }
 
  #maxui-messages {
- 	width:400px;
  	position:absolute;
  	top:0px;
- 	left:400px;
  	background-color: #fff;
 
  }
@@ -401,16 +399,16 @@ min-height:30px;
 }
 
 
-.maxui-message.user { text-align: right; padding-right: 40px }
-.maxui-message.user .maxui-avatar { right:5px; left:auto; }
-.maxui-message.user .maxui-body { margin-left:80px; }
-.maxui-message.user .maxui-publisheddate { position: absolute; top:0px; left:10px; }
+.maxui-message.maxui-user-me { text-align: right; padding-right: 40px }
+.maxui-message.maxui-user-me .maxui-avatar { right:5px; left:auto; }
+.maxui-message.maxui-user-me .maxui-body { margin-left:80px; }
+.maxui-message.maxui-user-me .maxui-publisheddate { position: absolute; top:0px; left:10px; }
 
 
-.maxui-message.anyone { text-align: left; padding-left:40px; }
-.maxui-message.anyone .maxui-avatar{ left:5px; }
-.maxui-message.anyone .maxui-body{ margin-right:80px }
-.maxui-message.anyone .maxui-publisheddate { position: absolute; top:0px; right:10px; }
+.maxui-message.maxui-user-notme { text-align: left; padding-left:40px; }
+.maxui-message.maxui-user-notme .maxui-avatar{ left:5px; }
+.maxui-message.maxui-user-notme .maxui-body{ margin-right:80px }
+.maxui-message.maxui-user-notme .maxui-publisheddate { position: absolute; top:0px; right:10px; }
 
 .maxui-message .maxui-avatar {top:0px;}
 .maxui-message .maxui-avatar img { width:30px;height:30px; }
@@ -457,18 +455,18 @@ text-align: center;
  */
 
 
-.jspContainer
+#maxui-container .jspContainer
 {
     overflow: hidden;
     position: relative;
 }
 
-.jspPane
+#maxui-container .jspPane
 {
     position: absolute;
 }
 
-.jspVerticalBar
+#maxui-container .jspVerticalBar
 {
     position: absolute;
     top: 0;
@@ -481,11 +479,11 @@ text-align: center;
     transition: .3s ease-in-out;
 }
 
-.jspVerticalBar:hover {
+#maxui-container .jspVerticalBar:hover {
 	width:10px; border-left:1px #bbb solid;
 }
 
-.jspHorizontalBar
+#maxui-container .jspHorizontalBar
 {
     position: absolute;
     bottom: 0;
@@ -495,35 +493,35 @@ text-align: center;
     background: red;
 }
 
-.jspVerticalBar *,
-.jspHorizontalBar *
+#maxui-container .jspVerticalBar *,
+#maxui-container .jspHorizontalBar *
 {
     margin: 0;
     padding: 0;
 }
 
-.jspCap
+#maxui-container .jspCap
 {
     display: none;
 }
 
-.jspHorizontalBar .jspCap
+#maxui-container .jspHorizontalBar .jspCap
 {
     float: left;
 }
 
-.jspTrack
+#maxui-container .jspTrack
 {
     background: white;
     position: relative;
 }
 
-.jspVerticalBar:hover .jspDrag{
+#maxui-container .jspVerticalBar:hover .jspDrag{
 	background: #999;
 
 }
 
-.jspDrag {
+#maxui-container .jspDrag {
     background: #bbb;
     position: relative;
     top: 0;
@@ -536,14 +534,14 @@ text-align: center;
     -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px;
 }
 
-.jspHorizontalBar .jspTrack,
-.jspHorizontalBar .jspDrag
+#maxui-container .jspHorizontalBar .jspTrack,
+#maxui-container .jspHorizontalBar .jspDrag
 {
     float: left;
     height: 100%;
 }
 
-.jspArrow
+#maxui-container .jspArrow
 {
     background: #50506d;
     text-indent: -20000px;
@@ -551,30 +549,30 @@ text-align: center;
     cursor: pointer;
 }
 
-.jspArrow.jspDisabled
+#maxui-container .jspArrow.jspDisabled
 {
     cursor: default;
     background: #80808d;
 }
 
-.jspVerticalBar .jspArrow
+#maxui-container .jspVerticalBar .jspArrow
 {
     height: 16px;
 }
 
-.jspHorizontalBar .jspArrow
+#maxui-container .jspHorizontalBar .jspArrow
 {
     width: 16px;
     float: left;
     height: 100%;
 }
 
-.jspVerticalBar .jspArrow:focus
+#maxui-container .jspVerticalBar .jspArrow:focus
 {
     outline: none;
 }
 
-.jspCorner
+#maxui-container .jspCorner
 {
     background: #eeeef4;
     float: left;

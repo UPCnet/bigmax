@@ -1,7 +1,7 @@
 {
     "github_url": "https://github.com/UPCnet/max.ui.js", 
     "images_url": "/maxui/img", 
-    "js_location": "./maxui/maxui.js", 
+    "js_location": ".bigmax/maxui/maxui.js", 
     "branch": "conversations", 
-    "css_location": "./maxui/maxui.css"
+    "css_location": "./bigmax/maxui/maxui.css"
 }
