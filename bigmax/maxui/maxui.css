@@ -189,7 +189,7 @@ p.maxui-body {margin:0;font-size:13px;}
 	.maxui-comment .maxui-activity-content p.maxui-body {font-size:12px !important;}
 
 .maxui-delete-activity {
-background:url('/maxui/img/trashbin.png') center 1 no-repeat;
+background:url('/maxui/img/trashbin.png') center 1px no-repeat;
 height:12px;
 width:12px;
 display: block;
