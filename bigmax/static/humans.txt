@@ -10,7 +10,7 @@
   Python mastery: Carles Bruguera [sunbit]
                   Victor Fernandez de Alba [sneridagh]
   JS wizardry: Carles Bruguera [sunbit]
-  Software arquitecture: Victor Fernandez de Alba [sneridagh]
+  Software architecture: Victor Fernandez de Alba [sneridagh]
 
 /* THANKS */
   Sponsoring: UPCnet (http://www.upcnet.es/)

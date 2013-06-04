@@ -2,7 +2,7 @@ Changelog
 =========
 
 3.0 (2013-04-15)
----------
+----------------
 
 - Conversations enabled
 - Add exceptions view
