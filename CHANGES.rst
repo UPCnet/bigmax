@@ -1,6 +1,12 @@
 Changelog
 =========
 
+3.3 (2013-06-05)
+----------------
+
+- Added compatibility to use pyramid_osiris
+- Deprecate the use of pyramid_ldap
+
 3.0 (2013-04-15)
 ----------------
 

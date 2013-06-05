@@ -9,6 +9,7 @@ from pyramid.security import remember, forget
 from pyramid.settings import asbool
 
 from pyramid_ldap import get_ldap_connector
+from pyramid_osiris import get_osiris_connector
 from bigmax.views.api import TemplateAPI
 from bigmax.utils import normalize_userdn
 import requests
@@ -55,13 +56,13 @@ def login(context, request):
 
         if login is u'' or password is u'':
             return dict(
-                    message='You need to suply an username and a password.',
-                    url='%s/login' % api.application_url,
-                    came_from=came_from,
-                    login=login,
-                    password=password,
-                    api=api
-                    )
+                message='You need to suply an username and a password.',
+                url='%s/login' % api.application_url,
+                came_from=came_from,
+                login=login,
+                password=password,
+                api=api
+            )
 
         if enable_ldap:
             connector = get_ldap_connector(request)
@@ -73,18 +74,36 @@ def login(context, request):
             # if not successful, try again
             else:
                 return dict(
-                        message='Login failed. Please try again.',
-                        url='%s/login' % api.application_url,
-                        came_from=came_from,
-                        login=login,
-                        password=password,
-                        api=api
-                        )
+                    message='Login failed. Please try again.',
+                    url='%s/login' % api.application_url,
+                    came_from=came_from,
+                    login=login,
+                    password=password,
+                    api=api
+                )
         else:
+            # Try to authenticate with Osiris
+            connector = get_osiris_connector(request)
+            data = connector.authenticate(login, password)
+            if data:
+                auth_user, oauth_token = data
+                headers = remember(request, auth_user)
+
+            # if not successful, try again
+            else:
+                return dict(
+                    message='Login failed. Please try again.',
+                    url='%s/login' % api.application_url,
+                    came_from=came_from,
+                    login=login,
+                    password=password,
+                    api=api
+                )
+            # Sucking less now muahhaha
             # Harcoded developer user
             # Try to suck less here in the future...
-            auth_user = login
-            headers = remember(request, auth_user)
+            # auth_user = login
+            # headers = remember(request, auth_user)
 
         # Access the MAX API to look for the auth user
         # requser = requests.post('%s/people/%s' % (max_settings.get('max_server'), auth_user), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
@@ -115,16 +134,16 @@ def login(context, request):
         #     logger.error("Something wrong happened while accessing MAX server and subcribing %s user to default context." % auth_user)
 
         # Request token for auth user
-        payload = {"grant_type": max_settings.get('max_oauth_grant_type'),
-                   "client_id": max_settings.get('max_oauth_clientid'),
-                   "scope": max_settings.get('max_oauth_scope'),
-                   "username": auth_user,
-                   "password": password
-                   }
+        # payload = {"grant_type": max_settings.get('max_oauth_grant_type'),
+        #            "client_id": max_settings.get('max_oauth_clientid'),
+        #            "scope": max_settings.get('max_oauth_scope'),
+        #            "username": auth_user,
+        #            "password": password
+        #            }
 
-        req = requests.post(max_settings.get('max_oauth_token_endpoint'), data=payload, verify=False)
-        response = json.loads(req.text)
-        oauth_token = response.get("oauth_token")
+        # req = requests.post(max_settings.get('max_oauth_token_endpoint'), data=payload, verify=False)
+        # response = json.loads(req.text)
+        # oauth_token = response.get("oauth_token")
 
         # Store the user's oauth token in the current session
         request.session['oauth_token'] = oauth_token
@@ -133,13 +152,13 @@ def login(context, request):
         return HTTPFound(headers=headers, location=came_from)
 
     return dict(
-            message=message,
-            url='%s/login' % api.application_url,
-            came_from=came_from,
-            login=login,
-            password=password,
-            api=api
-            )
+        message=message,
+        url='%s/login' % api.application_url,
+        came_from=came_from,
+        login=login,
+        password=password,
+        api=api
+    )
 
 
 @view_config(name='logout')

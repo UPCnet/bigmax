@@ -1,14 +1,10 @@
 from pyramid.config import Configurator
 
-from pyramid.settings import asbool
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
 
 from bigmax.resources import Root, loadMAXSettings
-
-import ldap
-from pyramid_ldap import groupfinder
 
 from maxclient import MaxClient
 
@@ -22,13 +18,9 @@ def main(global_config, **settings):
     session_factory = session_factory_from_settings(settings)
     set_cache_regions_from_settings(settings)
 
-    enable_ldap = asbool(settings['enable_ldap'])
     identifier_id = 'auth_tkt'
 
-    if enable_ldap:
-        authn_policy = AuthTktAuthenticationPolicy(identifier_id, callback=groupfinder)
-    else:
-        authn_policy = AuthTktAuthenticationPolicy(identifier_id)
+    authn_policy = AuthTktAuthenticationPolicy(identifier_id)
 
     authz_policy = ACLAuthorizationPolicy()
 
@@ -39,25 +31,10 @@ def main(global_config, **settings):
                           authentication_policy=authn_policy,
                           authorization_policy=authz_policy)
 
-    # LDAP (conditional)
-    if enable_ldap:
-        config.include('pyramid_ldap')
+    settings = config.registry.settings
 
-        config.ldap_setup('ldaps://ldap-pre.upc.edu',
-                          bind='cn=ldap.upc,ou=users,dc=upc,dc=edu',
-                          passwd='conldapnexio'
-                         )
-
-        config.ldap_set_login_query(base_dn='ou=users,dc=upc,dc=edu',
-                                    filter_tmpl='(cn=%(login)s)',
-                                    scope=ldap.SCOPE_ONELEVEL,
-                                   )
-
-        config.ldap_set_groups_query(base_dn='ou=groups,dc=upc,dc=edu',
-                                     filter_tmpl='(&(objectClass=groupOfNames)(member=%(userdn)s))',
-                                     scope=ldap.SCOPE_SUBTREE,
-                                     cache_period=600,
-                                    )
+    config.include('pyramid_osiris')
+    config.osiris_setup(settings.get('max.oauth_server'))
 
     config.add_static_view('static', 'bigmax:static')
     config.add_static_view('stylesheets', 'bigmax:stylesheets')

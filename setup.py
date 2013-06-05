@@ -1,7 +1,6 @@
 import os
-import sys
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
@@ -12,27 +11,27 @@ requires = [
     'pyramid_tm',
     'pyramid_debugtoolbar',
     'pyramid_beaker',
-    'pyramid_ldap',
+    'pyramid_osiris',
     'pymongo',
     'rfc3339',
     'requests',
     'waitress',
     'pygments',
     'DateTime'
-    ]
+]
 
 test_requires = ['WebTest', 'mock', ]
 
 setup(name='bigmax',
-      version='3.0',
+      version='3.3',
       description='Big MAX - MAX Web Administration Interface',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
-        "Programming Language :: Python",
-        "Framework :: Pylons",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        ],
+          "Programming Language :: Python",
+          "Framework :: Pylons",
+          "Topic :: Internet :: WWW/HTTP",
+          "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+      ],
       author='UPCnet Content Management Team',
       author_email='victor.fernandez@upcnet.es',
       url='http://github.com/upcnet/bigmax',
@@ -43,9 +42,7 @@ setup(name='bigmax',
       install_requires=requires,
       tests_require=requires + test_requires,
       test_suite="bigmax.tests",
-      extras_require={
-        'test': ['WebTest', 'mock', ]
-      },
+      extras_require={'test': ['WebTest', 'mock', ]},
       entry_points="""\
       [paste.app_factory]
       main = bigmax:main
