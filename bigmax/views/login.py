@@ -2,18 +2,13 @@
 from pyramid.httpexceptions import HTTPFound
 
 from pyramid.view import view_config
-from pyramid.url import resource_url
 from pyramid.view import forbidden_view_config
 
 from pyramid.security import remember, forget
-from pyramid.settings import asbool
 
-from pyramid_ldap import get_ldap_connector
 from pyramid_osiris import get_osiris_connector
 from bigmax.views.api import TemplateAPI
-from bigmax.utils import normalize_userdn
-import requests
-import json
+
 import logging
 import re
 
@@ -36,8 +31,6 @@ def login(context, request):
     """
     page_title = "BIG MAX Login"
     api = TemplateAPI(context, request, page_title)
-    enable_ldap = asbool(request.registry.settings.get('enable_ldap'))
-    max_settings = request.registry.max_settings
 
     login_url = '%s/login' % api.application_url,
     referrer = real_request_url(request)
@@ -64,46 +57,29 @@ def login(context, request):
                 api=api
             )
 
-        if enable_ldap:
-            connector = get_ldap_connector(request)
-            data = connector.authenticate(login, password)
-            if data:
-                dn = data[0]
-                headers = remember(request, dn)
-                auth_user = normalize_userdn(dn)
-            # if not successful, try again
-            else:
-                return dict(
-                    message='Login failed. Please try again.',
-                    url='%s/login' % api.application_url,
-                    came_from=came_from,
-                    login=login,
-                    password=password,
-                    api=api
-                )
-        else:
-            # Try to authenticate with Osiris
-            connector = get_osiris_connector(request)
-            data = connector.authenticate(login, password)
-            if data:
-                auth_user, oauth_token = data
-                headers = remember(request, auth_user)
+        # Try to authenticate with Osiris
+        connector = get_osiris_connector(request)
+        data = connector.authenticate(login, password)
+        if data:
+            auth_user, oauth_token = data
+            headers = remember(request, auth_user)
 
-            # if not successful, try again
-            else:
-                return dict(
-                    message='Login failed. Please try again.',
-                    url='%s/login' % api.application_url,
-                    came_from=came_from,
-                    login=login,
-                    password=password,
-                    api=api
-                )
-            # Sucking less now muahhaha
-            # Harcoded developer user
-            # Try to suck less here in the future...
-            # auth_user = login
-            # headers = remember(request, auth_user)
+        # if not successful, try again
+        else:
+            return dict(
+                message='Login failed. Please try again.',
+                url='%s/login' % api.application_url,
+                came_from=came_from,
+                login=login,
+                password=password,
+                api=api
+            )
+
+        # Sucking less now muahhaha
+        # Harcoded developer user
+        # Try to suck less here in the future...
+        # auth_user = login
+        # headers = remember(request, auth_user)
 
         # Access the MAX API to look for the auth user
         # requser = requests.post('%s/people/%s' % (max_settings.get('max_server'), auth_user), auth=(max_settings.get('max_ops_username'), max_settings.get('max_ops_password')), verify=False)
