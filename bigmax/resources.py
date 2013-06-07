@@ -12,14 +12,13 @@ class Root(object):
         (Allow, 'victor.fernandez', 'restricted'),
         (Allow, 'carles.bruguera', 'restricted'),
         (Allow, Authenticated, 'activitystream')
-        ]
+    ]
 
     def __init__(self, request):
         self.request = request
-        # MongoDB:
         registry = self.request.registry
-        self.db = registry.max_store
-        self.__acl__ = acl_generator(getMAXSecurity(registry))
+        self.maxclient = registry.maxclient
+        self.__acl__ = acl_generator(getMAXSecurity(self.maxclient))
 
 
 def getMAXSettings(request):
@@ -32,8 +31,7 @@ def loadMAXSettings(settings, config):
 
 
 @cache_region('long_term')
-def getMAXSecurity(registry):
-    client = registry.maxclient
+def getMAXSecurity(client):
     return client.getSecurity()
 
 

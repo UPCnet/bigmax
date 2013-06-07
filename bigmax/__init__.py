@@ -45,12 +45,6 @@ def main(global_config, **settings):
     config.add_route('profiles', '/profiles/{username}')
     config.add_route('exception', '/exceptions/{id}')
 
-    # Store in registry
-    db_uri = settings['mongodb.url']
-    conn = pymongo.Connection(db_uri)
-    db = conn[settings['mongodb.db_name']]
-    config.registry.max_store = db
-
     # Set MAX settings
     config.registry.max_settings = loadMAXSettings(settings, config)
 
