@@ -1,6 +1,11 @@
 Changelog
 =========
 
+3.4 (2013-06-18)
+----------------
+
+- Update the maxui widget to the STOMP enabled version
+
 3.3 (2013-06-05)
 ----------------
 
