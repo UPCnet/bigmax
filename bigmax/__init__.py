@@ -34,7 +34,7 @@ def main(global_config, **settings):
     settings = config.registry.settings
 
     config.include('pyramid_osiris')
-    config.osiris_setup(settings.get('max.oauth_server'))
+    config.osiris_setup(settings.get('max.oauth_server'), legacy_mode=settings.get('max.oauth_standard', False))
 
     config.add_static_view('static', 'bigmax:static')
     config.add_static_view('stylesheets', 'bigmax:stylesheets')
