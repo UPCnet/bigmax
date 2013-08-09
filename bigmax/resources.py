@@ -36,4 +36,4 @@ def getMAXSecurity(client):
 
 
 def acl_generator(security_settings):
-    return [(Allow, user, 'restricted') for user in security_settings['items'][0]['roles']['Manager']] + DEFAULT_PERMISSIONS
+    return [(Allow, user, 'restricted') for user in security_settings[0]['roles']['Manager']] + DEFAULT_PERMISSIONS

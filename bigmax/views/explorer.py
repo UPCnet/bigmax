@@ -84,17 +84,17 @@ def explorerView(context, request):
     user_cols = [dict(id="id", title="ID"),
                  dict(id="username", title="Nom d'usuari"),
                  dict(id="displayName", title="Nom Sencer"),
-                ]
+                 ]
 
     activity_cols = [dict(id="id", title="ID"),
                      dict(id="object.objectType", title="Tipus"),
                      dict(id="verb", title="Acció"),
-                ]
+                     ]
 
     context_cols = [dict(id="id", title="ID"),
                    dict(id="displayName", title="Nom"),
                    dict(id="url", title="URL"),
-                   ]
+                    ]
 
     user_cols_ids = [a['id'] for a in user_cols]
     activity_cols_ids = [a['id'] for a in activity_cols]
@@ -108,18 +108,14 @@ def explorerView(context, request):
     activities_dump = client.getActivities()
     contexts_dump = client.getContexts()
 
-    # users_dump = json.loads(requests.get('%s/admin/people' % maxserver, auth=auth, verify=False).text)['items']
-    # activities_dump = json.loads(requests.get('%s/admin/activities' % maxserver, auth=auth, verify=False).text)['items']
-    # contexts_dump = json.loads(requests.get('%s/admin/contexts' % maxserver, auth=auth, verify=False).text)['items']
-
-    user_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in user_cols_ids] for entry in users_dump['items']]
-    activity_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in activity_cols_ids] for entry in activities_dump['items']]
-    context_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in context_cols_ids] for entry in contexts_dump['items']]
+    user_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in user_cols_ids] for entry in users_dump]
+    activity_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in activity_cols_ids] for entry in activities_dump]
+    context_data = [[dict(id=field, value=getFieldByName(field, entry)) for field in context_cols_ids] for entry in contexts_dump]
 
     collections = [dict(id="users", objectType='user', title="Usuaris", data=user_data, icon="user", cols=user_cols),
                    dict(id="activities", objectType='activity', title="Activitats", data=activity_data, icon="star", cols=activity_cols),
                    dict(id="contexts", objectType='context', title="Contextes", data=context_data, icon="leaf", cols=context_cols),
-                  ]
+                   ]
 
     return dict(api=api,
                 url='%s/explorer' % api.application_url,

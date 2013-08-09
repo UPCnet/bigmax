@@ -53,7 +53,7 @@ def profilesView(context, request):
 
         isFollowing = False
 
-        for following in current_user.get('following', None).get('items', None):
+        for following in current_user.get('following', None):
             if following['username'] == userprofile['username']:
                 isFollowing = True
                 break
