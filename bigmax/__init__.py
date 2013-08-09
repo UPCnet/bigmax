@@ -51,6 +51,6 @@ def main(global_config, **settings):
     # Set a MaxClient Facility
     config.registry.maxclient = MaxClient(config.registry.max_settings['max_server'], config.registry.max_settings['max_oauth_server'])
 
-    config.scan('bigmax', ignore='max.tests')
+    config.scan('bigmax')
 
     return config.make_wsgi_app()
