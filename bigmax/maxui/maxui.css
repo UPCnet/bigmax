@@ -188,7 +188,7 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 p.maxui-body {margin:0;font-size:13px;}
 	.maxui-comment .maxui-activity-content p.maxui-body {font-size:12px !important;}
 
-.maxui-delete-activity {
+.maxui-delete-activity, .maxui-delete-comment {
 background:url('/maxui/img/trashbin.png') center 1px no-repeat;
 height:12px;
 width:12px;
@@ -198,7 +198,7 @@ margin-top:-12px;
 cursor:pointer;
 }
 
-.maxui-delete-activity:hover {
+.maxui-delete-activity:hover, .maxui-delete-comment:hover  {
 background:url('/maxui/img/trashbino.png') center 0 no-repeat;
 height:12px;
 width:12px;
@@ -207,7 +207,6 @@ float:right;
 margin-top:-12px;
 cursor:pointer;
 }
-
 
 .maxui-topright{
 font-size:11px;
@@ -600,8 +599,125 @@ text-align: center;
     height: 100%;
 }
 
+.maxui-activity-message {
+    position:relative;
+}
+.maxui-popover {
+    display:none;
+position: absolute;
+float: left;
+width: 180px;
+opacity: 0;
+margin: 20px;
+bottom: 0;
+left: 0;
+z-index: 1010;
+max-width: 276px;
+padding: 1px;
+margin-bottom: -42px;
+margin-left:117px;
+text-align: left;
+white-space: normal;
+background-color: #ffffff;
+border: 1px solid #ccc;
+border: 1px solid rgba(0, 0, 0, 0.2);
+-webkit-border-radius: 6px;
+-moz-border-radius: 6px;
+border-radius: 6px;
+-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+-webkit-background-clip: padding-box;
+-moz-background-clip: padding;
+background-clip: padding-box;
+}
+
+
+
+.maxui-comment .maxui-popover {
+    margin-left:64px;
+}
+
+.maxui-popover .maxui-button.delete {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ee5f5b', endColorstr='#bd362f'); /* for IE */
+background: -webkit-gradient(linear, left top, left bottom, from(#ee5f5b), to(#bd362f)); /* for webkit browsers */
+background: -moz-linear-gradient(top,  #ee5f5b,  #bd362f); /* for firefox 3.6+ */
+border-color: #bd362f #bd362f #802420;
+}
+
+.maxui-popover .maxui-button.cancel {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6'); /* for IE */
+background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e6e6e6)); /* for webkit browsers */
+background: -moz-linear-gradient(top,  #ffffff,  #e6e6e6); /* for firefox 3.6+ */
+border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+color:#333;
+text-shadow: 0 -1px rgba(255,255,255,.5);
+}
+
+.maxui-popover.left .maxui-arrow {
+top: 50%;
+right: -11px;
+margin-top: -11px;
+border-left-color: #999;
+border-left-color: rgba(0, 0, 0, 0.25);
+border-right-width: 0;
+}
+.maxui-popover .maxui-arrow {
+border-width: 11px;
+}
+.maxui-popover .maxui-arrow, .maxui-popover .maxui-arrow:after {
+position: absolute;
+display: block;
+width: 0;
+height: 0;
+border-color: transparent;
+border-style: solid;
+}
+
+.maxui-popover.left .maxui-arrow:after {
+right: 1px;
+bottom: -10px;
+border-left-color: #ffffff;
+border-right-width: 0;
+}
+.maxui-popover .maxui-arrow:after {
+border-width: 10px;
+content: "";
+}
+.maxui-popover .maxui-arrow, .maxui-popover .maxui-arrow:after {
+position: absolute;
+display: block;
+width: 0;
+height: 0;
+border-color: transparent;
+border-style: solid;
+}
+
+
+
+.maxui-popover-title {
+padding: 6px 12px;
+margin: 0;
+font-size: 14px;
+font-weight: bold;
+line-height: 18px;
+background-color: #f7f7f7;
+border-bottom: 1px solid #ebebeb;
+-webkit-border-radius: 5px 5px 0 0;
+-moz-border-radius: 5px 5px 0 0;
+border-radius: 5px 5px 0 0;
+}
+
+.maxui-popover-content {
+    text-align: right;
+padding: 8px 10px 12px 0px;
+}
+
 /* Yuk! CSS Hack for IE6 3 pixel bug :( */
 * html .jspCorner
 {
     margin: 0 -3px 0 0;
 }
+
+
+
