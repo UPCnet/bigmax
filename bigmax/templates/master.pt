@@ -67,18 +67,18 @@
 </header>
 
 
-  <div class="container">
-    <div id="main" role="main">
-    <div metal:define-slot="main">
-        The main content
-    </div>
-    </div>
+<div class="container">
+  <div id="main" role="main">
+  <div metal:define-slot="main">
+      The main content
+  </div>
+  </div>
 
-    <hr>
-    <footer>
-      <p>&copy; 2011-2013 - Powered by: e-knowledge Team - UPCnet, SLU</p>
-    </footer>
-  </div> <!--! end of #container -->
+  <hr>
+  <footer>
+    <p>&copy; 2011-2013 - Powered by: e-knowledge Team - UPCnet, SLU</p>
+  </footer>
+</div> <!--! end of #container -->
 
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
 <script src="/js/libs/jquery-1.9.1.min.js"></script>
