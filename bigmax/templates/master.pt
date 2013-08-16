@@ -12,9 +12,11 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="/stylesheets/style.css">
+  <!-- <link rel="stylesheet" href="/stylesheets/style.css"> -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/stylesheets/bigmax.css">
   <link rel="stylesheet" href="/stylesheets/pygments.css">
   <link rel="stylesheet" href="/maxui/maxui.css">
   <script src="/js/libs/modernizr-2.6.2.min.js"></script>
@@ -22,60 +24,48 @@
 </head>
 <body>
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<header>
+  <nav class="navbar navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
-        </a>
-        <a class="brand" href="/"><img class="maxlogo" src="/static/simbol_MAX_24.png"/>Big <span class="brandBold">MAX</span></a>
-        <div class="nav-collapse">
-          <ul class="nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-<!--           <ul class="nav pull-right" tal:condition="api.authenticatedUser and api.show_user_contexts">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                contexts
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li tal:repeat="subscription subscribed">
-                  <a href="#"
-                    rel="tooltip" title="tooltip"
-                    tal:attributes="title subscription['displayName']"
-                    tal:content="subscription['object']['url']">context</a>
-                </li>
-              </ul>
-            </li>
-          </ul> -->
-          <ul class="nav pull-right" tal:condition="api.authenticatedUser">
-            <!-- <li><a href="#">Link</a></li> -->
-            <!-- <li class="divider-vertical"></li> -->
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <tal:username content="api.authenticatedUser">Username</tal:username>
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a tal:attributes="href '/profiles/'+api.authenticatedUser">Profile</a></li>
-                <li><a href="/control_panel">Setup Server</a></li>
-                <li><a href="/maintenance">Maintenance</a></li>
-                <li><a href="/explorer">DB Explorer</a></li>
-                <li class="divider"></li>
-                <li><a href="/logout">Logout</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
+        </button>
+        <a class="navbar-brand" href="/">Big <span class="brandBold">MAX</span></a>
       </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Link</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right"
+            tal:condition="api.authenticatedUser">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <tal:username content="api.authenticatedUser">Username</tal:username>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a tal:attributes="href '/profiles/'+api.authenticatedUser">Profile</a></li>
+              <li><a href="/control_panel">Setup Server</a></li>
+              <li><a href="/maintenance">Maintenance</a></li>
+              <li><a href="/explorer">DB Explorer</a></li>
+              <li class="divider"></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
     </div>
-  </div>
+  </nav>
+
+</header>
+
 
   <div class="container">
     <div id="main" role="main">
@@ -86,20 +76,13 @@
 
     <hr>
     <footer>
-      <div class="row">
-        <div class="span6 offset3">
-          <img src="/static/PoweredMongoDBbeige50.png" /> &nbsp; <img src="/static/pyramid.png" />
-        </div>
-        <div class="span6 offset3">
-          <p>&copy; 2011-2013 - Powered by: e-knowledge Team - UPCnet, SLU</p>
-        </div>
-      </div>
+      <p>&copy; 2011-2013 - Powered by: e-knowledge Team - UPCnet, SLU</p>
     </footer>
   </div> <!--! end of #container -->
 
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
 <script src="/js/libs/jquery-1.9.1.min.js"></script>
-<script src="/js/libs/bootstrap.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/explorer.js"></script>
 <script src="/js/main.js"></script>
 <script src="/variables.js"></script>

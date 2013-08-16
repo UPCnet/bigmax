@@ -1,3 +1,0 @@
-[submodule "bigmax/bootstrap"]
-	path = bigmax/bootstrap
-	url = git://github.com/jlong/sass-twitter-bootstrap.git

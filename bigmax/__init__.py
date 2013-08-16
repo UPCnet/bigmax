@@ -8,8 +8,6 @@ from bigmax.resources import Root, loadMAXSettings
 
 from maxclient import MaxClient
 
-import pymongo
-
 
 def main(global_config, **settings):
     """ This function returns a WSGI application.
@@ -39,6 +37,7 @@ def main(global_config, **settings):
     config.add_static_view('static', 'bigmax:static')
     config.add_static_view('stylesheets', 'bigmax:stylesheets')
     config.add_static_view('js', 'bigmax:js')
+    config.add_static_view('bootstrap', 'bigmax:bootstrap')
     config.add_static_view('fonts', 'bigmax:static/fonts')
     config.add_static_view('maxui', 'bigmax:maxui')
 
