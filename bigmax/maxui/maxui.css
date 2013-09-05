@@ -431,7 +431,7 @@ min-height:30px;
 .maxui-message.maxui-user-notme .maxui-publisheddate { position: absolute; top:0px; right:10px; }
 
 .maxui-message .maxui-avatar {top:0px;}
-.maxui-message .maxui-avatar img { width:30px;height:30px; }
+.maxui-message .maxui-avatar img { width:30px; }
 .maxui-message .maxui-publisheddate { font-size: 10px; font-style: italic; color: #888; }
 
 .maxui-message .maxui-body {
