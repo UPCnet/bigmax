@@ -16,7 +16,7 @@ window._MAXUI.onReady = function() {
            'oAuthGrantType' : window._MAXUI.grant,
            'maxServerURL' : window._MAXUI.server,
            'maxServerURLAlias' : '',
-           'maxTalkURL': window._MAXUI.talk,
+           'maxTalkURL': window._MAXUI.stomp,
            'avatarURLpattern' : '',
            'readContext': window._MAXUI.server,
            'activitySource': 'timeline'

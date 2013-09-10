@@ -2,5 +2,5 @@ if (!window._MAXUI) {window._MAXUI = {}; }
 window._MAXUI.username = '<tal:block replace="variables.username" />'
 window._MAXUI.token = '<tal:block replace="variables.token" />'
 window._MAXUI.server = '<tal:block replace="variables.server" />'
-window._MAXUI.talk = '<tal:block replace="variables.talk" />'
+window._MAXUI.stomp = '<tal:block replace="variables.stomp" />'
 window._MAXUI.grant = '<tal:block replace="variables.grant" />'
