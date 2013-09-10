@@ -1,10 +1,25 @@
 Changelog
 =========
 
-3.4.1 (2013-09-05)
-------------------
+3.5 (2013-09-10)
+----------------
 
-- New Release
+ * Erradicate references to maxtalk Cleanup unused inis [Carles Bruguera]
+ * New build [Carles Bruguera]
+ * update ignore [Carles Bruguera]
+ * Really add bootstrap 3 to bigmax [Carles Bruguera]
+ * Delete fuckedup folder [Carles Bruguera]
+ * New maxui build [Carles Bruguera]
+ * Bump version [Carles Bruguera]
+ * Latest maxui [Carles Bruguera]
+ * Same [Victor Fernandez de Alba]
+ * Updated to bootstrap 3.0.0RC2, less based. Deleted old sass version. [Victor Fernandez de Alba]
+ * New 3.5 build [Victor Fernandez de Alba]
+ * Update Manifest [Victor Fernandez de Alba]
+ * Unignore tests in scan [Victor Fernandez de Alba]
+ * Updated to work with the MAX 3.5 version totalItemsless [Victor Fernandez de Alba]
+ * Added legacy mode work [Victor Fernandez de Alba]
+
 
 3.4 (2013-06-18)
 ----------------
