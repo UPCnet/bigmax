@@ -11,7 +11,7 @@ ORIGINAL_MAXUI_IMAGES_URL = '/maxui-dev/img'
 DEFAULT_MAXUI_IMAGES_URL = '/maxui/img'
 DEFAULT_MAXUI_IMAGES_FOLDER = './maxui/img'
 DEFAULT_MAXUI_GITHUB_URL = 'https://github.com/UPCnet/max.ui.js'
-DEFAULT_MAXUI_BRANCH = 'conversations'
+DEFAULT_MAXUI_BRANCH = 'develop'
 DEFAULT_MAXUI_JS = './max.ui.js'
 DEFAULT_MAXUI_CSS = './max.ui.css'
 
