@@ -340,7 +340,7 @@ box-sizing:border-box;
 
 #maxui-search-toggle {
     float:left;
-    background: url("/maxui-dev/img/maxcomm.png") no-repeat scroll 7px -92px transparent;
+    background: url("/maxui/img/maxcomm.png") no-repeat scroll 7px -92px transparent;
     display: inline;
     height: 16px;
     width: 24px;

@@ -57,66 +57,70 @@ def downloadFile(config, filename, raw=True):
     sys.stdout.flush()
     return response.content
 
+def main():
+    # Setup configuration parameters
+    # User will be asked if not setted
 
-# Setup configuration parameters
-# User will be asked if not setted
+    print
+    config = getConfiguration()
 
-print
-config = getConfiguration()
+    if 'images_url' not in config:
+        images_url = raw_input("Images base_url ['{}']: ".format(DEFAULT_MAXUI_IMAGES_URL))
+        images_url = images_url.strip()
+        images_url = images_url.rstrip('/')
+        config['images_url'] = images_url if images_url else DEFAULT_MAXUI_IMAGES_URL
 
-if 'images_url' not in config:
-    images_url = raw_input("Images base_url ['{}']: ".format(DEFAULT_MAXUI_IMAGES_URL))
-    images_url = images_url.strip()
-    images_url = images_url.rstrip('/')
-    config['images_url'] = images_url if images_url else DEFAULT_MAXUI_IMAGES_URL
+    if 'images_location' not in config:
+        images_url = raw_input("Image files location ['{}']: ".format(DEFAULT_MAXUI_IMAGES_FOLDER))
+        images_url = images_url.strip()
+        images_url = images_url.rstrip('/')
+        config['images_location'] = images_url if images_url else DEFAULT_MAXUI_IMAGES_FOLDER
 
-if 'images_location' not in config:
-    images_url = raw_input("Image files location ['{}']: ".format(DEFAULT_MAXUI_IMAGES_FOLDER))
-    images_url = images_url.strip()
-    images_url = images_url.rstrip('/')
-    config['images_location'] = images_url if images_url else DEFAULT_MAXUI_IMAGES_FOLDER
+    if 'js_location' not in config:
+        js_location = raw_input("Javascript file location ['{}']: ".format(DEFAULT_MAXUI_JS))
+        js_location = js_location.strip()
+        config['js_location'] = js_location if js_location else DEFAULT_MAXUI_JS
 
-if 'js_location' not in config:
-    js_location = raw_input("Javascript file location ['{}']: ".format(DEFAULT_MAXUI_JS))
-    js_location = js_location.strip()
-    config['js_location'] = js_location if js_location else DEFAULT_MAXUI_JS
+    if 'css_location' not in config:
+        css_location = raw_input("Stylesheet file location ['{}']: ".format(DEFAULT_MAXUI_CSS))
+        css_location = css_location.strip()
+        config['css_location'] = css_location if css_location else DEFAULT_MAXUI_CSS
 
-if 'css_location' not in config:
-    css_location = raw_input("Stylesheet file location ['{}']: ".format(DEFAULT_MAXUI_CSS))
-    css_location = css_location.strip()
-    config['css_location'] = css_location if css_location else DEFAULT_MAXUI_CSS
+    saveConfiguration(config)
 
-saveConfiguration(config)
+    version = downloadFile(config, 'version').rstrip('\n')
 
-version = downloadFile(config, 'version').rstrip('\n')
+    js = downloadFile(config, 'build/max.ui-{}.js'.format(version))
+    if not js:
+        print ' MAX UI Version {} build not found'.format(version)
+        sys.exit(1)
+    #Download and modify JS
+    sys.stdout.write(" Modifying image links ")
+    sys.stdout.flush()
+    js = re.sub(r'src="{}'.format(ORIGINAL_MAXUI_IMAGES_URL), r'src="{images_url}'.format(**config), js)
+    open(config['js_location'], 'w').write(js)
+    sys.stdout.write("✓\n")
+    sys.stdout.flush()
 
-js = downloadFile(config, 'build/max.ui-{}.js'.format(version))
-if not js:
-    print ' MAX UI Version {} build not found'.format(version)
-    sys.exit(1)
-#Download and modify JS
-sys.stdout.write(" Modifying image links ")
-sys.stdout.flush()
-js = re.sub(r'src="{}'.format(ORIGINAL_MAXUI_IMAGES_URL), r'src="{images_url}'.format(**config), js)
-open(config['js_location'], 'w').write(js)
-sys.stdout.write("✓\n")
-sys.stdout.flush()
+    #Download and modify CSS
+    css = downloadFile(config, 'css/max.ui.css'.format(version))
+    sys.stdout.write(" Modifying image links ")
+    sys.stdout.flush()
+    import ipdb;ipdb.set_trace()
+    css = re.sub(r"(url\(['\"]?){}(['\"]?)".format(ORIGINAL_MAXUI_IMAGES_URL), r"\1{images_url}\2".format(**config), css)
+    open(config['css_location'], 'w').write(css)
+    sys.stdout.write("✓\n")
+    sys.stdout.flush()
 
-#Download and modify CSS
-css = downloadFile(config, 'css/max.ui.css'.format(version))
-sys.stdout.write(" Modifying image links ")
-sys.stdout.flush()
-css = re.sub(r"url\('{}".format(ORIGINAL_MAXUI_IMAGES_URL), r"url('{images_url}".format(**config), css)
-open(config['css_location'], 'w').write(css)
-sys.stdout.write("✓\n")
-sys.stdout.flush()
+    #Download images
+    images = downloadFile(config, 'img', raw=False)
+    image_urls = re.findall(r'href=".*?/conversations/img/(.*?)"', images)
 
-#Download images
-images = downloadFile(config, 'img', raw=False)
-image_urls = re.findall(r'href=".*?/conversations/img/(.*?)"', images)
+    for image in image_urls:
+        imagebytes = downloadFile(config, 'img/' + image)
+        open(config['images_location'] + '/' + unquote(image), 'w').write(imagebytes)
 
-for image in image_urls:
-    imagebytes = downloadFile(config, 'img/' + image)
-    open(config['images_location'] + '/' + unquote(image), 'w').write(imagebytes)
+    print '\n MAX UI {} setup finished\n'.format(version)
 
-print '\n MAX UI {} setup finished\n'.format(version)
+if __name__ == "__main__":
+    main()
