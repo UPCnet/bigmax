@@ -4,8 +4,11 @@ Changelog
 3.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+ * N-MAX/BigMAX compliant [Victor Fernandez de Alba]
+ * Updated script to fix missing regex chicken [Carles Bruguera]
+ * Update ignores [Victor Fernandez de Alba]
+ * Unversion .maxui_setup [Victor Fernandez de Alba]
+ * Update branch from widget build script [Victor Fernandez de Alba]
 
 3.5 (2013-09-10)
 ----------------
@@ -25,7 +28,6 @@ Changelog
  * Unignore tests in scan [Victor Fernandez de Alba]
  * Updated to work with the MAX 3.5 version totalItemsless [Victor Fernandez de Alba]
  * Added legacy mode work [Victor Fernandez de Alba]
-
 
 3.4 (2013-06-18)
 ----------------
