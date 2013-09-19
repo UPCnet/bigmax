@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.5.1 (unreleased)
+3.5.1 (2013-09-19)
 ------------------
 
  * N-MAX/BigMAX compliant [Victor Fernandez de Alba]
