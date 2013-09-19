@@ -125,7 +125,7 @@ def login(context, request):
         request.session['oauth_token'] = oauth_token
 
         # Finally, return the authenticated view
-        return HTTPFound(headers=headers, location=came_from)
+        return HTTPFound(headers=headers, location=api.application_url)
 
     return dict(
         message=message,

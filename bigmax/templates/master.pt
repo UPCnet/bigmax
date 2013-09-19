@@ -52,11 +52,11 @@
             </a>
             <ul class="dropdown-menu">
               <li><a tal:attributes="href '/profiles/'+api.authenticatedUser">Profile</a></li>
-              <li><a href="/control_panel">Setup Server</a></li>
-              <li><a href="/maintenance">Maintenance</a></li>
-              <li><a href="/explorer">DB Explorer</a></li>
+              <li><a tal:attributes="href api.application_url+'/control_panel'">Setup Server</a></li>
+              <li><a tal:attributes="href api.application_url+'/maintenance'">Maintenance</a></li>
+              <li><a tal:attributes="href api.application_url+'/explorer'">DB Explorer</a></li>
               <li class="divider"></li>
-              <li><a href="/logout">Logout</a></li>
+              <li><a tal:attributes="href api.application_url+'/logout'">Logout</a></li>
             </ul>
           </li>
         </ul>
@@ -85,7 +85,8 @@
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/explorer.js"></script>
 <script src="/js/main.js"></script>
-<script src="/variables.js"></script>
+<!-- ATTENTION: Changed to relative the following JS for compat with n-BIGMAX servers -->
+<script src="variables.js"></script>
 <script src="/maxui/maxui.loader.js"></script>
 <!-- <script>
   var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
