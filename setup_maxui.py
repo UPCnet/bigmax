@@ -106,7 +106,6 @@ def main():
     css = downloadFile(config, 'css/max.ui.css'.format(version))
     sys.stdout.write(" Modifying image links ")
     sys.stdout.flush()
-    import ipdb;ipdb.set_trace()
     css = re.sub(r"(url\(['\"]?){}(['\"]?)".format(ORIGINAL_MAXUI_IMAGES_URL), r"\1{images_url}\2".format(**config), css)
     open(config['css_location'], 'w').write(css)
     sys.stdout.write("✓\n")
@@ -114,8 +113,7 @@ def main():
 
     #Download images
     images = downloadFile(config, 'img', raw=False)
-    image_urls = re.findall(r'href=".*?/conversations/img/(.*?)"', images)
-
+    image_urls = re.findall(r'href=".*?/%s/img/(.*?)"' % (config['branch']), images)
     for image in image_urls:
         imagebytes = downloadFile(config, 'img/' + image)
         open(config['images_location'] + '/' + unquote(image), 'w').write(imagebytes)
