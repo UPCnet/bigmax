@@ -1,11 +1,12 @@
 Changelog
 =========
 
-3.5.2 (unreleased)
+3.5.2 (2013-10-29)
 ------------------
 
-- Nothing changed yet.
-
+* Include maxui setup config in repo [Carles Bruguera]
+* New maxui [Carles Bruguera]
+* Updated maxui and script [Carles Bruguera]
 
 3.5.1 (2013-09-19)
 ------------------
