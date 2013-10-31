@@ -60,7 +60,6 @@ background-color: #ddd;
 	text-align:center;
 	background: #f2f2f2 url('/maxui/img/bgact.gif') 0 0 repeat;
 	border-top: 1px #b2b2b2 solid;
-	height:18px;
 
 }
 
@@ -69,17 +68,25 @@ background-color: #ddd;
 	text-align:center;
 	background: #f2f2f2 url('/maxui/img/bgact.gif') 0 0 repeat;
 	border-bottom: 1px #b2b2b2 solid;
-	height:18px;
 }
 
 #maxui-back-conversations {
     height: 41px;
 }
 
-#maxui-back-conversations h3{
+#maxui-back-conversations h3.maxui-title{
     margin: 3px 0px 7px;
     color:#727272;
+    font-size: 18px;
+    font-weight: bold;
 
+}
+
+.maxui-togglebar{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height:21px;
 }
 
 .maxui-togglebar a{
