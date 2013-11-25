@@ -1,11 +1,10 @@
 Changelog
 =========
 
-3.5.4 (unreleased)
+3.5.4 (2013-11-25)
 ------------------
 
-- Nothing changed yet.
-
+* New  maxui version [Carles Bruguera]
 
 3.5.3 (2013-11-07)
 ------------------
