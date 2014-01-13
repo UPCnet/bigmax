@@ -111,12 +111,15 @@ def main():
         print ' MAX UI Version {} build not found'.format(version)
         sys.exit(1)
     #Download and modify JS
-    sys.stdout.write(" Modifying image links ")
-    sys.stdout.flush()
-    js = re.sub(r'src="{}'.format(ORIGINAL_MAXUI_IMAGES_URL), r'src="{images_url}'.format(**config), js)
     open(config['js_location'], 'w').write(js)
-    sys.stdout.write("✓\n")
-    sys.stdout.flush()
+
+    js = downloadFile(config, 'build/debug/max.ui-{}-debug.js'.format(version))
+    if not js:
+        print ' MAX UI DEBUG Version {} build not found'.format(version)
+        sys.exit(1)
+    #Download and modify JS
+    fname = config['js_location'].split('.js')[0]
+    open('{}-debug.js'.format(fname), 'w').write(js)
 
     #Download and modify CSS
     css = downloadFile(config, 'build/css/max.ui-{}.css'.format(version))

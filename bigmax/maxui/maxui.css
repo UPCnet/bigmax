@@ -339,29 +339,11 @@ margin-left: 56px;
 }
 
 
-
-
-.maxui-actions {
-    position:relative;
-}
-
-
 .maxui-actions a, .maxui-origin{
 display:inline;
 padding-right:10px;
 }
 
-
-
-
-
-.maxui-actions a.maxui-action{
-font-size:12px;
-color:#007bc0;
-text-decoration:none;
-padding-right: 8px;
-cursor:pointer;
-}
 
 .maxui-actions a.maxui-action:hover {
 color:#005ea0;
@@ -399,7 +381,6 @@ width:36px!important;
 height:36px!important;
 }
 
-#maxui-search {border-top:1px solid #666; border-bottom:1px solid #666; background:#e5faff; padding:10px;}
 
 #maxui-search.folded #maxui-search-filters {
 display:none;
@@ -420,11 +401,7 @@ float:left;
     clear:both;
 }
 
-#maxui-search-filters {
-    zoom:1;
-	padding-left:56px;
 
-}
 
 
 }
@@ -459,8 +436,6 @@ box-sizing:border-box;
 -webkit-box-sizing:border-box;
 }
 
-
-#maxui-search-box {padding-left:56px; width:auto; text-align:left;}
 
 #maxui-newactivity .maxui-avatar {left:0; top:0; position:relative;}
 #maxui-container a img {border:0;}
@@ -1092,6 +1067,11 @@ top: 3px;
     margin-right: 5px;
 }
 
+#maxui-container #maxui-favorites-filter:hover {
+    color:#666;
+}
+
+
 #maxui-container #maxui-favorites-filter.active {
     color:#ff9b00;
 }
@@ -1114,6 +1094,7 @@ top: 3px;
 
 
 
+#maxui-container .maxui-actions a.maxui-action:before { font-size:12px; margin-right:.22em;}
 
 #maxui-container .maxui-actions a.maxui-action.maxui-commentaction.maxui-empty:before { content: '\e804'; }
 #maxui-container .maxui-actions a.maxui-action.maxui-commentaction:before             { content: '\e805'; }
@@ -1170,8 +1151,15 @@ cursor:pointer;
 .maxui-delete-comment:hover:before { content: '\e806'; color: #555;}
 
 #maxui-search {
-    min-height: 35px;
+    min-height: 58px;
+    box-sizing: border-box;
+    border-top:1px #b2b2b2 solid;
+    border-bottom:1px #b2b2b2 solid;
+    background:#f1f1f1;
+    padding:10px;
 }
+
+#maxui-search-box {padding-left:25px; width:auto; text-align:left;}
 
 #maxui-search-toggle {
     float:left;
@@ -1203,6 +1191,31 @@ background-color:#007ca5;
 color:#fff;
 border:1px solid #006989;
 display:block;
+}
+
+.maxui-actions a.maxui-action{
+font-size:11px;
+color:#007bc0;
+text-decoration:none;
+padding-right: 8px;
+cursor:pointer;
+}
+
+
+.maxui-actions {
+    position:relative;
+    line-height: 14px;
+}
+
+.maxui-activity-message {
+    margin-bottom:5px;
+}
+
+#maxui-search-filters {
+    zoom:1;
+    padding-left:25px;
+
+}
 
 /*
 
