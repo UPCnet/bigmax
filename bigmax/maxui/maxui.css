@@ -1160,11 +1160,11 @@ background-position: 0 -18px;
 */
 @font-face {
   font-family: 'maxicons';
-  src: url('../font/maxicons.eot?50174293');
-  src: url('../font/maxicons.eot?50174293#iefix') format('embedded-opentype'),
-       url('../font/maxicons.woff?50174293') format('woff'),
-       url('../font/maxicons.ttf?50174293') format('truetype'),
-       url('../font/maxicons.svg?50174293#maxicons') format('svg');
+  src: url('/maxui/maxicons.eot?50174293');
+  src: url('/maxui/maxicons.eot?50174293#iefix') format('embedded-opentype'),
+       url('/maxui/maxicons.woff?50174293') format('woff'),
+       url('/maxui/maxicons.ttf?50174293') format('truetype'),
+       url('/maxui/maxicons.svg?50174293#maxicons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -1174,7 +1174,7 @@ background-position: 0 -18px;
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'maxicons';
-    src: url('../font/maxicons.svg?50174293#maxicons') format('svg');
+    src: url('/maxui/maxicons.svg?50174293#maxicons') format('svg');
   }
 }
 */
