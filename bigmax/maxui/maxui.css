@@ -1,4 +1,103 @@
-/*aquest es per tenir una linia dibuixada*/
+@font-face {
+  font-family: 'maxicons';
+  src: url('/maxui/maxicons.eot?50174293');
+  src: url('/maxui/maxicons.eot?50174293#iefix') format('embedded-opentype'),
+       url('/maxui/maxicons.woff?50174293') format('woff'),
+       url('/maxui/maxicons.ttf?50174293') format('truetype'),
+       url('/maxui/maxicons.svg?50174293#maxicons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'maxicons';
+    src: url('/maxui/maxicons.svg?50174293#maxicons') format('svg');
+  }
+}
+*/
+
+ [class^="maxui-icon-"]:before, [class*=" maxui-icon-"]:before {
+  font-family: "maxicons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+ [class^="maxui-icon-"]:after, [class*=" maxui-icon-"]:after {
+  font-family: "maxicons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.maxui-icon-star:before { content: '\e800'; } /* '' */
+.maxui-icon-angle-circled-down:before { content: '\e80a'; } /* '' */
+.maxui-icon-thumbs-up:before { content: '\e802'; } /* '' */
+.maxui-icon-thumbs-up-alt:before { content: '\e803'; } /* '' */
+.maxui-icon-chat:before { content: '\e805'; } /* '' */
+.maxui-icon-chat-empty:before { content: '\e804'; } /* '' */
+.maxui-icon-trash:before { content: '\e806'; } /* '' */
+.maxui-icon-star-empty:before { content: '\e801'; } /* '' */
+.maxui-icon-right-dir:before { content: '\e80e'; } /* '' */
+.maxui-icon-left-open:before { content: '\e80c'; } /* '' */
+.maxui-icon-right-open:before { content: '\e80b'; } /* '' */
+.maxui-icon-angle-circled-left:before { content: '\e807'; } /* '' */
+.maxui-icon-angle-circled-right:before { content: '\e808'; } /* '' */
+.maxui-icon-angle-circled-up:before { content: '\e809'; } /* '' */
+.maxui-icon-down-dir:before { content: '\e80d'; } /* '' */
+.maxui-icon-pinboard:before { content: '\e80f'; } /* '' */
+.maxui-icon-cancel-circled:before { content: '\e810'; } /* '' *//*aquest es per tenir una linia dibuixada*/
 #maxui-container{border:1px solid #ccc;}
 
 
@@ -1158,103 +1257,3 @@ background-position: 0 -18px;
 #maxui-container a:hover {text-decoration:underline; color:#005ea0;}
 
 */
-@font-face {
-  font-family: 'maxicons';
-  src: url('/maxui/maxicons.eot?50174293');
-  src: url('/maxui/maxicons.eot?50174293#iefix') format('embedded-opentype'),
-       url('/maxui/maxicons.woff?50174293') format('woff'),
-       url('/maxui/maxicons.ttf?50174293') format('truetype'),
-       url('/maxui/maxicons.svg?50174293#maxicons') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
-/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
-/*
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  @font-face {
-    font-family: 'maxicons';
-    src: url('/maxui/maxicons.svg?50174293#maxicons') format('svg');
-  }
-}
-*/
-
- [class^="maxui-icon-"]:before, [class*=" maxui-icon-"]:before {
-  font-family: "maxicons";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
-
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-  /* opacity: .8; */
-
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
-
-  /* fix buttons height, for twitter bootstrap */
-  line-height: 1em;
-
-  /* Animation center compensation - margins should be symmetric */
-  /* remove if not needed */
-  margin-left: .2em;
-
-  /* you can be more comfortable with increased icons size */
-  /* font-size: 120%; */
-
-  /* Uncomment for 3D effect */
-  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
-}
-
- [class^="maxui-icon-"]:after, [class*=" maxui-icon-"]:after {
-  font-family: "maxicons";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
-
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-  /* opacity: .8; */
-
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
-
-  /* fix buttons height, for twitter bootstrap */
-  line-height: 1em;
-
-  /* Animation center compensation - margins should be symmetric */
-  /* remove if not needed */
-  margin-left: .2em;
-
-  /* you can be more comfortable with increased icons size */
-  /* font-size: 120%; */
-
-  /* Uncomment for 3D effect */
-  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
-}
-
-.maxui-icon-star:before { content: '\e800'; } /* '' */
-.maxui-icon-angle-circled-down:before { content: '\e80a'; } /* '' */
-.maxui-icon-thumbs-up:before { content: '\e802'; } /* '' */
-.maxui-icon-thumbs-up-alt:before { content: '\e803'; } /* '' */
-.maxui-icon-chat:before { content: '\e805'; } /* '' */
-.maxui-icon-chat-empty:before { content: '\e804'; } /* '' */
-.maxui-icon-trash:before { content: '\e806'; } /* '' */
-.maxui-icon-star-empty:before { content: '\e801'; } /* '' */
-.maxui-icon-right-dir:before { content: '\e80e'; } /* '' */
-.maxui-icon-left-open:before { content: '\e80c'; } /* '' */
-.maxui-icon-right-open:before { content: '\e80b'; } /* '' */
-.maxui-icon-angle-circled-left:before { content: '\e807'; } /* '' */
-.maxui-icon-angle-circled-right:before { content: '\e808'; } /* '' */
-.maxui-icon-angle-circled-up:before { content: '\e809'; } /* '' */
-.maxui-icon-down-dir:before { content: '\e80d'; } /* '' */
-.maxui-icon-pinboard:before { content: '\e80f'; } /* '' */
-.maxui-icon-cancel-circled:before { content: '\e810'; } /* '' */
