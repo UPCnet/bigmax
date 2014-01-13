@@ -10,8 +10,7 @@ input.maxui-simple-text-input:focus {
 }
 
 #maxui-container a {text-decoration: none;font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;color:#007bc0;}
-
-#maxui-container a:hover {text-decoration:underline; color:#005ea0;}
+#maxui-container a:hover {color:#026399;}
 
 #maxui-container {text-shadow: 0 1px #fff; font:13px/18px Arial, "HelveticaNeue","Helvetica Neue",Helvetica,sans-serif;color:#333;}
 
@@ -218,34 +217,9 @@ input.maxui-button[disabled] {-webkit-appearance: none;border:1px solid #b2b2b2;
 p.maxui-body {margin:0;font-size:13px;}
 	.maxui-comment .maxui-activity-content p.maxui-body {font-size:12px !important;}
 
-.maxui-delete-activity, .maxui-delete-comment {
-background:url('/maxui/img/trashbin.png') center 1px no-repeat;
-height:12px;
-width:12px;
-display: block;
-float:right;
-margin-top:-12px;
-cursor:pointer;
-}
-
-.maxui-delete-activity:hover, .maxui-delete-comment:hover  {
-background:url('/maxui/img/trashbino.png') center 0 no-repeat;
-height:12px;
-width:12px;
-display: block;
-float:right;
-margin-top:-12px;
-cursor:pointer;
-}
-
 .maxui-info {
    font-style:italic;
    color:#666
-}
-.maxui-publisheddate {
-font-size:11px;
-color:  #6e6e6e;
-text-align: right;
 }
 
 .maxui-topright{
@@ -261,25 +235,41 @@ padding-top:6px;
 .maxui-filter .maxui-img {
     vertical-align: inherit;
 }
+.maxui-footer {
+margin-left: 56px;
+}
+
+
+
+
+.maxui-actions {
+    position:relative;
+}
+
+
 .maxui-actions a, .maxui-origin{
 display:inline;
-margin-left: 56px;
 padding-right:10px;
 }
-.maxui-origin {color:#6e6e6e; font-size:11px; background:url('/maxui/img/maxcomm.png') 0 -77px no-repeat; padding-left:10px;}
-.maxui-actions a.maxui-commentaction {
+
+
+
+
+
+.maxui-actions a.maxui-action{
 font-size:12px;
-background: url('/maxui/img/maxcomm.png') no-repeat 0 2px;
 color:#007bc0;
 text-decoration:none;
-padding-left:18px;
+padding-right: 8px;
 cursor:pointer;
 }
-.maxui-actions a.maxui-commentaction:hover {
+
+.maxui-actions a.maxui-action:hover {
 color:#005ea0;
-background-position: 0 -18px;
 text-decoration:underline;
 }
+
+
 .maxui-comments {
 margin-left:56px;
 width:auto;
@@ -337,15 +327,7 @@ float:left;
 
 }
 
-#maxui-search-filters .maxui-filter span{
-padding:0 2px 3px 4px;
--moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;
--moz-box-shadow:0 1px 0 #fff;-webkit-box-shadow:0 1px 0 #fff;box-shadow:0 1px 0 #fff;
-text-shadow: 0 -1px rgba(0,0,0,.5);
-background-color:#007ca5;
-color:#fff;
-border:1px solid #006989;
-display:block;
+
 }
 #maxui-search-filters .maxui-filter span.hashtag {background-color:#008564;border:1px solid #007355;}
 #maxui-search-filters .maxui-filter span.person {background-color:#837800;border:1px solid #706923;}
@@ -361,9 +343,9 @@ top: 3px;
 
 #maxui-search-text {
 -webkit-appearance: none; -moz-appearance:none; appearance:none;
-width:100%;
-width:97.5% \0/;
-*width:97.5%;
+width:82%;
+width:77.5% \0/;
+*width:77.5%;
 color:#666;
 height:24px; min-height:24px;
 border: 1px #b2b2b2 solid;
@@ -378,15 +360,8 @@ box-sizing:border-box;
 -webkit-box-sizing:border-box;
 }
 
-#maxui-search-toggle {
-    float:left;
-    background: url("/maxui/img/maxcomm.png") no-repeat scroll 7px -92px transparent;
-    display: inline;
-    height: 16px;
-    width: 24px;
-}
 
-#maxui-search-box {padding-left:56px; width:auto; text-align:right;}
+#maxui-search-box {padding-left:56px; width:auto; text-align:left;}
 
 #maxui-newactivity .maxui-avatar {left:0; top:0; position:relative;}
 #maxui-container a img {border:0;}
@@ -409,11 +384,6 @@ box-sizing:border-box;
 	.maxui-avatar img {float: left;	}
 	.maxui-comments .maxui-avatar {margin-top:5px; position: absolute;left: -41px; top:0;}
 
-#maxui-search a img {width:14px; height:8px; background: url('/maxui/img/maxcomm.png') 2px -60px no-repeat; margin:8px 5px 0; opacity:.8;  filter: alpha(opacity=80);}
-#maxui-search.folded a img {background-position: 2px -40px;}
-#maxui-search a img:hover {opacity:1;  filter: alpha(opacity=100);}
-#maxui-search a.maxui-disabled img {background-position: 2px -100px; }
-#maxui-search a.maxui-disabled {cursor:default;}
 
 img { -ms-interpolation-mode: bicubic; image-rendering: optimizeQuality;}
 
@@ -541,18 +511,6 @@ img { -ms-interpolation-mode: bicubic; image-rendering: optimizeQuality;}
 .maxui-message .maxui-publisheddate { font-size: 9px; font-style: italic; color: #888; }
 
 
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-	only screen and (-o-min-device-pixel-ratio: 3/2),
-	only screen and (min--moz-device-pixel-ratio: 1.5),
-	only screen and (min-device-pixel-ratio: 1.5) {
-		#maxui-search .obretanca, .maxui-actions a.maxui-commentaction, .maxui-origin
-			{	background-image:url('/maxui/img/maxcomm@2x.png');
-				-moz-background-size: 12px 120px;
-				-o-background-size: 12px 120px;
-				-webkit-background-size: 12px 120px;
-				background-size: 12px 120px;
-			}
-}
 html { -webkit-text-size-adjust:none; }
 
 .maxui-message-count {
@@ -714,8 +672,8 @@ left: 0;
 z-index: 1010;
 max-width: 276px;
 padding: 1px;
-margin-bottom: -42px;
-margin-left:117px;
+margin-bottom: -31px;
+margin-left:68px;
 text-align: left;
 white-space: normal;
 background-color: #ffffff;
@@ -899,7 +857,7 @@ display:block;
 #maxui-new-participants .maxui-filter span.person {background-color:#837800;border:1px solid #706923;}
 
 #maxui-new-participants .maxui-filter .maxui-close{
-padding: 0 2px 0 4px;
+padding: 0 0 0 4px;
 opacity:.8; filter: alpha(opacity=80);
 position: relative;
 top: 3px;
@@ -984,3 +942,319 @@ top: 3px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
 }
+
+#maxui-activity-sort {
+    border-bottom: 1px #b2b2b2 solid;
+    margin: 0 -10px;
+    padding: 5px 10px;
+
+}
+
+#maxui-activity-sort .maxui-sort-action:hover {
+    text-decoration:none;
+}
+
+#maxui-activity-sort .maxui-sort-action.active {
+    color: #444;
+}
+
+#maxui-activity-sort .maxui-sort-action.active:hover {
+    text-decoration:none;
+    color: #000;
+}
+
+
+#maxui-activity-sort .maxui-sort-action.maxui-most-recent {
+    padding-right: 5px;
+}
+
+#maxui-activity-sort .maxui-sort-action.maxui-most-recent {
+    padding-right: 5px;
+}
+
+#maxui-activity-sort .maxui-sort-action.maxui-most-valued {
+    padding-left: 5px;
+}
+
+#maxui-activity-sort .maxui-sort-action a {
+    color: #929292;
+    text-decoration: none;
+}
+
+#maxui-activity-sort .maxui-sort-action a:hover {
+    color: #555;
+}
+
+#maxui-container #maxui-favorites-filter {
+    color:#bbb;
+    width:50px;
+    float:right;
+    text-align: center;
+    margin-right: 5px;
+}
+
+#maxui-container #maxui-favorites-filter.active {
+    color:#ff9b00;
+}
+
+#maxui-favorites-filter .maxui-icon-star{
+ font-size: 175%;
+}
+
+
+/* maxicons styles*/
+
+#maxui-container .maxui-actions a.maxui-action {
+    color: #666;
+}
+
+#maxui-container .maxui-actions a.maxui-action:hover {
+    color: #333;
+    text-decoration:none;
+}
+
+
+
+
+#maxui-container .maxui-actions a.maxui-action.maxui-commentaction.maxui-empty:before { content: '\e804'; }
+#maxui-container .maxui-actions a.maxui-action.maxui-commentaction:before             { content: '\e805'; }
+#maxui-container .maxui-actions a.maxui-action.maxui-likes:before                     { content: '\e802'; }
+#maxui-container .maxui-actions a.maxui-action.maxui-likes.maxui-liked:before         { content: '\e803'; color:#007bc0;}
+#maxui-container .maxui-actions a.maxui-action.maxui-likes.maxui-liked:hover:before   { color:#026399;}
+#maxui-container .maxui-actions a.maxui-action.maxui-favorites:before                 { content: '\e801'; }
+#maxui-container .maxui-actions a.maxui-action.maxui-favorites:hover:before           { content: '\e801'; color:#ff9b00;}
+#maxui-container .maxui-actions a.maxui-action.maxui-favorites.maxui-favorited:before { content: '\e800'; color:#007bc0;}
+#maxui-container .maxui-actions a.maxui-action.maxui-favorites.maxui-favorited:hover:before { color:#ff9b00;}
+#maxui-container .maxui-actions a.maxui-action.maxui-delete:before                    { content: '\e806'; }
+
+#maxui-container .maxui-actions a.maxui-action.maxui-commentaction {color:#007bc0;}
+#maxui-container .maxui-actions a.maxui-action.maxui-commentaction:hover {color:#026399;}
+
+#maxui-container .maxui-actions a.maxui-action.maxui-commentaction.maxui-empty {color:#666;}
+#maxui-container .maxui-actions a.maxui-action.maxui-commentaction.maxui-empty:hover {color:#333;}
+
+#maxui-container .maxui-actions a.maxui-action.maxui-likes.maxui-liked { color:#007bc0; }
+#maxui-container .maxui-actions a.maxui-action.maxui-favorites.maxui-favorited { color:#007bc0; }
+
+#maxui-container .maxui-actions a.maxui-action.maxui-likes.maxui-liked:hover { color:#026399; }
+#maxui-container .maxui-actions a.maxui-action.maxui-favorites.maxui-favorited:hover { color:#026399; }
+
+
+#maxui-show-timeline.maxui-togglebar:after { content: '\e80a'; color:#929292;}
+#maxui-show-timeline.maxui-togglebar:hover:after { content: '\e80a'; color:#555;}
+
+#maxui-show-conversations.maxui-togglebar:after { content: '\e809'; color:#929292;}
+#maxui-show-conversations.maxui-togglebar:hover:after { content: '\e809'; color:#555;}
+
+#maxui-back-conversations.maxui-togglebar a:before { content: '\e807'; color:#929292;}
+#maxui-back-conversations.maxui-togglebar a:hover:before { content: '\e807'; color:#555;}
+
+.maxui-enterconversation:before { font-size: 150%; content: '\e80b'; color:#929292; }
+.maxui-enterconversation:hover:before { color:#555; }
+
+.maxui-origin {
+    color:#6e6e6e;
+    font-size:11px;
+}
+
+.maxui-origin:before { content: '\e80f';}
+
+
+.maxui-delete-comment, .maxui-delete-comment:hover
+{
+float:right;
+margin-top:-12px;
+cursor:pointer;
+}
+
+.maxui-delete-comment:before { content: '\e806'; color: #666;}
+.maxui-delete-comment:hover:before { content: '\e806'; color: #555;}
+
+#maxui-search {
+    min-height: 35px;
+}
+
+#maxui-search-toggle {
+    float:left;
+}
+
+
+
+#maxui-search.folded #maxui-search-toggle:before { content: '\e80e'; color: #666; font-size: 120%; margin-top:3px;}
+#maxui-search #maxui-search-toggle:before { content: '\e80d'; color: #666; font-size: 120%; margin-top: 3px;}
+
+
+.maxui-publisheddate, .maxui-likescount {
+    font-size:11px;
+    color:  #6e6e6e;
+    text-align: right;
+}
+
+.maxui-icon-cancel-circled:before {
+    color:white;
+    font-size: 130%;
+}
+
+#maxui-search-filters .maxui-filter span{
+padding:0px 0px 4px 4px;
+-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;
+-moz-box-shadow:0 1px 0 #fff;-webkit-box-shadow:0 1px 0 #fff;box-shadow:0 1px 0 #fff;
+text-shadow: 0 -1px rgba(0,0,0,.5);
+background-color:#007ca5;
+color:#fff;
+border:1px solid #006989;
+display:block;
+
+/*
+
+
+.maxui-actions a.maxui-action.maxui-likes {
+background: url('/maxui/img/nolike.png') no-repeat 0 1px;
+}
+
+.maxui-actions a.maxui-action.maxui-likes.maxui-liked {
+background: url('/maxui/img/like.png') no-repeat 0 1px;
+}
+
+.maxui-actions a.maxui-action.maxui-favorites {
+background: url('/maxui/img/nofav.png') no-repeat 0 1px;
+}
+
+.maxui-actions a.maxui-action.maxui-favorites.maxui-favorited {
+background: url('/maxui/img/fav.png') no-repeat 0 1px;
+}
+
+.maxui-actions a.maxui-action.maxui-delete {
+background:url('/maxui/img/trashbin.png') 5px 1px no-repeat;
+}
+
+.maxui-actions a.maxui-action.maxui-delete:hover {
+background:url('/maxui/img/trashbino.png') 5px 0px no-repeat;
+}
+
+.maxui-actions a.maxui-commentaction {
+background: url('/maxui/img/maxcomm.png') no-repeat 0 2px;
+background-position: 0 2px;
+}
+
+.maxui-actions a.maxui-commentaction:hover {
+background: url('/maxui/img/maxcomm.png') no-repeat 0 2px;
+background-position: 0 -18px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+    only screen and (-o-min-device-pixel-ratio: 3/2),
+    only screen and (min--moz-device-pixel-ratio: 1.5),
+    only screen and (min-device-pixel-ratio: 1.5) {
+        #maxui-search .obretanca, .maxui-actions a.maxui-commentaction, .maxui-origin
+            {   background-image:url('/maxui/img/maxcomm@2x.png');
+                -moz-background-size: 12px 120px;
+                -o-background-size: 12px 120px;
+                -webkit-background-size: 12px 120px;
+                background-size: 12px 120px;
+            }
+}
+
+#maxui-container a:hover {text-decoration:underline; color:#005ea0;}
+
+*/
+@font-face {
+  font-family: 'maxicons';
+  src: url('../font/maxicons.eot?50174293');
+  src: url('../font/maxicons.eot?50174293#iefix') format('embedded-opentype'),
+       url('../font/maxicons.woff?50174293') format('woff'),
+       url('../font/maxicons.ttf?50174293') format('truetype'),
+       url('../font/maxicons.svg?50174293#maxicons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'maxicons';
+    src: url('../font/maxicons.svg?50174293#maxicons') format('svg');
+  }
+}
+*/
+
+ [class^="maxui-icon-"]:before, [class*=" maxui-icon-"]:before {
+  font-family: "maxicons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+ [class^="maxui-icon-"]:after, [class*=" maxui-icon-"]:after {
+  font-family: "maxicons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.maxui-icon-star:before { content: '\e800'; } /* '' */
+.maxui-icon-angle-circled-down:before { content: '\e80a'; } /* '' */
+.maxui-icon-thumbs-up:before { content: '\e802'; } /* '' */
+.maxui-icon-thumbs-up-alt:before { content: '\e803'; } /* '' */
+.maxui-icon-chat:before { content: '\e805'; } /* '' */
+.maxui-icon-chat-empty:before { content: '\e804'; } /* '' */
+.maxui-icon-trash:before { content: '\e806'; } /* '' */
+.maxui-icon-star-empty:before { content: '\e801'; } /* '' */
+.maxui-icon-right-dir:before { content: '\e80e'; } /* '' */
+.maxui-icon-left-open:before { content: '\e80c'; } /* '' */
+.maxui-icon-right-open:before { content: '\e80b'; } /* '' */
+.maxui-icon-angle-circled-left:before { content: '\e807'; } /* '' */
+.maxui-icon-angle-circled-right:before { content: '\e808'; } /* '' */
+.maxui-icon-angle-circled-up:before { content: '\e809'; } /* '' */
+.maxui-icon-down-dir:before { content: '\e80d'; } /* '' */
+.maxui-icon-pinboard:before { content: '\e80f'; } /* '' */
+.maxui-icon-cancel-circled:before { content: '\e810'; } /* '' */
