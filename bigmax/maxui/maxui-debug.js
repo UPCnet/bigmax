@@ -185,7 +185,7 @@ var MSTCH_MAXUI_ACTIVITY = '\
     <div class="maxui-activity-content">\
         <div class="maxui-topright">\
             {{^showLikesCount}}<span class="maxui-publisheddate">{{date}}</span>{{/showLikesCount}}\
-            {{#showLikesCount}}<span class="maxui-likescount"><strong>{{likes}}</strong> {{literals.like}}</span>{{/showLikesCount}}\
+            {{#showLikesCount}}<span class="maxui-likescount"><strong>{{likes}}</strong><i class="maxui-icon-thumbs-up"></i></span>{{/showLikesCount}}\
         </div>\
         <div class="maxui-actor">\
               <a href="#"><span class="maxui-avatar"><img src="{{avatarURL}}"></span>\
@@ -211,8 +211,8 @@ var MSTCH_MAXUI_ACTIVITY = '\
         {{/publishedIn}}\
         <div class="maxui-actions">\
             <a href="" class="maxui-action maxui-commentaction maxui-icon- {{^replies}}maxui-empty{{/replies}}"><strong>{{replies.length}}</strong> {{literals.toggle_comments}}</a>\
-            <a href="" class="maxui-action maxui-favorites {{#favorited}}maxui-favorited{{/favorited}} maxui-icon-">{{#favorited}}{{literals.unfavorite}}{{/favorited}}{{^favorited}}{{literals.favorite}}{{/favorited}}</a>\
-            <a href="" class="maxui-action maxui-likes {{#liked}}maxui-liked{{/liked}} maxui-icon-">{{#liked}}{{literals.unlike}}{{/liked}}{{^liked}}{{literals.like}}{{/liked}}</a>\
+            <a href="" class="maxui-action maxui-favorites {{#favorited}}maxui-favorited{{/favorited}} maxui-icon-">{{literals.favorite}}</a>\
+            <a href="" class="maxui-action maxui-likes {{#liked}}maxui-liked{{/liked}} maxui-icon-">{{literals.like}}</a>\
             {{#canDeleteActivity}}\
             <a href="" class="maxui-action maxui-delete maxui-icon-">{{literals.delete_activity_icon}}</a>\
             <div class="maxui-popover left">\
@@ -464,7 +464,7 @@ max.literals = function(language) {
                        'unfavorite': 'treure favorit',
                        'like': "m'agrada",
                        'unlike': "ja no m'agrada",
-                       'recent_activity': "Darreres Activitats",
+                       'recent_activity': "Darreres activitats",
                        'valued_activity': "Activitats més valorades"
 
         }
@@ -1792,12 +1792,10 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
             if (favorited) {
                 maxui.maxClient.unfavoriteActivity(activityid, function(event) {
                     $favorites.toggleClass('maxui-favorited', false)
-                    $favorites.text(maxui.settings.literals.favorite)
                 })
             } else {
                 maxui.maxClient.favoriteActivity(activityid, function(event) {
                     $favorites.toggleClass('maxui-favorited', true)
-                    $favorites.text(maxui.settings.literals.unfavorite)
                 })
 
             }
@@ -1814,12 +1812,10 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
             if (liked) {
                 maxui.maxClient.unlikeActivity(activityid, function(event) {
                     $likes.toggleClass('maxui-liked', false)
-                    $likes.text(maxui.settings.literals.like)
                 })
             } else {
                 maxui.maxClient.likeActivity(activityid, function(event) {
                     $likes.toggleClass('maxui-liked', true)
-                    $likes.text(maxui.settings.literals.unlike)
                 })
             }
         })

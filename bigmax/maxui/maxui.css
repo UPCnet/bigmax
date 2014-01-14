@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'maxicons';
-  src: url('/maxui/maxicons.eot?50174293');
-  src: url('/maxui/maxicons.eot?50174293#iefix') format('embedded-opentype'),
-       url('/maxui/maxicons.woff?50174293') format('woff'),
-       url('/maxui/maxicons.ttf?50174293') format('truetype'),
-       url('/maxui/maxicons.svg?50174293#maxicons') format('svg');
+  src: url('/maxui/maxicons.eot?57646476');
+  src: url('/maxui/maxicons.eot?57646476#iefix') format('embedded-opentype'),
+       url('/maxui/maxicons.woff?57646476') format('woff'),
+       url('/maxui/maxicons.ttf?57646476') format('truetype'),
+       url('/maxui/maxicons.svg?57646476#maxicons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,90 +14,91 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'maxicons';
-    src: url('/maxui/maxicons.svg?50174293#maxicons') format('svg');
+    src: url('/maxui/maxicons.svg?57646476#maxicons') format('svg');
   }
 }
 */
-
+ 
  [class^="maxui-icon-"]:before, [class*=" maxui-icon-"]:before {
   font-family: "maxicons";
   font-style: normal;
   font-weight: normal;
   speak: none;
-
+ 
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
   margin-right: .2em;
   text-align: center;
   /* opacity: .8; */
-
+ 
   /* For safety - reset parent styles, that can break glyph codes*/
   font-variant: normal;
   text-transform: none;
-
+     
   /* fix buttons height, for twitter bootstrap */
   line-height: 1em;
-
+ 
   /* Animation center compensation - margins should be symmetric */
   /* remove if not needed */
   margin-left: .2em;
-
+ 
   /* you can be more comfortable with increased icons size */
   /* font-size: 120%; */
-
+ 
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
-
- [class^="maxui-icon-"]:after, [class*=" maxui-icon-"]:after {
-  font-family: "maxicons";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
-
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-  /* opacity: .8; */
-
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
-
-  /* fix buttons height, for twitter bootstrap */
-  line-height: 1em;
-
-  /* Animation center compensation - margins should be symmetric */
-  /* remove if not needed */
-  margin-left: .2em;
-
-  /* you can be more comfortable with increased icons size */
-  /* font-size: 120%; */
-
-  /* Uncomment for 3D effect */
-  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
-}
-
+ 
 .maxui-icon-star:before { content: '\e800'; } /* '' */
 .maxui-icon-angle-circled-down:before { content: '\e80a'; } /* '' */
+.maxui-icon-cancel-circled:before { content: '\e810'; } /* '' */
+.maxui-icon-pin:before { content: '\e811'; } /* '' */
 .maxui-icon-thumbs-up:before { content: '\e802'; } /* '' */
 .maxui-icon-thumbs-up-alt:before { content: '\e803'; } /* '' */
 .maxui-icon-chat:before { content: '\e805'; } /* '' */
 .maxui-icon-chat-empty:before { content: '\e804'; } /* '' */
-.maxui-icon-trash:before { content: '\e806'; } /* '' */
 .maxui-icon-star-empty:before { content: '\e801'; } /* '' */
+.maxui-icon-down-dir:before { content: '\e80d'; } /* '' */
 .maxui-icon-right-dir:before { content: '\e80e'; } /* '' */
 .maxui-icon-left-open:before { content: '\e80c'; } /* '' */
 .maxui-icon-right-open:before { content: '\e80b'; } /* '' */
 .maxui-icon-angle-circled-left:before { content: '\e807'; } /* '' */
 .maxui-icon-angle-circled-right:before { content: '\e808'; } /* '' */
 .maxui-icon-angle-circled-up:before { content: '\e809'; } /* '' */
-.maxui-icon-down-dir:before { content: '\e80d'; } /* '' */
-.maxui-icon-pinboard:before { content: '\e80f'; } /* '' */
-.maxui-icon-cancel-circled:before { content: '\e810'; } /* '' *//*aquest es per tenir una linia dibuixada*/
+.maxui-icon-trash:before { content: '\e806'; } /* '' */ [class^="maxui-icon-"]:after, [class*=" maxui-icon-"]:after {
+  font-family: "maxicons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+
+/*aquest es per tenir una linia dibuixada*/
 #maxui-container{border:1px solid #ccc;}
 
 
@@ -1030,6 +1031,7 @@ top: 3px;
 
 #maxui-activity-sort .maxui-sort-action.active {
     color: #444;
+    font-weight: bold;
 }
 
 #maxui-activity-sort .maxui-sort-action.active:hover {
@@ -1137,7 +1139,7 @@ top: 3px;
     font-size:11px;
 }
 
-.maxui-origin:before { content: '\e80f';}
+.maxui-origin:before { content: '\e811'; font-size: 12px;}
 
 
 .maxui-delete-comment, .maxui-delete-comment:hover
@@ -1216,57 +1218,3 @@ cursor:pointer;
     padding-left:25px;
 
 }
-
-/*
-
-
-.maxui-actions a.maxui-action.maxui-likes {
-background: url('/maxui/img/nolike.png') no-repeat 0 1px;
-}
-
-.maxui-actions a.maxui-action.maxui-likes.maxui-liked {
-background: url('/maxui/img/like.png') no-repeat 0 1px;
-}
-
-.maxui-actions a.maxui-action.maxui-favorites {
-background: url('/maxui/img/nofav.png') no-repeat 0 1px;
-}
-
-.maxui-actions a.maxui-action.maxui-favorites.maxui-favorited {
-background: url('/maxui/img/fav.png') no-repeat 0 1px;
-}
-
-.maxui-actions a.maxui-action.maxui-delete {
-background:url('/maxui/img/trashbin.png') 5px 1px no-repeat;
-}
-
-.maxui-actions a.maxui-action.maxui-delete:hover {
-background:url('/maxui/img/trashbino.png') 5px 0px no-repeat;
-}
-
-.maxui-actions a.maxui-commentaction {
-background: url('/maxui/img/maxcomm.png') no-repeat 0 2px;
-background-position: 0 2px;
-}
-
-.maxui-actions a.maxui-commentaction:hover {
-background: url('/maxui/img/maxcomm.png') no-repeat 0 2px;
-background-position: 0 -18px;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-    only screen and (-o-min-device-pixel-ratio: 3/2),
-    only screen and (min--moz-device-pixel-ratio: 1.5),
-    only screen and (min-device-pixel-ratio: 1.5) {
-        #maxui-search .obretanca, .maxui-actions a.maxui-commentaction, .maxui-origin
-            {   background-image:url('/maxui/img/maxcomm@2x.png');
-                -moz-background-size: 12px 120px;
-                -o-background-size: 12px 120px;
-                -webkit-background-size: 12px 120px;
-                background-size: 12px 120px;
-            }
-}
-
-#maxui-container a:hover {text-decoration:underline; color:#005ea0;}
-
-*/
