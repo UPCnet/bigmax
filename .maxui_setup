@@ -1,10 +1,10 @@
 {
-    "fonts_url": "/maxui", 
     "branch": "develop", 
-    "images_location": "./bigmax/maxui/img", 
-    "js_location": "./bigmax/maxui/maxui.js", 
-    "github_url": "https://github.com/UPCnet/max.ui.js", 
-    "images_url": "/maxui/img", 
+    "css_location": "./bigmax/maxui/maxui.css", 
     "fonts_location": "./bigmax/maxui", 
-    "css_location": "./bigmax/maxui/maxui.css"
+    "fonts_url": "/maxui", 
+    "github_url": "https://github.com/UPCnet/max.ui.js", 
+    "images_location": "./bigmax/maxui/img", 
+    "images_url": "/maxui/img", 
+    "js_location": "./bigmax/maxui/maxui.js"
 }

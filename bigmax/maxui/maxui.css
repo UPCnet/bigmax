@@ -860,7 +860,7 @@ padding: 8px 10px 12px 0px;
     background-color: transparent;
     color:#929292;
     width:250px;
-
+    display: block;
 
 }
 
@@ -871,8 +871,8 @@ padding: 8px 10px 12px 0px;
     outline: 0;}
 
 #maxui-conversation-predictive {
-    margin-top: 35px;
-    margin-left: 130px;
+    margin-top: 50px;
+    margin-left: 10px;
 }
 
 
@@ -1123,7 +1123,8 @@ top: 3px;
     font-size:11px;
 }
 
-.maxui-origin:before { content: '\e811'; font-size: 12px;}
+.maxui-origin.maxui-icon-:before { content: '\e811'; font-size: 12px; margin-right: 0px;}
+
 
 
 .maxui-delete-comment, .maxui-delete-comment:hover
@@ -1153,7 +1154,7 @@ cursor:pointer;
 
 
 #maxui-search.folded #maxui-search-toggle:before { content: '\e80e'; color: #666; font-size: 120%; margin-top:4px;margin-left:19px;}
-#maxui-search #maxui-search-toggle:before { content: '\e80d'; color: #666; font-size: 120%; margin-top: 3px;}
+#maxui-search #maxui-search-toggle:before { content: '\e80d'; color: #666; font-size: 120%; margin-top: 4px;margin-left:18px;}
 
 
 .maxui-publisheddate, .maxui-likescount {
@@ -1198,6 +1199,7 @@ cursor:pointer;
 
 #maxui-search-filters {
     zoom:1;
+    margin-top: 7px;
 
 }
 

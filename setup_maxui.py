@@ -23,7 +23,7 @@ def saveConfiguration(config):
     """
         Loads stored configuration from .maxui_setup
     """
-    dump = json.dumps(config, indent=4)
+    dump = json.dumps(config, indent=4, sort_keys=True)
     open('.maxui_setup', 'w').write(dump)
 
 

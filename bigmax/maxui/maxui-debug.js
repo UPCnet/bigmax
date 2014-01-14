@@ -362,6 +362,7 @@ max.literals = function(language) {
                        'conversation_name': 'Conversation name',
                        'message': 'Message',
                        'no_conversations': 'No conversations already',
+                       'no_match_found': 'No match found',
                        'new_conversation_text': 'Add participants and send a message to start a conversation',
                        'new_activity_post': "Post activity",
                        'toggle_comments': "comments",
@@ -389,8 +390,8 @@ max.literals = function(language) {
                        'unlike': 'unlike',
                        'recent_activity': "Latest activity",
                        'valued_activity': "Most valued activity",
-                       'recent_favorited_activity': "Favorited activity",
-                       'valued_favorited_activity': "Most valued favorited activity"                       
+                       'recent_favorited_activity': "Latest favorites",
+                       'valued_favorited_activity': "Most valued favorites"                       
         }
 
     maxui['es'] = {'months': ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
@@ -403,6 +404,7 @@ max.literals = function(language) {
                        'conversation_name': 'Nombre de la conversación',
                        'message': 'Mensaje',
                        'no_conversations': 'No hay conversaciones',
+                       'no_match_found': 'No hay coincidencias',
                        'new_conversation_text': 'Añade participantes y envia el mensaje para iniciar una conversación',
                        'new_activity_post': "Publica",
                        'toggle_comments': "comentarios",
@@ -422,7 +424,7 @@ max.literals = function(language) {
                        'delete_activity_delete': "Borrar",
                        'delete_activity_cancel': "Cancelar",
                        'delete_activity_icon': "borrar",
-                       'favorites_filter_hint': 'Filtrar por actividad favorita',
+                       'favorites_filter_hint': 'Filtra por actividad favorita',
                        'favorites': 'Favoritos',
                        'favorite': 'favorito',
                        'unfavorite': 'quitar favorito',
@@ -430,8 +432,8 @@ max.literals = function(language) {
                        'unlike': 'ya no me gusta',
                        'recent_activity': "Últimas actividades",
                        'valued_activity': "Actividades más valoradas",
-                       'recent_favorited_activity': "Actividades favoritas",
-                       'valued_favorited_activity': "Act. favoritas más valoradas"                       
+                       'recent_favorited_activity': "Últimas favoritas",
+                       'valued_favorited_activity': "Favoritas más valoradas"                       
         }
 
     maxui['ca'] = {'months': ['gener', 'febrer', 'març', 'abril', 'maig', 'juny', 'juliol', 'agost', 'setembre', 'octubre', 'novembre', 'desembre'],
@@ -444,6 +446,7 @@ max.literals = function(language) {
                        'conversation_name': 'Nom de la conversa',
                        'message': 'Missatge',
                        'no_conversations': 'No hi ha converses',
+                       'no_match_found': "No s'han trobat coincidències",
                        'new_conversation_text': 'Afegeix participants i envia el missatge per iniciar una conversa',
                        'new_activity_post': "Publica",
                        'toggle_comments': "comentaris",
@@ -463,7 +466,7 @@ max.literals = function(language) {
                        'delete_activity_delete': "Esborra",
                        'delete_activity_cancel': "No ho toquis!",
                        'delete_activity_icon': "esborra",
-                       'favorites_filter_hint': 'Filtrar per activitat favorita',
+                       'favorites_filter_hint': 'Filtra per activitat favorita',
                        'favorites': 'Favorits',
                        'favorite': 'favorit',
                        'unfavorite': 'treure favorit',
@@ -471,8 +474,8 @@ max.literals = function(language) {
                        'unlike': "ja no m'agrada",
                        'recent_activity': "Darreres activitats",
                        'valued_activity': "Activitats més valorades",
-                       'recent_favorited_activity': "Activitats favorites",
-                       'valued_favorited_activity': "Act. favorites més valorades"
+                       'recent_favorited_activity': "Darreres favorites",
+                       'valued_favorited_activity': "Favorites més valorades"
 
         }
 
@@ -636,9 +639,9 @@ max.utils = function() {
                 formatted = jQuery.easydate.format_date(thisdate, lang)
             } else {
                 if (lang == 'en') {
-                  formatted = '{0} {1}'.format(match[4], settings.literals.months[match[3]])
+                  formatted = '{0} {1}'.format(match[4], settings.literals.months[match[3]-1])
                 } else if (lang == 'es') {
-                  formatted = '{0} de {1}'.format(match[4], settings.literals.months[match[3]])
+                  formatted = '{0} de {1}'.format(match[4], settings.literals.months[match[3]-1])
                 } else if (lang == 'ca') {
                   prefix = 'de '
                   if (match[3] == 4 || match[3] == 8 || match[3] == 10 ) {
@@ -1744,13 +1747,19 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
             $area.focus()
             })
 
+        // Close predictive window if clicked outside
+        jq(document).on('click', function(event) {
+            var $predictive = jq('#maxui-conversation-predictive')
+            $predictive.hide()
+        })
+
        //Assign user mention suggestion to input by click
         jq('#maxui-conversation-predictive').on('click','.maxui-prediction',function (event) {
             event.preventDefault()
-
+            console.log('click')
             var $selected = jq(this)
             var $area = jq('#maxui-add-people-box .maxui-text-input')
-            var $predictive = jq('#maxui-conversations #maxui-predictive')
+            var $predictive = jq('#maxui-conversation-predictive')
             var text = $area.val()
 
             var matchMention = new RegExp('^\\s*([\\w\\.]+)\s*')
@@ -2660,6 +2669,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
     jq.fn.toggleSection = function(sectionToEnable) {
         maxui = this
         var $search = jq('#maxui-search')
+        var $activitysort = jq('#maxui-activity-sort')
         var $timeline = jq('#maxui-timeline')
         var $timeline_wrapper = jq('#maxui-timeline .maxui-wrapper')
         var $conversations = jq('#maxui-conversations')
@@ -2696,6 +2706,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
           $conversations_list.width(sectionsWidth)
           $timeline.animate({'height':0}, 400)
           $search.hide(400)
+          $activitysort.hide(400)
           maxui.settings.UISection='conversations'
           $postbutton.val(maxui.settings.literals.new_message_post)
           $conversationsbutton.hide()
@@ -2715,6 +2726,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
               $addpeople.hide()
           })
           $search.show(400)
+          $activitysort.show(400)
           //maxui.settings.currentConversationSection=='conversations'
           maxui.settings.UISection='timeline'
           $postbutton.val(maxui.settings.literals.new_activity_post)
@@ -2867,6 +2879,8 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
         // String to store the generated html pieces of each conversation item
         var predictions = ''
 
+
+
         // Iterate through all the conversations
         for (i=0;i<items.length;i++)
             {
@@ -2884,6 +2898,11 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
                 predictions = predictions + maxui.templates.predictive.render(params)
                 }
             }
+
+        if (predictions == '') {
+            predictions = '<li>' + maxui.settings.literals.no_match_found + '</li>'
+        }
+
         jq(predictive_selector + ' ul').html(predictions)
 
         if (arguments.length>2) {
