@@ -131,23 +131,21 @@ var MSTCH_MAXUI_MAIN_UI = '\
 \
    <div id="maxui-search" class="folded">\
        <a id="maxui-search-toggle" class="maxui-disabled maxui-icon-" href="#" alt="obre-tanca"></a>\
+       <a href="#" id="maxui-favorites-filter" title="{{literals.favorites_filter_hint}}"><i class="maxui-icon-star"/></a>\
        <div id="maxui-search-box">\
           <input id="maxui-search-text" type="search" data-literal="{{literals.search_text}}" class="maxui-empty maxui-text-input" value="{{literals.search_text}}" />\
-          <a href="#" id="maxui-favorites-filter"><i class="maxui-icon-star"/>{{literals.favorites}}\
-          </a>\
-          <!--<input disabled="disabled" id="maxui-search-action" type="button" class="maxui-button maxui-disabled"></input>-->\
        </div>\
        <div id="maxui-search-filters"></div>\
    </div>\
 \
    <div id="maxui-show-timeline" class="maxui-togglebar maxui-icon-" style="{{showTimelineToggle}}"><a href="#">{{literals.activity}}</a></div>\
 \
-   <div id="maxui-timeline" style="{{showTimeline}}">\
       <div id="maxui-activity-sort">\
         <a class="maxui-sort-action maxui-most-recent active" href="#">{{literals.recent_activity}}</a>\
         /\
         <a class="maxui-sort-action maxui-most-valued" href="#">{{literals.valued_activity}}</a>\
       </div>\
+   <div id="maxui-timeline" style="{{showTimeline}}">\
       <div class="maxui-wrapper">\
           <div id="maxui-preload" class="maxui-activities" style="height:0px;overflow:hidden">\
               <div class="maxui-wrapper">\
@@ -383,13 +381,16 @@ max.literals = function(language) {
                        'delete_activity_delete': "Delete",
                        'delete_activity_cancel': "Cancel",
                        'delete_activity_icon': "delete",
+                       'favorites_filter_hint': 'Filter by favorited activity',
                        'favorites': 'Favorites',
                        'favorite': 'favorite',
                        'unfavorite': 'unfavorite',
                        'like': 'like',
                        'unlike': 'unlike',
                        'recent_activity': "Latest activity",
-                       'valued_activity': "Most valued activity"
+                       'valued_activity': "Most valued activity",
+                       'recent_favorited_activity': "Latest favorited activity",
+                       'valued_favorited_activity': "Most valued favorited activity"                       
         }
 
     maxui['es'] = {'months': ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
@@ -421,13 +422,16 @@ max.literals = function(language) {
                        'delete_activity_delete': "Borrar",
                        'delete_activity_cancel': "Cancelar",
                        'delete_activity_icon': "borrar",
+                       'favorites_filter_hint': 'Filtrar por actividad favorita',
                        'favorites': 'Favoritos',
                        'favorite': 'favorito',
                        'unfavorite': 'quitar favorito',
                        'like': 'me gusta',
                        'unlike': 'ya no me gusta',
                        'recent_activity': "Últimas actividades",
-                       'valued_activity': "Actividades más valoradas"
+                       'valued_activity': "Actividades más valoradas",
+                       'recent_favorited_activity': "Últimas actividades favoritas",
+                       'valued_favorited_activity': "Actividades favoritas más valoradas"                       
         }
 
     maxui['ca'] = {'months': ['gener', 'febrer', 'març', 'abril', 'maig', 'juny', 'juliol', 'agost', 'setembre', 'octubre', 'novembre', 'desembre'],
@@ -459,13 +463,16 @@ max.literals = function(language) {
                        'delete_activity_delete': "Esborra",
                        'delete_activity_cancel': "No ho toquis!",
                        'delete_activity_icon': "esborra",
+                       'favorites_filter_hint': 'Filtrar per activitat favorita',
                        'favorites': 'Favorits',
                        'favorite': 'favorit',
                        'unfavorite': 'treure favorit',
                        'like': "m'agrada",
                        'unlike': "ja no m'agrada",
                        'recent_activity': "Darreres activitats",
-                       'valued_activity': "Activitats més valorades"
+                       'valued_activity': "Activitats més valorades",
+                       'recent_favorited_activity': "Darreres activitats favorites",
+                       'valued_favorited_activity': "Activitats favorites més valorades"
 
         }
 
@@ -1680,10 +1687,16 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
             var filterFavorites = !favoritesButton.hasClass('active')
             if (filterFavorites) {
                 maxui.addFilter({type:'favorites', value:true, visible:false})
+                var valued_literal = maxui.settings.literals.valued_favorited_activity
+                var recent_literal = maxui.settings.literals.recent_favorited_activity
             } else {
                 maxui.delFilter({type:'favorites', value:true})
+                var valued_literal = maxui.settings.literals.valued_activity
+                var recent_literal = maxui.settings.literals.recent_activity                
             }
             favoritesButton.toggleClass('active', filterFavorites)
+            jq('#maxui-activity-sort .maxui-most-recent').text(recent_literal)
+            jq('#maxui-activity-sort .maxui-most-valued').text(valued_literal)
             })
 
         //Assign hashtag filtering via delegating the click to the activities container
@@ -1911,7 +1924,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
         })
 
 
-        jq('#maxui-timeline').on('click', 'a.maxui-sort-action.maxui-most-recent', function (event) {
+        jq('#maxui-activity-sort').on('click', 'a.maxui-sort-action.maxui-most-recent', function (event) {
             event.preventDefault()
             $sortbutton = jq(this)
             if (!$sortbutton.hasClass('active')) {
@@ -1922,7 +1935,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
 
         })
 
-        jq('#maxui-timeline').on('click', 'a.maxui-sort-action.maxui-most-valued', function (event) {
+        jq('#maxui-activity-sort').on('click', 'a.maxui-sort-action.maxui-most-valued', function (event) {
             event.preventDefault()
             $sortbutton = jq(this)
             if (!$sortbutton.hasClass('active')) {
@@ -3266,7 +3279,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback ) {
             {insert_at = 'beggining'}
 
         if (!filters.sortBy) {
-            if (jq('#maxui-timeline .maxui-sort-action.maxui-most-valued').hasClass('active')) {
+            if (jq('#maxui-activity-sort .maxui-sort-action.maxui-most-valued').hasClass('active')) {
                 filters.sortBy = 'likes'
             } else {
                 filters.sortBy = maxui.settings.activitySortOrder
