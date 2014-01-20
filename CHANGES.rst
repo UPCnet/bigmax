@@ -1,14 +1,8 @@
 Changelog
 =========
 
-3.5.6 (unreleased)
-------------------
-
-- Nothing changed yet.
-
-
-3.5.5 (2014-01-20)
-------------------
+3.6 (2014-01-20)
+----------------
 
 * Add newest widget and debug version [Carles Bruguera]
 * Add updated setup script [Carles Bruguera]
