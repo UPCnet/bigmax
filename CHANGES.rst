@@ -6,13 +6,6 @@ Changelog
 
 - Nothing changed yet.
 
-
-3.7 (unreleased)
-----------------
-
-- Nothing changed yet.
-
-
 3.6 (2014-01-20)
 ----------------
 
