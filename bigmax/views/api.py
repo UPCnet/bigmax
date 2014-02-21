@@ -58,6 +58,13 @@ class TemplateAPI(object):
         else:
             return app_url
 
+    @property
+    def context_url(self):
+        try:
+            return self.request.resource_url(self.context)
+        except:
+            return self.application_url
+
     def getVirtualHost(self):
         return self.request.headers.get('X-Virtual-Host-Uri', None)
 

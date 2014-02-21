@@ -1,11 +1,11 @@
 from pyramid.config import Configurator
 
-from pyramid.authentication import AuthTktAuthenticationPolicy
+
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
 
-from bigmax.resources import Root, loadMAXSettings
-
+from bigmax.resources import get_root, loadMAXSettings
+from bigmax.authentication import MultiMaxServerAuthTktAuthenticationPolicy
 from maxclient import MaxClient
 
 
@@ -18,21 +18,18 @@ def main(global_config, **settings):
 
     identifier_id = 'auth_tkt'
 
-    authn_policy = AuthTktAuthenticationPolicy(identifier_id)
+    authn_policy = MultiMaxServerAuthTktAuthenticationPolicy(identifier_id)
 
     authz_policy = ACLAuthorizationPolicy()
 
     # App config
     config = Configurator(settings=settings,
-                          root_factory=Root,
+                          root_factory=get_root,
                           session_factory=session_factory,
                           authentication_policy=authn_policy,
                           authorization_policy=authz_policy)
 
     settings = config.registry.settings
-
-    config.include('pyramid_osiris')
-    config.osiris_setup(settings.get('max.oauth_server'), legacy_mode=settings.get('max.oauth_standard', False))
 
     config.add_static_view('static', 'bigmax:static')
     config.add_static_view('stylesheets', 'bigmax:stylesheets')

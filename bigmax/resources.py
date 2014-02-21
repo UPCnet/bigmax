@@ -1,24 +1,55 @@
-from pyramid.security import Everyone, Allow, Authenticated
 from beaker.cache import cache_region
+from maxclient import MaxClient
+from pyramid.security import Allow
+from pyramid.security import Authenticated
 
-DEFAULT_PERMISSIONS = [(Allow, Authenticated, 'activitystream')]
+import ConfigParser
 
 
-class Root(object):
-    __parent__ = __name__ = None
-    __acl__ = [
-        (Allow, Everyone, 'anonymous'),
-        (Allow, u'cn=UPCnet.Plone.Admins,ou=UPCNET,ou=Groups,dc=upc,dc=edu', 'restricted'),
-        (Allow, 'victor.fernandez', 'restricted'),
-        (Allow, 'carles.bruguera', 'restricted'),
-        (Allow, Authenticated, 'activitystream')
-    ]
+class MaxServer(dict):
 
-    def __init__(self, request):
-        self.request = request
-        registry = self.request.registry
-        self.maxclient = registry.maxclient
-        self.__acl__ = acl_generator(getMAXSecurity(self.maxclient))
+    __DEFAULT_PERMISSIONS__ = (Allow, Authenticated, 'activitystream')
+
+    def __init__(self, **kwargs):
+        self.max_server = kwargs['max_server']
+        self.oauth_server = kwargs['oauth_server']
+        self.oauth_grant_type = 'password'
+        self.stomp_server = kwargs['stomp_server']
+        self.__name__ = kwargs['name']
+        self.maxclient = MaxClient(self.max_server, self.oauth_server)
+
+    @property
+    def __acl__(self):
+        security_settings = getMAXSecurity(self.maxclient)
+        for user in security_settings[0]['roles']['Manager']:
+            yield (Allow, user, 'restricted')
+        yield self.__DEFAULT_PERMISSIONS__
+
+    def __resource_url__(self, request, info):
+        app_url = request.application_url.rstrip('/')
+        return '/'.join((app_url, self.__name__, ''))
+
+    def __repr__(self):
+        return '<MaxServer @ {}>'.format(self.max)
+
+
+def get_root(request):
+    return {instance["name"]: MaxServer(**instance) for instance in getInstances(request)}
+
+
+@cache_region('long_term')
+def getInstances(request):
+    settings = getMAXSettings(request)
+    instances_file = ConfigParser.ConfigParser()
+    instances_file.read(settings['max_instances'])
+
+    for section in instances_file.sections():
+        yield {
+            "name": section,
+            "max_server": instances_file.get(section, "max_server"),
+            "stomp_server": instances_file.get(section, "max_server"),
+            "oauth_server": instances_file.get(section, "max_server")
+        }
 
 
 def getMAXSettings(request):
@@ -33,7 +64,3 @@ def loadMAXSettings(settings, config):
 @cache_region('long_term')
 def getMAXSecurity(client):
     return client.getSecurity()
-
-
-def acl_generator(security_settings):
-    return [(Allow, user, 'restricted') for user in security_settings[0]['roles']['Manager']] + DEFAULT_PERMISSIONS
