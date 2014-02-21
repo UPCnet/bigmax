@@ -86,7 +86,7 @@
 <script src="/js/explorer.js"></script>
 <script src="/js/main.js"></script>
 <!-- ATTENTION: Changed to relative the following JS for compat with n-BIGMAX servers -->
-<script src="variables.js"></script>
+<script src="${api.context_url}/variables.js"></script>
 <script src="/maxui/maxui.loader.js"></script>
 <!-- <script>
   var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
