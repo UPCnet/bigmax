@@ -61,7 +61,7 @@ def login(context, request):
         data = connector.authenticate(login, password)
         if data:
             auth_user, oauth_token = data
-            headers = remember(request, auth_user, tokens=(request.context.__name__, ))
+            headers = remember(request, auth_user)
             context.maxclient.setActor(auth_user)
             context.maxclient.setToken(oauth_token)
             context.maxclient.addUser(auth_user)
@@ -81,7 +81,7 @@ def login(context, request):
         request.session['{}_oauth_token'.format(context.__name__)] = oauth_token
 
         # Finally, return the authenticated view
-        return HTTPFound(headers=headers, location=api.application_url)
+        return HTTPFound(headers=headers, location=request.resource_url(request.context))
 
     return dict(
         message=message,

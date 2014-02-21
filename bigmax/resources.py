@@ -30,7 +30,7 @@ class MaxServer(dict):
         return '/'.join((app_url, self.__name__, ''))
 
     def __repr__(self):
-        return '<MaxServer @ {}>'.format(self.max)
+        return '<MaxServer "{}" @ {}>'.format(self.__name__, self.max_server)
 
 
 def get_root(request):
@@ -47,8 +47,8 @@ def getInstances(request):
         yield {
             "name": section,
             "max_server": instances_file.get(section, "max_server"),
-            "stomp_server": instances_file.get(section, "max_server"),
-            "oauth_server": instances_file.get(section, "max_server")
+            "stomp_server": instances_file.get(section, "stomp_server"),
+            "oauth_server": instances_file.get(section, "oauth_server")
         }
 
 
