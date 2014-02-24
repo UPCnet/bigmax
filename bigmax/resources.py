@@ -34,7 +34,8 @@ class MaxServer(dict):
 
 
 def get_root(request):
-    return {instance["name"]: MaxServer(**instance) for instance in getInstances(request)}
+    instances = getInstances(request)
+    return {instance["name"]: MaxServer(**instance) for instance in instances}
 
 
 @cache_region('long_term')
@@ -43,13 +44,16 @@ def getInstances(request):
     instances_file = ConfigParser.ConfigParser()
     instances_file.read(settings['max_instances'])
 
+    instances = []
     for section in instances_file.sections():
-        yield {
+        instances.append({
             "name": section,
             "max_server": instances_file.get(section, "max_server"),
             "stomp_server": instances_file.get(section, "stomp_server"),
             "oauth_server": instances_file.get(section, "oauth_server")
-        }
+        })
+
+    return instances
 
 
 def getMAXSettings(request):

@@ -9,6 +9,7 @@ from urllib2 import urlparse
 from bigmax.resources import MaxServer
 from bigmax.views.api import TemplateAPI
 from bigmax.utils import normalize_userdn
+from collections import OrderedDict
 
 
 @view_config(context=MaxServer, renderer='bigmax:templates/activityStream.pt', permission='activitystream')
@@ -18,7 +19,15 @@ def rootView(context, request):
     page_title = "%s's Activity Stream" % username
     api = TemplateAPI(context, request, page_title)
 
-    return dict(api=api)
+    maxserver_info = OrderedDict()
+    maxserver_info['name'] = context.__name__
+    maxserver_info['max_server'] = context.max_server
+    maxserver_info['oauth_server'] = context.oauth_server
+
+    return dict(
+        api=api,
+        maxserver_info=[{'key': k, 'value': v} for k, v in maxserver_info.items()]
+    )
 
 
 @view_config(name='variables.js', context=MaxServer, renderer='bigmax:templates/js_variables.js.pt')
