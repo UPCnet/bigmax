@@ -2,6 +2,7 @@ from beaker.cache import cache_region
 from maxclient import MaxClient
 from pyramid.security import Allow
 from pyramid.security import Authenticated
+from pyramid.security import authenticated_userid
 
 import ConfigParser
 
@@ -10,13 +11,26 @@ class MaxServer(dict):
 
     __DEFAULT_PERMISSIONS__ = (Allow, Authenticated, 'activitystream')
 
-    def __init__(self, **kwargs):
+    def __init__(self, request, **kwargs):
+        self.request = request
+
         self.max_server = kwargs['max_server']
         self.oauth_server = kwargs['oauth_server']
         self.oauth_grant_type = 'password'
         self.stomp_server = kwargs['stomp_server']
         self.__name__ = kwargs['name']
-        self.maxclient = MaxClient(self.max_server, self.oauth_server)
+
+    @property
+    def maxclient(self):
+        maxclient = MaxClient(self.max_server, self.oauth_server)
+        # Set authentication on max if we're authenticated on bigmax
+        # otherwise return a raw maxclient
+        userid = authenticated_userid(self.request)
+        if userid:
+            token = self.request.session.get('{}_oauth_token'.format(self.__name__), None)
+            maxclient.setActor(userid)
+            maxclient.setToken(token)
+        return maxclient
 
     @property
     def __acl__(self):
@@ -35,7 +49,7 @@ class MaxServer(dict):
 
 def get_root(request):
     instances = getInstances(request)
-    return {instance["name"]: MaxServer(**instance) for instance in instances}
+    return {instance["name"]: MaxServer(request, **instance) for instance in instances}
 
 
 @cache_region('long_term')

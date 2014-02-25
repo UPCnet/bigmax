@@ -10,7 +10,7 @@ window._MAXUI.onReady = function() {
     // This is called when the code has loaded.
 
     var settings = {
-           'language': 'ca',
+           'language': window._MAXUI.language,
            'username' : window._MAXUI.username,
            'oAuthToken' : window._MAXUI.token,
            'oAuthGrantType' : window._MAXUI.grant,
@@ -18,8 +18,9 @@ window._MAXUI.onReady = function() {
            'maxServerURLAlias' : '',
            'maxTalkURL': window._MAXUI.stomp,
            'avatarURLpattern' : '',
-           'readContext': window._MAXUI.server,
-           'activitySource': 'timeline'
+           'readContext': window._MAXUI.readContext,
+           'activitySource': window._MAXUI.activitySource,
+           'domain': window._MAXUI.domain
            }
 
     $('#activityStream').maxUI(settings)

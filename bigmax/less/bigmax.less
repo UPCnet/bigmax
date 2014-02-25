@@ -36,8 +36,9 @@ url('/fonts/ProximaNova-LightItalic.svg#ProximaNova-LightIt') format('svg');
 body { padding-top: 70px; font-family: "ProximaNova-Regular", serif }
 
 header {
-    nav {
-        // height: 50px;
+    nav.navbar {
+        background-color: white;
+        border-bottom:1px solid #eee;
     }
 }
 
@@ -45,6 +46,11 @@ header {
     background: url(/static/simbol_MAX_24.png) no-repeat left center;
     padding-left: 30px;
     height: 50px;
+    kbd {
+        background-color: #428bca;
+        margin-left:10px;
+        font-weight: bold
+    }
 }
 
 .maxlogo {
@@ -61,4 +67,21 @@ header {
 #login {
     margin: 7em auto;
     width: 320px;
+}
+
+@media (min-width: 768px) {
+
+    .info-panel {
+        dl {
+            dt {width:90px;}
+            dd {margin-left:100px;}
+        }
+
+    .panel-default>.panel-heading {
+        color: white;
+        background-color: lighten(#428bca, 10%);
+        border-color: #ddd;
+    }
+
+    }
 }

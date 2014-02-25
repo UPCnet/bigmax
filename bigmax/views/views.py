@@ -2,6 +2,7 @@ from pyramid.view import view_config
 from pyramid.renderers import render_to_response
 from pyramid.security import authenticated_userid
 from pyramid.response import Response
+from pyramid.httpexceptions import HTTPOk
 
 import requests
 from urllib2 import urlparse
@@ -20,13 +21,29 @@ def rootView(context, request):
     api = TemplateAPI(context, request, page_title)
 
     maxserver_info = OrderedDict()
-    maxserver_info['name'] = context.__name__
-    maxserver_info['max_server'] = context.max_server
-    maxserver_info['oauth_server'] = context.oauth_server
+    maxserver_info['Max Server'] = context.max_server
+    maxserver_info['Oauth Server'] = context.oauth_server
+
+    user_properties = context.maxclient.getUser()
+    user_info = OrderedDict()
+    display_properties = ['username', 'displayName']
+    for prop in display_properties:
+        user_info[prop] = user_properties[prop]
+
+    subscriptions = user_properties['subscribedTo']
+    for subscription in subscriptions:
+        subscription['selected'] = request.session['maxui_settings']['readContext'] == subscription['url']
 
     return dict(
+        settings=request.session['maxui_settings'],
+        context_url=request.resource_url(request.context, ''),
+        maxserver_name=context.__name__,
         api=api,
-        maxserver_info=[{'key': k, 'value': v} for k, v in maxserver_info.items()]
+        maxserver_info=[{'key': k, 'value': v} for k, v in maxserver_info.items()],
+        user_profile=dict(
+            properties=[{'key': k, 'value': v} for k, v in user_info.items()],
+            subscriptions=subscriptions
+        )
     )
 
 
@@ -41,6 +58,18 @@ def js_variables(context, request):
         'server': context.max_server,
         'stomp': context.stomp_server,
         'grant': context.oauth_grant_type,
+        'activitySource': 'timeline',
+        'activitySortOrder': 'comments',
+        'language': 'ca',
+        'domain': context.__name__
     }
+    variables.update(request.session['maxui_settings'])
     request.response.content_type = 'text/javascript'
     return dict(variables=variables)
+
+
+@view_config(name='session-update', context=MaxServer)
+def session_update(context, request):
+
+    request.session['maxui_settings'] = dict(request.params.items())
+    return HTTPOk()

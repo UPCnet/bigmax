@@ -62,9 +62,10 @@ def login(context, request):
         if data:
             auth_user, oauth_token = data
             headers = remember(request, auth_user)
-            context.maxclient.setActor(auth_user)
-            context.maxclient.setToken(oauth_token)
-            context.maxclient.addUser(auth_user)
+            client = context.maxclient
+            client.setActor(auth_user)
+            client.setToken(oauth_token)
+            client.addUser(auth_user)
 
         # if not successful, try again
         else:

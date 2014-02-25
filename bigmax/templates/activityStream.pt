@@ -7,9 +7,92 @@
 <!--    <div metal:use-macro="api.snippets.macros['statusMessage']"/>-->
     <div class="row fluid">
 
+
+        <div class="col-sm-4">
+            <div class="panel-group info-panel" id="accordion2">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                      Widget Settings
+                    </a>
+                  </h4>
+                </div>
+
+                <div id="collapseThree" class="panel-collapse collapse in">
+                  <div class="panel-body">
+
+                   <form class="form-horizontal" role="form" id="maxui-settings" tal:attributes="data-session-update context_url + '/session-update'">
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label">Language</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="language">
+                              <option tal:attributes="selected settings['language']=='ca'" value="ca">Català</option>
+                              <option tal:attributes="selected settings['language']=='es'" value="es">Español</option>
+                              <option tal:attributes="selected settings['language']=='en'" value="en">Anglès</option>
+                            </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-sm-4 control-label">Activity Source</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="activitySource">
+                              <option tal:attributes="selected settings['activitySource']=='timeline'"
+                                value="timeline">Timeline</option>
+                              <option tal:attributes="selected settings['activitySource']=='activities'"
+                                value="activities">Context</option>
+                            </select>
+                        </div>
+                      </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Context</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="readContext">
+                                <option tal:repeat="subscr user_profile.subscriptions"
+                                        tal:attributes="value subscr.url;
+                                                        selected subscr.selected"
+                                        tal:content="subscr.displayName">
+                                </option>
+                            </select>
+                        </div>
+                      </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Sort order</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="activitySortOrder">
+                               <option tal:attributes="selected settings['activitySortOrder']=='activities'" value="activities">Activities</option>
+                               <option tal:attributes="selected settings['activitySortOrder']=='comments'" value="comments">Comments</option>
+
+                            </select>
+                        </div>
+                      </div>
+
+
+                    </form>
+
+
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div><!-- Widget Settings-->
+        </div> <!-- End widget settings-->
+
+
+        <div class="col-sm-4">
+            <div id="activityStream">
+            </div>
+        </div>
+
         <div class="col-sm-4">
 
-            <div class="panel-group" id="accordion">
+            <div class="panel-group info-panel" id="accordion">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
@@ -28,7 +111,9 @@
                     </dl>
                   </div>
                 </div>
-              </div>
+              </div> <!-- MAX Server information-->
+
+
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
@@ -39,35 +124,27 @@
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse">
                   <div class="panel-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      <dl class="dl-horizontal">
+                      <tal:item repeat="item user_profile.properties">
+                        <dt tal:content="item.key"></dt>
+                        <dd tal:content="item.value"></dd>
+                      </tal:item>
+
+                        <dt>Subscriptions</dt>
+                        <div class="clearfix"></div>
+                        <ul>
+                            <li tal:repeat="subscr user_profile.subscriptions">
+                                <a tal:attributes="href subscr.url" tal:content="subscr.displayName"></a>
+                            </li>
+                        </ul>
+
                   </div>
                 </div>
-              </div>
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                      Widget settings
-                    </a>
-                  </h4>
-                </div>
-                <div id="collapseThree" class="panel-collapse collapse">
-                  <div class="panel-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                  </div>
-                </div>
-              </div>
-            </div>
+              </div> <!-- User Information-->
+            </div> <!--Accordion --><!-- user info-->
+        </div><!-- End user info-->
 
 
-        </div>
-
-
-
-        <div class="col-sm-4">
-            <div id="activityStream">
-        </div>
-        </div>
     </div>
     <div class="row">
         <div class="span5 offset3">
