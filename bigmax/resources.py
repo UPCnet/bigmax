@@ -1,5 +1,5 @@
 from beaker.cache import cache_region
-from maxclient import MaxClient
+from maxclient.rest import MaxClient
 from pyramid.security import Allow
 from pyramid.security import Authenticated
 from pyramid.security import authenticated_userid
@@ -47,9 +47,26 @@ class MaxServer(dict):
         return '<MaxServer "{}" @ {}>'.format(self.__name__, self.max_server)
 
 
+class RootMaxServer(MaxServer):
+    def __resource_url__(self, request, info):
+        app_url = request.application_url.rstrip('/')
+        return '/'.join((app_url, '')).rstrip('/')
+
+
 def get_root(request):
+    max_settings = getMAXSettings(request)
+
     instances = getInstances(request)
-    return {instance["name"]: MaxServer(request, **instance) for instance in instances}
+    root_instance_config = {
+        "name": max_settings['max_server_id'],
+        "max_server": max_settings['max_server'],
+        "stomp_server": max_settings['max_stomp'],
+        "oauth_server": max_settings['max_oauth_server']
+    }
+    root = RootMaxServer(request, **root_instance_config)
+    for instance in instances:
+        root[instance["name"]] = MaxServer(request, **instance)
+    return root
 
 
 @cache_region('long_term')
@@ -81,4 +98,4 @@ def loadMAXSettings(settings, config):
 
 @cache_region('long_term')
 def getMAXSecurity(client):
-    return client.getSecurity()
+    return client.admin.security.get()

@@ -1,20 +1,14 @@
-from pyramid.view import view_config
-from pyramid.renderers import render_to_response
-from pyramid.security import authenticated_userid
-from pyramid.response import Response
-from pyramid.httpexceptions import HTTPOk
-
-import requests
-from urllib2 import urlparse
-
 from bigmax.resources import MaxServer
-from bigmax.views.api import TemplateAPI
 from bigmax.utils import normalize_userdn
+from bigmax.views.api import TemplateAPI
 from collections import OrderedDict
+from pyramid.httpexceptions import HTTPOk
+from pyramid.security import authenticated_userid
+from pyramid.view import view_config
 
 
 @view_config(context=MaxServer, renderer='bigmax:templates/activityStream.pt', permission='activitystream')
-def rootView(context, request):
+def MaxRootView(context, request):
 
     username = authenticated_userid(request)
     page_title = "%s's Activity Stream" % username
@@ -24,7 +18,7 @@ def rootView(context, request):
     maxserver_info['Max Server'] = context.max_server
     maxserver_info['Oauth Server'] = context.oauth_server
 
-    user_properties = context.maxclient.getUser()
+    user_properties = context.maxclient.people[':me'].get()
     user_info = OrderedDict()
     display_properties = ['username', 'displayName']
     for prop in display_properties:
