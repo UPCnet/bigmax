@@ -35,8 +35,9 @@ class MaxServer(dict):
     @property
     def __acl__(self):
         security_settings = getMAXSecurity(self.maxclient)
-        for user in security_settings[0]['roles']['Manager']:
-            yield (Allow, user, 'restricted')
+        if security_settings:
+            for user in security_settings[0]['roles']['Manager']:
+                yield (Allow, user, 'restricted')
         yield self.__DEFAULT_PERMISSIONS__
 
     def __resource_url__(self, request, info):
@@ -50,7 +51,7 @@ class MaxServer(dict):
 class RootMaxServer(MaxServer):
     def __resource_url__(self, request, info):
         app_url = request.application_url.rstrip('/')
-        return '/'.join((app_url, '')).rstrip('/')
+        return '/'.join((app_url, ''))
 
 
 def get_root(request):
@@ -98,4 +99,7 @@ def loadMAXSettings(settings, config):
 
 @cache_region('long_term')
 def getMAXSecurity(client):
-    return client.admin.security.get()
+    try:
+        return client.admin.security.get()
+    except:
+        return []

@@ -40,6 +40,8 @@ def main(global_config, **settings):
 
     config.add_route('profiles', '/profiles/{username}')
     config.add_route('exception', '/exceptions/{id}')
+    config.add_route('api_role', '/api/role')
+    config.add_route('api_users', '/api/users')
 
     # Set MAX settings
     config.registry.max_settings = loadMAXSettings(settings, config)

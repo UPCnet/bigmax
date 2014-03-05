@@ -7,6 +7,14 @@ from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 
 
+DEFAULT_WIDGET_SETTINGS = {
+    "readContext": None,
+    "language": "ca",
+    "activitySource": "timeline",
+    "activitySortOrder": "comments"
+}
+
+
 @view_config(context=MaxServer, renderer='bigmax:templates/activityStream.pt', permission='activitystream')
 def MaxRootView(context, request):
 
@@ -26,10 +34,10 @@ def MaxRootView(context, request):
 
     subscriptions = user_properties['subscribedTo']
     for subscription in subscriptions:
-        subscription['selected'] = request.session['maxui_settings']['readContext'] == subscription['url']
+        subscription['selected'] = request.session.get('maxui_settings', DEFAULT_WIDGET_SETTINGS)['readContext'] == subscription['url']
 
     return dict(
-        settings=request.session['maxui_settings'],
+        settings=request.session.get('maxui_settings', DEFAULT_WIDGET_SETTINGS),
         context_url=request.resource_url(request.context, ''),
         maxserver_name=context.__name__,
         api=api,
@@ -52,12 +60,10 @@ def js_variables(context, request):
         'server': context.max_server,
         'stomp': context.stomp_server,
         'grant': context.oauth_grant_type,
-        'activitySource': 'timeline',
-        'activitySortOrder': 'comments',
-        'language': 'ca',
-        'domain': context.__name__
+        'domain': context.__name__,
     }
-    variables.update(request.session['maxui_settings'])
+
+    variables.update(request.session.get('maxui_settings', DEFAULT_WIDGET_SETTINGS))
     request.response.content_type = 'text/javascript'
     return dict(variables=variables)
 

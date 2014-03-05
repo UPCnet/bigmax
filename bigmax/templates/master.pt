@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="/stylesheets/bigmax.css">
   <link rel="stylesheet" href="/stylesheets/pygments.css">
+  <link rel="stylesheet" href="/stylesheets/select2.css">
+  <link rel="stylesheet" href="/stylesheets/select2-bootstrap.css">
   <link rel="stylesheet" href="/maxui/maxui.css">
   <script src="/js/libs/modernizr-2.6.2.min.js"></script>
 
@@ -40,8 +42,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#">Link</a></li>
+          <li><a href="${api.context_url}/users">Users</a></li>
           <li><a href="#">Link</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right"
@@ -84,8 +85,12 @@
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
 <script src="/js/libs/jquery-1.9.1.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/libs/select2.min.js"></script>
 <script src="/js/explorer.js"></script>
 <script src="/js/main.js"></script>
+  <div metal:define-slot="javascript">
+      A javascript slot
+  </div>
 <!-- ATTENTION: Changed to relative the following JS for compat with n-BIGMAX servers -->
 <script src="${api.context_url}/variables.js"></script>
 <script src="/maxui/maxui.loader.js"></script>
