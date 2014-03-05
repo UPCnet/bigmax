@@ -31,7 +31,7 @@ def users_view(context, request):
     )
 
 
-@view_config(route_name="api_role", context=MaxServer, permission='restricted')
+@view_config(name="api-role", context=MaxServer, permission='restricted')
 def api_role(context, request):
     """
     """
@@ -47,7 +47,7 @@ def api_role(context, request):
     return HTTPOk()
 
 
-@view_config(route_name="api_users", context=MaxServer, permission='restricted', renderer='json')
+@view_config(name="api-users", context=MaxServer, permission='restricted', renderer='json')
 def api_users(context, request):
     """
     """

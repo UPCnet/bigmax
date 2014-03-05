@@ -27,7 +27,7 @@
                   <div class="row">
                     <div class="col-md-12">
 
-                        <table class="table" id="user-roles" data-url="${api.context_url}/api/role">
+                        <table class="table" id="user-roles" data-url="${api.context_url}/api-role">
                             <thead>
                               <tr>
                                 <th></th>
@@ -51,7 +51,7 @@
 
                   <div class="row">
                     <div class="form-group col-xs-4">
-                      <input type="text" class="form-control" id="searchusers" placeholder="Search Users" data-url="${api.context_url}/api/users">
+                      <input type="text" class="form-control" id="searchusers" placeholder="Search Users" data-url="${api.context_url}/api-users">
                     </div>
                   </div>
 
@@ -68,7 +68,7 @@
   </metal:main>
 
   <metal:main fill-slot="javascript">
-    <script src="${api.context_url}/js/user.js"></script>
+    <script src="${api.application_url}/js/user.js"></script>
   </metal:main>
 </body>
 </html>
