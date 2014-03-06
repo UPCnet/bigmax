@@ -49,6 +49,16 @@ def MaxRootView(context, request):
     )
 
 
+@view_config(name="users", context=MaxServer, renderer='bigmax:templates/users.pt')
+def users_view(context, request):
+    """
+    """
+
+    return dict(
+        api=TemplateAPI(context, request, 'Users administration'),
+    )
+
+
 @view_config(name='variables.js', context=MaxServer, renderer='bigmax:templates/js_variables.js.pt')
 def js_variables(context, request):
 

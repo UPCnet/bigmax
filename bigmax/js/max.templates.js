@@ -41,25 +41,30 @@ var MSTCH_BIGMAX_USERS_ROLES_UI = '\
             <thead>\
               <tr>\
                 <th></th>\
-                <th tal:repeat="role roles" tal:content="role"></th>\
+                {{#roles}}<th>{{name}}</th>{{/roles}}\
               </tr>\
             </thead>\
-            <tr tal:repeat="user users"\
-                tal:attributes="data-username user.username">\
-              <td tal:content="user.username"></td>\
-              <td tal:repeat="role user.roles" >\
+            <tbody>\
+            {{#users}}\
+            <tr data-username="{{id}}">\
+              <td>{{id}}</td>\
+              {{#roles}}\
+              <td>\
                   <input type="checkbox"\
                          class="user-role"\
-                         tal:attributes="checked role.checked|nothing;\
-                                         data-role role.name">\
+                         {{#active}}checked="checked{{/active}}"\
+                         data-role="{{name}}">\
               </td>\
+              {{/roles}}\
             </tr>\
+            {{/users}}\
+            </tbody>\
           </table>\
     </div>\
   </div>\
   <div class="row">\
     <div class="form-group col-xs-4">\
-      <input type="text" class="form-control" id="searchusers" placeholder="Search Users" data-url="${api.context_url}/api-users">\
+      <input type="text" class="form-control" id="searchusers" placeholder="Search Users" data-url="/api-users">\
     </div>\
   </div>\
 </div>\

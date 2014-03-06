@@ -14,7 +14,6 @@
   </metal:main>
 
   <metal:main fill-slot="javascript">
-    <script src="${api.application_url}/js/user.js"></script>
     <script src="${api.application_url}/js/max.models.js"></script>
     <script src="${api.application_url}/js/max.templates.js"></script>
     <script src="${api.application_url}/js/max.views.js"></script>

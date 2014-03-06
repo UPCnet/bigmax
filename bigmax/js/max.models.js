@@ -18,7 +18,7 @@ bigmax.models = function(settings) {
     var settings = settings
     var auth = {
         username: settings.username,
-        token: settings.oAuthToken
+        token: settings.token
     }
 
     // Enable POST Tunneling
@@ -39,7 +39,7 @@ bigmax.models = function(settings) {
 
     var User = Backbone.Model.extend({
         idAttribute: 'username',
-        urlRoot: '{0}/people'.format(settings.maxServerURL),
+        urlRoot: '{0}/people'.format(settings.server),
         defaults: {
             username: '',
             displayName: ''
@@ -51,7 +51,37 @@ bigmax.models = function(settings) {
 
     }) // End User model
 
+    var UserRole = Backbone.Model.extend({
+        idAttribute: 'username',
+        initialize: function(options){
+            this.urlRoot = '{0}/admin/security/roles/{1}/users'.format(settings.server, options.role)
+        },
 
+        sync: function(method, model, options) {
+                switch (method) {
+                    case "update":
+                        method='create'
+                        break;
+                }
+                return Backbone.sync.call(model, method, model, options);
+            }
+
+
+    }) // End User model
+
+    var SecurityUserEntry = Backbone.Model.extend({
+        idAttribute: 'username',
+        urlRoot: '{0}/people'.format(settings.maxServerURL),
+        defaults: {
+            username: '',
+            roles: []
+        },
+
+        initialize: function(attributes, options){
+            this.roles = attributes.roles
+        }
+
+    }) // End User model
     // Collection that returns the inner `items` attribute of the
     // json returned by calls to the server, in response
     // to calls to the fetch or reset collection methods
@@ -63,10 +93,18 @@ bigmax.models = function(settings) {
     })
 
     var Users = Backbone.Collection.extend({
-        model: Comment,
+        model: User,
 
         initialize: function(models, options) {
-            this.url = '{0}/people'.format(settings.maxServerURL)
+            this.url = '{0}/people'.format(settings.server)
+        }
+    })
+
+    var Security = Backbone.Collection.extend({
+        model: SecurityUserEntry,
+
+        initialize: function(models, options) {
+            this.url = '{0}/admin/security/users'.format(settings.server)
         }
     })
 
@@ -74,7 +112,10 @@ bigmax.models = function(settings) {
 
     return {
         User: User,
-        Users: Users
+        UserRole: UserRole,
+        Users: Users,
+        Security: Security
+
     }
 }
 
