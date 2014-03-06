@@ -1,6 +1,13 @@
 $(document).ready(function() {
 
-    $('#user-roles').on('change', '.user-role', function(event) {
+
+
+
+
+
+
+
+  /*  $('#user-roles').on('change', '.user-role', function(event) {
         var post_url = $('#user-roles').attr('data-url')
         var $role = $(event.target)
         $.post(post_url, {
@@ -39,6 +46,6 @@ $(document).ready(function() {
           newuser += '</tr>'
           $('#user-roles tr:last').after(newuser)
       }
-    })
+    })*/
 
 })

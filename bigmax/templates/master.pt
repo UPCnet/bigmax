@@ -83,17 +83,22 @@
 </div> <!--! end of #container -->
 
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
-<script src="/js/libs/jquery-1.9.1.min.js"></script>
+<script src="/js/libs/jquery-1.11.0.min.js"></script>
+<script src="/js/libs/underscore-min.js"></script>
+<script src="/js/libs/json2.js"></script>
+<script src="/js/libs/hogan.js"></script>
+<script src="/js/libs/backbone-min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/libs/select2.min.js"></script>
 <script src="/js/explorer.js"></script>
 <script src="/js/main.js"></script>
+<!-- ATTENTION: Changed to relative the following JS for compat with n-BIGMAX servers -->
+<script src="${api.context_url}/variables.js"></script>
+
   <div metal:define-slot="javascript">
       A javascript slot
   </div>
-<!-- ATTENTION: Changed to relative the following JS for compat with n-BIGMAX servers -->
-<script src="${api.context_url}/variables.js"></script>
-<script src="/maxui/maxui.loader.js"></script>
+
 <!-- <script>
   var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
   (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];

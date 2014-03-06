@@ -154,5 +154,10 @@
         </div>
     </div>
     </metal:main>
+
+  <metal:main fill-slot="javascript">
+    <script src="/maxui/maxui.loader.js"></script>
+  </metal:main>
+
 </body>
 </html>
