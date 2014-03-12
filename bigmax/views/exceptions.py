@@ -7,19 +7,18 @@ from pygments import highlight
 from pygments.lexers import PythonTracebackLexer, HttpLexer
 from pygments.formatters import HtmlFormatter
 
-import re
 from DateTime import DateTime
 
 
 @view_config(context=MaxServer, route_name="exception", renderer='bigmax:templates/exceptions.pt', permission='restricted')
 def configView(context, request):
-    logfile = request.registry.settings.get('exceptions_log')
-    date, http_request, traceback = re.search(r'BEGIN EXCEPTION REPORT: %s\nDATE: (.*?)\nREQUEST:\n\n(.*?)\n\nTRACEBACK:\n\n(.*?)\nEND EXCEPTION REPORT' % request.matchdict['id'], open(logfile).read(), re.DOTALL).groups()
+
+    exception_report = context.maxclient.admin.maintenance.exceptions[request.matchdict['id']].get()
     page_title = "BIG MAX Exception Log"
     api = TemplateAPI(context, request, page_title)
     return dict(api=api,
-                date=DateTime(date).strftime('%Y/%M/%d %H:%M:%S'),
+                date=DateTime(exception_report['date']).strftime('%Y/%M/%d %H:%M:%S'),
                 exception_id=request.matchdict['id'],
-                http_request=highlight(http_request, HttpLexer(), HtmlFormatter(style='friendly')),
-                traceback=highlight(traceback, PythonTracebackLexer(), HtmlFormatter(style="friendly")),
+                http_request=highlight(exception_report['request'], HttpLexer(), HtmlFormatter(style='friendly')),
+                traceback=highlight(exception_report['traceback'], PythonTracebackLexer(), HtmlFormatter(style="friendly")),
                 url='%s/exeptions' % api.application_url)
