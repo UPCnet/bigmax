@@ -41,7 +41,7 @@ class MaxServer(dict):
         yield self.__DEFAULT_PERMISSIONS__
 
     def __resource_url__(self, request, info):
-        app_url = request.application_url.rstrip('/')
+        app_url = request.headers.get('X-Virtual-Host-Uri', request.application_url).rstrip('/')
         return '/'.join((app_url, self.__name__, ''))
 
     def __repr__(self):
@@ -50,7 +50,7 @@ class MaxServer(dict):
 
 class RootMaxServer(MaxServer):
     def __resource_url__(self, request, info):
-        app_url = request.application_url.rstrip('/')
+        app_url = request.headers.get('X-Virtual-Host-Uri', request.application_url).rstrip('/')
         return '/'.join((app_url, ''))
 
 
