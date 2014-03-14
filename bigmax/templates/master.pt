@@ -96,7 +96,7 @@
 <script src="${api.context_url}/variables.js"></script>
 
   <div metal:define-slot="javascript">
-      A javascript slot
+      <tal:comment>A javascript slot</tal:comment>>
   </div>
 
 <!-- <script>

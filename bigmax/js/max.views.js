@@ -108,6 +108,70 @@ bigmax.views = function(settings) {
             }
         })
 
+    var ResourcesListView = Backbone.View.extend({
+            initialize: function(options){
+                var view = this
+                view._items = {}
+                view.apiview = options.apiview
+                $.get(view.apiview.$el.attr('data-url'), function(data) {
+                    view.categories = data
+                    view.render()
+                })
+            },
+            render: function(){
+
+                var variables = {
+                    categories: this.categories
+                }
+                var html = templates.api_resource_list.render(variables)
+                this.$el.html(html)
+            },
+        })
+
+    var ResourceView = Backbone.View.extend({
+            initialize: function(options){
+                var view = this
+                view._items = {}
+                view.apiview = options.apiview
+                view.render()
+            },
+            render: function(){
+
+                var variables = {
+                }
+                var html = templates.api_resource_panel.render(variables)
+                this.$el.html(html)
+            },
+        })
+
+    var ApiView = Backbone.View.extend({
+            initialize: function(options){
+                var mainview = this
+                mainview.render()
+                mainview.views = {}
+                mainview.views.list = new ResourcesListView({
+                    el: jq('#backbone-container #api-resource-list'),
+                    apiview: this
+                })
+                mainview.views.panel = new ResourceView({
+                    el: jq('#backbone-container #api-resource-panel'),
+                    apiview: this
+                })
+            },
+            render: function(){
+
+                var variables = {
+                }
+                var html = templates.api_main_ui.render(variables)
+                this.$el.html(html)
+                view = this
+            },
+            activate: function(){
+
+            }
+
+    })
+
 
     var MainView = Backbone.View.extend({
             initialize: function(options){
@@ -164,5 +228,6 @@ bigmax.views = function(settings) {
 
     return {
         MainView: MainView,
+        ApiView: ApiView
     }
 }

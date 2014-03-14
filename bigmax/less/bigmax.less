@@ -33,13 +33,17 @@ url('/fonts/ProximaNova-LightItalic.svg#ProximaNova-LightIt') format('svg');
     src: local('GillSans'), url("/static/fonts/ProximaNova-Extrabold.woff") format("woff");
 }
 
-body { padding-top: 70px; font-family: "ProximaNova-Regular", serif }
+body { padding-top: 70px; }
 
 header {
     nav.navbar {
         background-color: white;
         border-bottom:1px solid #eee;
     }
+}
+
+html {
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
 }
 
 .navbar-brand {
@@ -83,5 +87,82 @@ header {
         border-color: #ddd;
     }
 
+    }
+}
+
+
+#backbone-container {
+    .resources-panel {
+        padding:0;
+
+        .panel-default{
+            border:none;
+            border-bottom: 1px solid #ddd;
+            border-radius: 0px;
+            &> .panel-heading {
+                background-color: transparent;
+                border:none;
+            }
+            &:last-child {border-bottom:none;}
+
+        }
+        .panel-group {
+            margin-bottom: 0px;
+        }
+
+        .panel.resource {
+            .glyphicon {
+                font-size: 12px;
+                padding-right: 5px;
+
+            }
+        }
+    }
+    #api-resource-panel {
+        h2 { margin-top:0px;}
+
+        .panel {
+            padding:10px;
+            .resource-item {
+                margin-bottom: 5px;
+                label {
+                    font-size: 16px;
+                    span {
+                        margin-left: 10px;
+                        font-weight: normal;
+                    }
+                }
+            }
+
+            .form-group {
+                label {
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+
+                h5 {
+                    color: #428bca;
+                    font-size: 16px;
+                }
+
+                &#resource-uri {
+                    text-rendering: optimizelegibility;
+                    font-size: 16px;
+                    input.param {
+                        padding: 2px 8px;
+                        width:130px;
+                        border:1px solid #ddd;
+                        border-radius:4px;
+                        font-size: 16px;
+                        font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+                        display: inline-block;
+                    }
+                    span.fixed {
+                        font-weight: bold;
+                        font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,0 +1,18 @@
+<!doctype html>
+<html metal:use-macro="api.masterTemplate.macros['master']">
+<head></head>
+<body>
+  <metal:main fill-slot="main">
+
+    <div id='backbone-container' data-url="${url}/data">
+    </div>
+
+  </metal:main>
+  <metal:main fill-slot="javascript">
+    <script src="${api.application_url}/js/max.models.js"></script>
+    <script src="${api.application_url}/js/max.templates.js"></script>
+    <script src="${api.application_url}/js/max.views.js"></script>
+    <script src="${api.application_url}/js/endpoints.js"></script>
+  </metal:main>
+</body>
+</html>
