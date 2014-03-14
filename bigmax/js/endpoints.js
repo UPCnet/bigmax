@@ -29,15 +29,15 @@
 
 function adaptURIInputSizes(input) {
     var $input = $(input)
-    $input.css({width: ($input.val().length * 10) + 24});
+    $input.css({width: ($input.val().length * 8) + 8});
 }
 
 $(document).ready(function(event) {
 
-    $('#backbone-container').on('keyup', 'input.param', function(event) {
+    $('#backbone-container').on('keyup', '#resource-uri input.param', function(event) {
         adaptURIInputSizes(event.currentTarget)
     })
-    .on('keypress', 'input.param', function(event) {
+    .on('keypress', '#resource-uri input.param', function(event) {
         adaptURIInputSizes(event.currentTarget)
     })
 })

@@ -107,34 +107,58 @@ html {
   margin-bottom: 5px;
 }
 #backbone-container #api-resource-panel .panel .resource-item label {
-  font-size: 16px;
+  font-size: 14px;
 }
 #backbone-container #api-resource-panel .panel .resource-item label span {
   margin-left: 10px;
   font-weight: normal;
 }
-#backbone-container #api-resource-panel .panel .form-group label {
-  font-size: 16px;
+#backbone-container #api-resource-panel .panel .form-group {
+  margin-bottom: 0px;
+  padding-bottom: 5px;
+  text-rendering: optimizelegibility;
+  font-size: 14px;
+}
+#backbone-container #api-resource-panel .panel .form-group .form-group {
+  margin-bottom: 5px;
+}
+#backbone-container #api-resource-panel .panel .form-group .form-group input,
+#backbone-container #api-resource-panel .panel .form-group .form-group label {
+  font-size: 12px;
+  font-weight: normal;
+  height: 24px;
+}
+#backbone-container #api-resource-panel .panel .form-group > label {
   font-weight: bold;
+  border-right: 4px #ddd solid;
+  padding-bottom: 8px;
 }
 #backbone-container #api-resource-panel .panel .form-group h5 {
   color: #428bca;
-  font-size: 16px;
 }
-#backbone-container #api-resource-panel .panel .form-group#resource-uri {
-  text-rendering: optimizelegibility;
-  font-size: 16px;
-}
-#backbone-container #api-resource-panel .panel .form-group#resource-uri input.param {
-  padding: 2px 8px;
+#backbone-container #api-resource-panel .panel .form-group input.param {
+  padding: 2px 4px;
   width: 130px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 16px;
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
   display: inline-block;
+  height: 30px;
 }
-#backbone-container #api-resource-panel .panel .form-group#resource-uri span.fixed {
-  font-weight: bold;
+#backbone-container #api-resource-panel .panel .form-group span.fixed,
+#backbone-container #api-resource-panel .panel .form-group label.fixed {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+#backbone-container #api-resource-panel .panel .form-group#resource-uri input.param {
+  font-weight: bold;
+}
+#backbone-container #api-resource-panel .panel .form-group#resource-description .col-sm-10 {
+  padding-top: 9px;
+}
+#backbone-container #api-resource-panel .panel .form-group#request-data textarea {
+  min-height: 100px;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+#backbone-container #api-resource-panel .panel .form-group#request-submit i {
+  margin-right: 5px;
 }

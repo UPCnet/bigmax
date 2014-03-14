@@ -9,3 +9,4 @@ data
 bigmax/.sass-cache/
 dist
 build
+node_modules

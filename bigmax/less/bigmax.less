@@ -126,7 +126,7 @@ html {
             .resource-item {
                 margin-bottom: 5px;
                 label {
-                    font-size: 16px;
+                    font-size: 14px;
                     span {
                         margin-left: 10px;
                         font-weight: normal;
@@ -135,31 +135,59 @@ html {
             }
 
             .form-group {
-                label {
-                    font-size: 16px;
+                margin-bottom: 0px;
+                padding-bottom: 5px;
+                text-rendering: optimizelegibility;
+                font-size: 14px;
+                .form-group {
+                    input, label {
+                        font-size: 12px;
+                        font-weight: normal;
+                        height:24px;
+                    }
+                    margin-bottom: 5px;
+                }
+
+                &>label {
                     font-weight: bold;
+                    border-right: 4px #ddd solid;
+                    padding-bottom: 8px;
                 }
 
                 h5 {
                     color: #428bca;
-                    font-size: 16px;
-                }
+                     }
 
-                &#resource-uri {
-                    text-rendering: optimizelegibility;
-                    font-size: 16px;
-                    input.param {
-                        padding: 2px 8px;
+               input.param {
+                        padding: 2px 4px;
                         width:130px;
                         border:1px solid #ddd;
                         border-radius:4px;
-                        font-size: 16px;
                         font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
                         display: inline-block;
-                    }
-                    span.fixed {
-                        font-weight: bold;
+                        height:30px;
+                }
+                span.fixed, label.fixed {
+                    font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+                }
+
+                &#resource-uri {
+                    input.param {font-weight: bold;}
+                }
+                &#resource-description {
+                    .col-sm-10 {padding-top: 9px;}
+                }
+
+                &#request-data {
+                    textarea {
+                        min-height: 100px;
                         font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+                    }
+                }
+
+                &#request-submit {
+                    i {
+                        margin-right: 5px;
                     }
                 }
             }

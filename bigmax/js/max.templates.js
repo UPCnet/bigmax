@@ -64,17 +64,77 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
         <div class="form-group" id="resource-method">\
           <label for="resource-method" class="col-sm-2 control-label">Request Method</label>\
           <div class="col-sm-10">\
-            <label class="checkbox-inline">
-              <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
-            </label>
-            <label class="checkbox-inline">
-              <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
-            </label>
-            <label class="checkbox-inline">
-              <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
-            </label>
+            <label class="radio-inline">\
+              <input type="radio" id="inlineRadio1" name="request-method" value="GET"> GET\
+            </label>\
+            <label class="radio-inline">\
+              <input type="radio" id="inlineRadio2" name="request-method" value="POST"> POST\
+            </label>\
+            <label class="radio-inline">\
+              <input type="radio" id="inlineRadio3" name="request-method" value="PUT"> PUT\
+            </label>\
+            <label class="radio-inline">\
+              <input type="radio" id="inlineRadio3" name="request-method" value="PUT"> DELETE\
+            </label>\
           </div>\
         </div>\
+\
+       <div class="form-group" id="resource-description">\
+          <label for="resource-description" class="col-sm-2 control-label">Description</label>\
+          <div class="col-sm-10">\
+            <p>Adds a post to the user activities</p>\
+          </div>\
+        </div>\
+\
+       <div class="form-group" id="request-headers">\
+          <label for="request-headers" class="col-sm-2 control-label">Headers</label>\
+          <div class="col-sm-10">\
+\
+             <div class="form-group" id="oauth-username">\
+                <label class="col-sm-3 control-label fixed">X-Oauth-Username</label>\
+                <div class="col-sm-9">\
+                  <input class="param form-control" type="text">\
+                </div>\
+              </div>\
+       \
+               <div class="form-group" id="oauth-token">\
+                  <label class="col-sm-3 control-label fixed">X-Oauth-Token</label>\
+                  <div class="col-sm-9">\
+                    <input class="param form-control" type="text">\
+                  </div>\
+                </div>\
+       \
+             <div class="form-group" id="oauth-scope">\
+                <label class="col-sm-3 control-label fixed">X-Oauth-Scope</label>\
+                <div class="col-sm-9">\
+                  <input class="param form-control" type="text">\
+                </div>\
+              </div>\
+       \
+          </div>\
+        </div>\
+\
+       <div class="form-group" id="request-data">\
+          <label for="resource-description" class="col-sm-2 control-label">Description</label>\
+          <div class="col-sm-10">\
+            <textarea class="form-control">\
+{\
+    "hola": "que tal"\
+}\
+            </textarea>\
+          </div>\
+        </div>\
+\
+       <div class="form-group" id="request-submit">\
+          <label class="col-sm-2 control-label"></label>\
+          <div class="col-sm-10">\
+            <button type="submit" class="btn btn-large btn-primary" id="execute_button" data-bind="visible:isIdle, enable:url" disabled="">\
+                <i class="glyphicon glyphicon-random"></i>\
+                Launch Request\
+              </button>\
+          </div>\
+        </div>\
+\
     </form>\
 </div>\
 ';
