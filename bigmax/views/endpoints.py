@@ -35,6 +35,7 @@ def endpoints_data(context, request):
             routes.append({
                 'route_id': route_info['id'],
                 'route_name': route_info['name'],
+                'route_url': route_info['url'],
                 'methods': route_info['methods']
             })
         category = {

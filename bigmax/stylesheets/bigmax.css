@@ -97,6 +97,10 @@ html {
   font-size: 12px;
   padding-right: 5px;
 }
+#backbone-container .resources-panel .panel.resource .resource-item {
+  text-decoration: none;
+  cursor: pointer;
+}
 #backbone-container #api-resource-panel h2 {
   margin-top: 0px;
 }
@@ -124,6 +128,7 @@ html {
 }
 #backbone-container #api-resource-panel .panel .form-group .form-group input,
 #backbone-container #api-resource-panel .panel .form-group .form-group label {
+  border-right: none;
   font-size: 12px;
   font-weight: normal;
   height: 24px;
@@ -158,6 +163,9 @@ html {
 #backbone-container #api-resource-panel .panel .form-group#request-data textarea {
   min-height: 100px;
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+#backbone-container #api-resource-panel .panel .form-group#request-submit label {
+  border-right: none;
 }
 #backbone-container #api-resource-panel .panel .form-group#request-submit i {
   margin-right: 5px;

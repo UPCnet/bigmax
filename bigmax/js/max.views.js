@@ -110,67 +110,116 @@ bigmax.views = function(settings) {
 
     var ResourcesListView = Backbone.View.extend({
             initialize: function(options){
-                var view = this
-                view._items = {}
-                view.apiview = options.apiview
+                var view = this;
+                view._items = {};
+                view.apiview = options.apiview;
                 $.get(view.apiview.$el.attr('data-url'), function(data) {
-                    view.categories = data
-                    view.render()
-                })
+                    view.categories = data;
+                    view.render();
+                    _.each(data,function(element, index, list) {
+                        _.each(element.resources, function(element, index, list) {
+                            view._items[element.route_id] = element;
+                        });
+                    });
+                });
+            },
+            events: {
+                'click .resource-item': 'updatePanel'
+            },
+            updatePanel: function(event) {
+                var resource = this._items[event.currentTarget.id];
+                this.apiview.views.panel.update(resource);
             },
             render: function(){
 
                 var variables = {
                     categories: this.categories
-                }
-                var html = templates.api_resource_list.render(variables)
-                this.$el.html(html)
+                };
+                var html = templates.api_resource_list.render(variables);
+                this.$el.html(html);
             },
-        })
+        });
 
     var ResourceView = Backbone.View.extend({
             initialize: function(options){
-                var view = this
-                view._items = {}
-                view.apiview = options.apiview
-                view.render()
+                var view = this;
+                view._items = {};
+                view.resource = {};
+                view.apiview = options.apiview;
+            },
+
+            update: function(resource){
+                this.resource = resource;
+                this.render();
+
+            },
+            getDestinationParts: function() {
+                var parts = this.resource.route_url.match(/[^\/]+/g);
+                var destination = [];
+                _.each(parts, function(element, index, list) {
+                   if (element[0] == '{') {
+                    if (index > 0) {
+                        if (destination[index - 1].fixed) {
+                            destination[index - 1].text += '/';
+                        } else {
+                            destination.push({'text': '/', fixed:true, param:false});
+                        }
+                    }
+
+                    destination.push({'text': element, fixed:false, param:true});
+                   } else {
+                    var newpart = '/' + element;
+                    if (index === 0) {
+                        destination.push({'text': newpart, fixed:true, param:false});
+                    } else {
+                        if (destination[index - 1].fixed) {
+                            destination[index - 1].text += newpart;
+                        } else {
+                            destination.push({'text': newpart, fixed:true, param:false});
+                        }
+                    }
+
+                   }
+                });
+                console.log(destination)
+                return destination
             },
             render: function(){
-
                 var variables = {
-                }
-                var html = templates.api_resource_panel.render(variables)
-                this.$el.html(html)
+                    name: this.resource.route_name,
+                    destination: this.getDestinationParts()
+                };
+                var html = templates.api_resource_panel.render(variables);
+                this.$el.html(html);
             },
-        })
+        });
 
     var ApiView = Backbone.View.extend({
             initialize: function(options){
-                var mainview = this
-                mainview.render()
-                mainview.views = {}
+                var mainview = this;
+                mainview.render();
+                mainview.views = {};
                 mainview.views.list = new ResourcesListView({
                     el: jq('#backbone-container #api-resource-list'),
                     apiview: this
-                })
+                });
                 mainview.views.panel = new ResourceView({
                     el: jq('#backbone-container #api-resource-panel'),
                     apiview: this
-                })
+                });
             },
             render: function(){
 
                 var variables = {
-                }
-                var html = templates.api_main_ui.render(variables)
-                this.$el.html(html)
-                view = this
+                };
+                var html = templates.api_main_ui.render(variables);
+                this.$el.html(html);
+                view = this;
             },
             activate: function(){
 
             }
-
-    })
+    });
 
 
     var MainView = Backbone.View.extend({

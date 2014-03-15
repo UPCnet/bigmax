@@ -40,24 +40,23 @@ var MSTCH_BIGMAX_API_MAIN_UI = '\
 ';
 
 var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
+{{#name}}\
 <div class="panel panel-defaulte">\
     <form class="form-horizontal" role="form">\
        <div class="form-group" id="resource-name">\
           <label for="resource-name" class="col-sm-2 control-label">Resource</label>\
           <div class="col-sm-10">\
-            <h5>User Activities</h5>\
+            <h5>{{name}}</h5>\
           </div>\
         </div>\
 \
        <div class="form-group" id="resource-uri">\
           <label for="resource-uri" class="col-sm-2 control-label">Destination</label>\
           <div class="col-sm-10">\
-              <span class="fixed">/people/</span>\
-              <input class="param form-control" value="{username}"/>\
-              <span class="fixed">/device/</span>\
-              <input class="param form-control" value="{platform}"/>\
-              <span class="fixed">/</span>\
-              <input class="param form-control" value="{token}"/>\
+              {{#destination}}\
+                  {{#fixed}}<span class="fixed">{{text}}</span>{{/fixed}}\
+                  {{#param}}<input class="param form-control" value="{{text}}"/>{{/param}}\
+              {{/destination}}\
           </div>\
         </div>\
 \
@@ -137,6 +136,7 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
 \
     </form>\
 </div>\
+{{/name}}\
 ';
 
 var MSTCH_BIGMAX_API_RESOURCE_LIST = '\
@@ -161,7 +161,7 @@ var MSTCH_BIGMAX_API_RESOURCE_LIST = '\
                       <div class="panel panel-default resource">\
                         <div class="panel-heading">\
                           <h4 class="panel-title">\
-                            <a data-toggle="collapse" data-parent="#{{id}}-resources" href="#{{resource_id}}">\
+                            <a data-toggle="collapse" class="resource-item" id="{{route_id}}" data-parent="#{{id}}-resources">\
                               <span class="glyphicon glyphicon-paperclip"></span> {{route_name}}\
                             </a>\
                           </h4>\
