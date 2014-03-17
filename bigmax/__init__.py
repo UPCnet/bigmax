@@ -42,6 +42,7 @@ def main(global_config, **settings):
     config.add_route('exception', '/exceptions/{id}')
     config.add_route('endpoints', '/api')
     config.add_route('endpoints_data', '/api/data')
+    config.add_route('endpoints_request', '/api/request')
 
     # Set MAX settings
     config.registry.max_settings = loadMAXSettings(settings, config)

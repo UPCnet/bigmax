@@ -75,6 +75,10 @@ html {
     border-color: #ddd;
   }
 }
+#backbone-container .btn-primary[disabled] {
+  background-color: #ddd;
+  border-color: #bbbbbb;
+}
 #backbone-container h4 a {
   font-size: 14px;
 }
@@ -89,12 +93,20 @@ html {
 #backbone-container .resources-panel .panel-default > .panel-heading {
   background-color: transparent;
   border: none;
+  padding: 8px 10px;
 }
 #backbone-container .resources-panel .panel-default:last-child {
   border-bottom: none;
 }
 #backbone-container .resources-panel .panel-group {
   margin-bottom: 0px;
+}
+#backbone-container .resources-panel .panel.resource {
+  margin-top: 0px;
+}
+#backbone-container .resources-panel .panel.resource:hover,
+#backbone-container .resources-panel .panel.resource.active {
+  background-color: #e1edf7;
 }
 #backbone-container .resources-panel .panel.resource .glyphicon {
   font-size: 12px;
@@ -163,8 +175,19 @@ html {
 #backbone-container #api-resource-panel .panel .form-group#resource-uri input.param {
   font-weight: bold;
 }
+#backbone-container #api-resource-panel .panel .form-group#resource-uri .col-sm* {
+  padding-top: 7px;
+}
+#backbone-container #api-resource-panel .panel .form-group#request-headers .col-sm-10,
+#backbone-container #api-resource-panel .panel .form-group#request-data .col-sm-10 {
+  border-left: 4px #ddd solid;
+  margin-left: -4px;
+}
 #backbone-container #api-resource-panel .panel .form-group#resource-description .col-sm-10 {
   padding-top: 9px;
+}
+#backbone-container #api-resource-panel .panel .form-group#resource-description p {
+  margin-bottom: 0px;
 }
 #backbone-container #api-resource-panel .panel .form-group#request-data textarea {
   min-height: 100px;
@@ -178,4 +201,15 @@ html {
 }
 #backbone-container #api-resource-panel .panel .form-group#resource-method #methods-list {
   margin-right: 20px;
+}
+#backbone-container #api-resource-panel #request-results .tab-pane {
+  padding: 10px;
+  padding-bottom: 0px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  border-top: none;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }

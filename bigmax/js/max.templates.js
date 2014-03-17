@@ -34,6 +34,7 @@ var MSTCH_BIGMAX_API_MAIN_UI = '\
         <div class="col-md-3" id="api-resource-list">\
         </div>\
         <div class="col-md-9" id="api-resource-panel">\
+        <h5>Select a resource from the list on the left.</h5>\
         </div>\
     </div>\
 </div>\
@@ -41,7 +42,7 @@ var MSTCH_BIGMAX_API_MAIN_UI = '\
 
 var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
 {{#name}}\
-<div class="panel panel-defaulte">\
+<div class="panel panel-default">\
     <form class="form-horizontal" role="form">\
        <div class="form-group" id="resource-name">\
           <label for="resource-name" class="col-sm-2 control-label">Resource</label>\
@@ -55,7 +56,7 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
           <div class="col-sm-10">\
               {{#destination}}\
                   {{#fixed}}<span class="fixed">{{text}}</span>{{/fixed}}\
-                  {{#param}}<input class="param form-control" value="{{text}}"/>{{/param}}\
+                  {{#param}}<input data-param="{{text}}" class="param form-control" value="{{text}}"/>{{/param}}\
               {{/destination}}\
           </div>\
         </div>\
@@ -106,6 +107,25 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
     </form>\
 </div>\
 {{/name}}\
+<div id="request-results">\
+    <!-- Nav tabs -->\
+    <ul class="nav nav-tabs">\
+      <li class="active"><a href="#response-content" data-toggle="tab">Response JSON</a></li>\
+      <li><a href="#request-http" data-toggle="tab">HTTP Request</a></li>\
+      <li><a href="#response-http" data-toggle="tab">HTTP Response</a></li>\
+    </ul>\
+\
+    <!-- Tab panes -->\
+    <div class="tab-content">\
+      <div class="tab-pane active" id="response-content">\
+      <p>No response yet. Make a request first</p>\
+      </div>\
+      <div class="tab-pane" id="request-http">\
+      </div>\
+      <div class="tab-pane" id="response-http">\
+      </div>\
+    </div>\
+</div>\
 ';
 
 
@@ -131,8 +151,8 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL_DETAILS = '\
           </div>\
         </div>\
 \
-       <div class="form-group" id="request-data">\
-          <label for="resource-description" class="col-sm-2 control-label">Description</label>\
+       {{#postdata}}<div class="form-group" id="request-data">\
+          <label for="resource-description" class="col-sm-2 control-label">Data</label>\
           <div class="col-sm-10">\
             <textarea class="form-control">\
 {\
@@ -140,7 +160,7 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL_DETAILS = '\
 }\
             </textarea>\
           </div>\
-        </div>\
+        </div>{{/postdata}}\
 ';
 
 

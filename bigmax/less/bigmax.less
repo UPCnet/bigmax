@@ -92,6 +92,10 @@ html {
 
 
 #backbone-container {
+    .btn-primary[disabled] {
+        background-color: #ddd;
+        border-color: #bbbbbb;
+    }
     h4 a {font-size: 14px;}
     .resources-panel {
         padding:0;
@@ -103,6 +107,7 @@ html {
             &> .panel-heading {
                 background-color: transparent;
                 border:none;
+                padding: 8px 10px;
             }
             &:last-child {border-bottom:none;}
 
@@ -112,6 +117,12 @@ html {
         }
 
         .panel.resource {
+            margin-top:0px;
+            &:hover, &.active {
+                background-color: lighten(#428bca,40%);
+                .panel-heading {
+                }
+            }
             .glyphicon {
                 font-size: 12px;
                 padding-right: 5px;
@@ -182,9 +193,21 @@ html {
 
                 &#resource-uri {
                     input.param {font-weight: bold;}
+                    .col-sm* {
+                        padding-top: 7px;
+                    }
                 }
+
+                &#request-headers, &#request-data {
+                    .col-sm-10 {
+                        border-left: 4px #ddd solid;
+                        margin-left: -4px;
+                    }
+                }
+
                 &#resource-description {
                     .col-sm-10 {padding-top: 9px;}
+                    p {margin-bottom: 0px;}
                 }
 
                 &#request-data {
@@ -208,5 +231,21 @@ html {
                 }
             }
         }
+
+        #request-results {
+            .tab-pane {
+                padding:10px;
+                padding-bottom: 0px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                border-top:none;
+                border-top-right-radius: 0px;
+                border-top-left-radius: 0px;
+                -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+                box-shadow: 0 1px 1px rgba(0,0,0,.05);
+            }
+        }
+
+
     }
 }

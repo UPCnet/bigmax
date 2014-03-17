@@ -124,10 +124,14 @@ bigmax.views = function(settings) {
                 });
             },
             events: {
-                'click .resource-item': 'updatePanel'
+                'click .panel.resource': 'updatePanel'
             },
             updatePanel: function(event) {
-                var resource = this._items[event.currentTarget.id];
+                $target = $(event.currentTarget)
+                $item = $target.find('.resource-item');
+                $('.panel.resource.active').toggleClass('active', false)
+                $target.toggleClass('active', true)
+                var resource = this._items[$item[0].id];
                 this.apiview.views.panel.update(resource);
             },
             render: function(){
@@ -149,9 +153,54 @@ bigmax.views = function(settings) {
             },
             events: {
                 'click #methods-list .btn': 'setActiveMethod',
-                'click #roles-list .btn': 'setActiveRole'
+                'click #roles-list .btn': 'setActiveRole',
+                'click #request-submit .btn': 'makeRequest'
             },
 
+            makeRequest: function(event) {
+                event.preventDefault()
+                event.stopPropagation()
+                var url = view.apiview.$el.attr('data-url')
+                url = url.substr(0, url.length - 4) + 'request'
+
+                url_parts = {}
+                _.each($('#resource-uri input.param'), function(element, index, list) {
+                    var $input = $(element)
+                    var param_name = $input.attr('data-param')
+                    var param_value = $input.val()
+                    url_parts[param_name] = param_value
+                })
+
+                headers = {}
+                _.each($('#request-headers .form-group'), function(element, index, list) {
+                    var $header = $(element)
+                    var header_name = $header.attr('id')
+                    var header_value = $header.find('input.param').val()
+                    headers[header_name] = header_value
+                })
+
+
+                var request_data = {
+                    url: this.resource.route_url,
+                    url_params: url_parts,
+                    headers: headers,
+                    method: this.active_method
+                }
+
+                if (this.active_method == 'POST' || this.active_method == 'PUT') {
+                    request_data['postdata'] = $('#request_data textarea').val()
+                }
+                jQuery.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: JSON.stringify(request_data),
+                    async: true,
+                    dataType: 'json'
+                })
+                .done(function (data) {
+                    $('#request-results #response-content').html(data.response_html)
+                })
+            },
             update: function(resource){
                 this.resource = resource;
                 this.render();
@@ -261,7 +310,8 @@ bigmax.views = function(settings) {
 
                 var variables = {
                     description: current_role_method.description,
-                    headers: this.getHeaders()
+                    headers: this.getHeaders(),
+                    postdata: this.active_method == 'POST' || this.active_method == 'PUT'
                 }
                 return templates.api_resource_panel_details.render(variables);
             },
@@ -277,6 +327,7 @@ bigmax.views = function(settings) {
                 var roles = this.getAvailableRoles()
 
                 var variables = {
+                    id: this.resource.route_id,
                     name: this.resource.route_name,
                     destination: this.getDestinationParts(),
                     methods: methods,
