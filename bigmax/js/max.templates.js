@@ -27,7 +27,7 @@ var MSTCH_BIGMAX_API_MAIN_UI = '\
 <div class="container">\
     <div class="row">\
         <div class="col-md-12">\
-            <h1>API resource tester</h1>\
+            <h3>API resource tester</h3>\
         </div>\
     </div>\
     <div class="row">\
@@ -60,56 +60,74 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
           </div>\
         </div>\
 \
-        <div class="form-group" id="resource-method">\
-          <label for="resource-method" class="col-sm-2 control-label">Request Method</label>\
+       <div class="form-group" id="resource-method">\
+          <label for="resource-method" class="col-sm-2 control-label">Req. Method</label>\
           <div class="col-sm-10">\
-            <label class="radio-inline">\
-              <input type="radio" id="inlineRadio1" name="request-method" value="GET"> GET\
-            </label>\
-            <label class="radio-inline">\
-              <input type="radio" id="inlineRadio2" name="request-method" value="POST"> POST\
-            </label>\
-            <label class="radio-inline">\
-              <input type="radio" id="inlineRadio3" name="request-method" value="PUT"> PUT\
-            </label>\
-            <label class="radio-inline">\
-              <input type="radio" id="inlineRadio3" name="request-method" value="PUT"> DELETE\
-            </label>\
+              <div class="btn-group" id="methods-list" data-toggle="buttons">\
+                {{#methods}}\
+                  <label class="btn btn-primary {{#GET.active}}active{{/GET.active}}" {{^GET.available}}disabled{{/GET.available}}>\
+                      <input type="radio" name="methods-list" data-value="GET" id="method-get"/>GET\
+                  </label>\
+                  <label class="btn btn-primary {{#POST.active}}active{{/POST.active}}" {{^POST.available}}disabled{{/POST.available}}>\
+                      <input type="radio" name="methods-list" data-value="POST" id="method-post"/>POST\
+                  </label>\
+                  <label class="btn btn-primary {{#PUT.active}}active{{/PUT.active}}" {{^PUT.available}}disabled{{/PUT.available}}>\
+                      <input type="radio" name="methods-list" data-value="PUT" id="method-put"/>PUT\
+                  </label>\
+                  <label class="btn btn-primary {{#DELETE.active}}active{{/DELETE.active}}" {{^DELETE.available}}disabled{{/DELETE.available}}>\
+                      <input type="radio" name="methods-list" data-value="DELETE" id="method-delete"/>DELETE\
+                  </label>\
+                {{/methods}}\
+              </div>\
+              <div class="btn-group" id="roles-list" data-toggle="buttons">\
+               {{#roles}}\
+                <label class="btn btn-warning {{#active}}active{{/active}}">\
+                    <input data-value="{{role_name}}" name="roles-list "type="radio" id="role-{{role_name}}"/>{{role_name}}\
+                </label>\
+              {{/roles}}\
+              </div>\
           </div>\
         </div>\
 \
+    <div id="resource-details">\
+    {{{details}}}\
+    </div>\
+\
+       <div class="form-group" id="request-submit">\
+          <label class="col-sm-2 control-label"></label>\
+          <div class="col-sm-10">\
+            <button type="submit" class="btn btn-large btn-primary" id="execute_button">\
+                <i class="glyphicon glyphicon-random"></i>\
+                Launch Request\
+              </button>\
+          </div>\
+        </div>\
+\
+    </form>\
+</div>\
+{{/name}}\
+';
+
+
+var MSTCH_BIGMAX_API_RESOURCE_PANEL_DETAILS = '\
        <div class="form-group" id="resource-description">\
           <label for="resource-description" class="col-sm-2 control-label">Description</label>\
           <div class="col-sm-10">\
-            <p>Adds a post to the user activities</p>\
+            <p>{{description}}</p>\
           </div>\
         </div>\
 \
        <div class="form-group" id="request-headers">\
           <label for="request-headers" class="col-sm-2 control-label">Headers</label>\
           <div class="col-sm-10">\
-\
-             <div class="form-group" id="oauth-username">\
-                <label class="col-sm-3 control-label fixed">X-Oauth-Username</label>\
+\            {{#headers}}\
+             <div class="form-group" id="{{header}}">\
+                <label class="col-sm-3 control-label fixed">{{header}}</label>\
                 <div class="col-sm-9">\
-                  <input class="param form-control" type="text">\
+                  <input class="param form-control" type="text" value="{{value}}">\
                 </div>\
               </div>\
-       \
-               <div class="form-group" id="oauth-token">\
-                  <label class="col-sm-3 control-label fixed">X-Oauth-Token</label>\
-                  <div class="col-sm-9">\
-                    <input class="param form-control" type="text">\
-                  </div>\
-                </div>\
-       \
-             <div class="form-group" id="oauth-scope">\
-                <label class="col-sm-3 control-label fixed">X-Oauth-Scope</label>\
-                <div class="col-sm-9">\
-                  <input class="param form-control" type="text">\
-                </div>\
-              </div>\
-       \
+              {{/headers}}\
           </div>\
         </div>\
 \
@@ -123,21 +141,8 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
             </textarea>\
           </div>\
         </div>\
-\
-       <div class="form-group" id="request-submit">\
-          <label class="col-sm-2 control-label"></label>\
-          <div class="col-sm-10">\
-            <button type="submit" class="btn btn-large btn-primary" id="execute_button" data-bind="visible:isIdle, enable:url" disabled="">\
-                <i class="glyphicon glyphicon-random"></i>\
-                Launch Request\
-              </button>\
-          </div>\
-        </div>\
-\
-    </form>\
-</div>\
-{{/name}}\
 ';
+
 
 var MSTCH_BIGMAX_API_RESOURCE_LIST = '\
 <div class="panel-group" id="categories">\
@@ -236,6 +241,7 @@ var templates = {
          api_main_ui: Hogan.compile(MSTCH_BIGMAX_API_MAIN_UI),
          api_resource_list: Hogan.compile(MSTCH_BIGMAX_API_RESOURCE_LIST),
          api_resource_panel: Hogan.compile(MSTCH_BIGMAX_API_RESOURCE_PANEL),
+         api_resource_panel_details: Hogan.compile(MSTCH_BIGMAX_API_RESOURCE_PANEL_DETAILS),
   }
 
   return templates

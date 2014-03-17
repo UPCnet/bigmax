@@ -147,6 +147,10 @@ bigmax.views = function(settings) {
                 view.resource = {};
                 view.apiview = options.apiview;
             },
+            events: {
+                'click #methods-list .btn': 'setActiveMethod',
+                'click #roles-list .btn': 'setActiveRole'
+            },
 
             update: function(resource){
                 this.resource = resource;
@@ -181,16 +185,107 @@ bigmax.views = function(settings) {
 
                    }
                 });
-                console.log(destination)
                 return destination
             },
+            setActiveRole: function() {
+                var roles = this.getAvailableRoles()
+                if (arguments.length == 0) {
+                    if (_.where(roles, {role_name:'Everyone'}).length > 0) {
+                        this.active_role = 'Everyone'
+                    } else {
+                        this.active_role = roles[0].role_name
+                    }
+
+                } else {
+                    $input = $(arguments[0].currentTarget).find('input')
+                    this.active_role = $input.attr('data-value')
+                    this.renderMethodDetails()
+                }
+            },
+            getAvailableRoles: function() {
+                var roless = []
+                view = this
+                _.each(this.resource.methods[this.active_method], function(element, index, list) {
+                    var role = {role_name: index, active: index == view.active_role}
+                    roless.push(role)
+                })
+                return roless
+            },
+            setActiveMethod: function() {
+                var methods = this.getAvailableMethods()
+                if (arguments.length == 0) {
+                    if (methods.GET.available) {
+                        this.active_method = 'GET'
+                    }
+                    else if (methods.POST.available) {
+                        this.active_method = 'POST'
+                    }
+                    else if (methods.PUT.available) {
+                        this.active_method = 'PÛT'
+                    }
+                    else if (methods.DELETE.available) {
+                        this.active_method = 'DELETE'
+                    }
+                } else {
+                    $input = $(arguments[0].currentTarget).find('input')
+                    this.active_method = $input.attr('data-value')
+                    this.renderMethodDetails()
+                }
+            },
+            getAvailableMethods: function() {
+                view = this
+                var methods = {
+                    'GET': {'available': false, 'active': false},
+                    'POST': {'available': false, 'active': false},
+                    'PUT': {'available': false, 'active': false},
+                    'DELETE': {'available': true, 'active': false}
+                }
+                _.each(this.resource.methods, function(element, index, list) {
+                    methods[index].available = true
+                    if (view.active_method === index) {
+                        methods[index].active = true
+                    }
+                })
+                return methods
+            },
+            getHeaders: function() {
+                var headers = [
+                    {'header':'X-Oauth-Username', value: _MAXUI.username},
+                    {'header':'X-Oauth-Token', value: _MAXUI.token},
+                    {'header':'X-Oauth-Scope', value: 'widgetcli'}
+                ]
+                return headers
+            },
+            getMethodDetailsHTML: function() {
+                var current_role_method = this.resource.methods[this.active_method][this.active_role]
+
+                var variables = {
+                    description: current_role_method.description,
+                    headers: this.getHeaders()
+                }
+                return templates.api_resource_panel_details.render(variables);
+            },
+            renderMethodDetails: function() {
+                var html = this.getMethodDetailsHTML()
+                this.$el.find('#resource-details').html(html);
+
+            },
             render: function(){
+                this.setActiveMethod()
+                var methods = this.getAvailableMethods()
+                this.setActiveRole()
+                var roles = this.getAvailableRoles()
+
                 var variables = {
                     name: this.resource.route_name,
-                    destination: this.getDestinationParts()
+                    destination: this.getDestinationParts(),
+                    methods: methods,
+                    roles: roles,
+                    details: this.getMethodDetailsHTML()
                 };
                 var html = templates.api_resource_panel.render(variables);
                 this.$el.html(html);
+
             },
         });
 

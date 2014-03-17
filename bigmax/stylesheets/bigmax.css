@@ -75,6 +75,9 @@ html {
     border-color: #ddd;
   }
 }
+#backbone-container h4 a {
+  font-size: 14px;
+}
 #backbone-container .resources-panel {
   padding: 0;
 }
@@ -133,6 +136,9 @@ html {
   font-weight: normal;
   height: 24px;
 }
+#backbone-container #api-resource-panel .panel .form-group .form-group input.param {
+  width: 100%;
+}
 #backbone-container #api-resource-panel .panel .form-group > label {
   font-weight: bold;
   border-right: 4px #ddd solid;
@@ -169,4 +175,7 @@ html {
 }
 #backbone-container #api-resource-panel .panel .form-group#request-submit i {
   margin-right: 5px;
+}
+#backbone-container #api-resource-panel .panel .form-group#resource-method #methods-list {
+  margin-right: 20px;
 }
