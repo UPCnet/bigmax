@@ -1,0 +1,22 @@
+
+{
+  "name": "bigmax",
+  "description": "MAX Control Panel",
+  "version": "3.6.0",
+  "homepage": "https://github.com/UPCnet/bigmax",
+  "author": {
+    "name": "UPCnet",
+    "url": "https://github.com/UPCnet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/UPCnet/bigmax.git"
+  },
+  "keywords": [
+    "max"
+  ],
+  "devDependencies": {
+      "grunt-contrib-watch": "",
+      "grunt-contrib-less": ""
+  }
+}
