@@ -110,19 +110,23 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
 <div id="request-results">\
     <!-- Nav tabs -->\
     <ul class="nav nav-tabs">\
-      <li class="active"><a href="#response-content" data-toggle="tab">Response JSON</a></li>\
-      <li><a href="#request-http" data-toggle="tab">HTTP Request</a></li>\
-      <li><a href="#response-http" data-toggle="tab">HTTP Response</a></li>\
+      <li class="active"><a href="#response-content" data-toggle="tab">Response</a></li>\
+      <li><a href="#response-raw" data-toggle="tab">RAW Response</a></li>\
+      <li><a href="#http-request-headers" data-toggle="tab">Http Request</a></li>\
+      <li><a href="#http-response-headers" data-toggle="tab">Response Headers</a></li>\
     </ul>\
 \
     <!-- Tab panes -->\
     <div class="tab-content">\
       <div class="tab-pane active" id="response-content">\
-      <p>No response yet. Make a request first</p>\
+      <pre>No response yet. Launch a request first</pre>\
       </div>\
-      <div class="tab-pane" id="request-http">\
+      <div class="tab-pane" id="response-raw">\
+        <pre></pre>\
       </div>\
-      <div class="tab-pane" id="response-http">\
+      <div class="tab-pane" id="http-request-headers">\
+      </div>\
+      <div class="tab-pane" id="http-response-headers">\
       </div>\
     </div>\
 </div>\

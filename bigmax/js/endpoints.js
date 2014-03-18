@@ -29,7 +29,7 @@
 
 function adaptURIInputSizes(input) {
     var $input = $(input)
-    $input.css({width: ($input.val().length * 8) + 8});
+    $input.css({width: ($input.val().length * 8) + 12});
 }
 
 $(document).ready(function(event) {

@@ -92,6 +92,10 @@ html {
 
 
 #backbone-container {
+
+    .btn-focus {
+        outline:none;
+    }
     .btn-primary[disabled] {
         background-color: #ddd;
         border-color: #bbbbbb;
@@ -244,6 +248,18 @@ html {
                 -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
                 box-shadow: 0 1px 1px rgba(0,0,0,.05);
             }
+            #response-content {
+                &[data-type=image] {
+                    text-align: center;
+                    img {
+                        border: 1px solid #eee;
+                        padding: 10px;
+                        margin:10px;
+                    }
+                }
+                #res
+            }
+
         }
 
 

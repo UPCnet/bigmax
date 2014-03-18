@@ -199,6 +199,12 @@ bigmax.views = function(settings) {
                 })
                 .done(function (data) {
                     $('#request-results #response-content').html(data.response_html)
+                    $('#request-results #response-raw pre').html(data.response_raw)
+                    $('#request-results #response-content').attr('data-type', data.response_type)
+                    $('#request-results #http-request-headers').html(data.request_headers)
+                    $('#request-results #http-response-headers').html(data.response_headers)
+
+
                 })
             },
             update: function(resource){
@@ -287,7 +293,7 @@ bigmax.views = function(settings) {
                     'GET': {'available': false, 'active': false},
                     'POST': {'available': false, 'active': false},
                     'PUT': {'available': false, 'active': false},
-                    'DELETE': {'available': true, 'active': false}
+                    'DELETE': {'available': false, 'active': false}
                 }
                 _.each(this.resource.methods, function(element, index, list) {
                     methods[index].available = true

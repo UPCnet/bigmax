@@ -75,6 +75,9 @@ html {
     border-color: #ddd;
   }
 }
+#backbone-container .btn-focus {
+  outline: none;
+}
 #backbone-container .btn-primary[disabled] {
   background-color: #ddd;
   border-color: #bbbbbb;
@@ -212,4 +215,12 @@ html {
   border-top-left-radius: 0px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+#backbone-container #api-resource-panel #request-results #response-content[data-type=image] {
+  text-align: center;
+}
+#backbone-container #api-resource-panel #request-results #response-content[data-type=image] img {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin: 10px;
 }
