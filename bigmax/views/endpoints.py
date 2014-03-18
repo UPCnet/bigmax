@@ -5,7 +5,7 @@ from bigmax.views.api import TemplateAPI
 from bigmax.resources import MaxServer
 
 from pygments import highlight
-from pygments.lexers import JsonLexer, HttpLexer
+from pygments.lexers import JsonLexer, HttpLexer, HtmlLexer
 from pygments.formatters import HtmlFormatter
 
 import requests
@@ -101,7 +101,7 @@ def endpoints_request(context, request):
 
     response_headers_html = response_headers_html[:first_line] + response_headers_html[last_line:]
     if 'text/html' in response.headers['content-type']:
-        response_html = highlight(response.content, HttpLexer(), HtmlFormatter(style='friendly')),
+        response_html = highlight(response.content, HtmlLexer(), HtmlFormatter(style='friendly')),
         response_type = 'html'
         response_content = response.content
 
