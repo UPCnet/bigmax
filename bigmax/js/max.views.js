@@ -198,7 +198,11 @@ bigmax.views = function(settings) {
                     dataType: 'json'
                 })
                 .done(function (data) {
-                    $('#request-results #response-content').html(data.response_html)
+                    var response_html = data.response_html
+                    if (data.response_type == 'text')
+                        response_html = '<pre>' + response_html + '</pre>'
+
+                    $('#request-results #response-content').html(response_html)
                     $('#request-results #response-raw pre').html(data.response_raw)
                     $('#request-results #response-content').attr('data-type', data.response_type)
                     $('#request-results #http-request-headers').html(data.request_headers)
@@ -281,6 +285,9 @@ bigmax.views = function(settings) {
                     else if (methods.DELETE.available) {
                         this.active_method = 'DELETE'
                     }
+                    else if (methods.HEAD.available) {
+                        this.active_method = 'DELETE'
+                    }
                 } else {
                     $input = $(arguments[0].currentTarget).find('input')
                     this.active_method = $input.attr('data-value')
@@ -293,7 +300,8 @@ bigmax.views = function(settings) {
                     'GET': {'available': false, 'active': false},
                     'POST': {'available': false, 'active': false},
                     'PUT': {'available': false, 'active': false},
-                    'DELETE': {'available': false, 'active': false}
+                    'DELETE': {'available': false, 'active': false},
+                    'HEAD': {'available': false, 'active': false}
                 }
                 _.each(this.resource.methods, function(element, index, list) {
                     methods[index].available = true

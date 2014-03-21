@@ -89,11 +89,12 @@ def endpoints_request(context, request):
         'verify': False,
     }
 
-    if request_method == 'POST':
+    if request_method == 'post':
         params['data'] = request.json['postdata']
 
     response = requester(url, **params)
-    response_headers = '\r\n'.join(['{}: {}'.format(k.capitalize(), v) for k, v in sorted(response.raw.getheaders().items(), key=lambda x: x[0])]) + '\r\n\r\n'
+    response_headers_raw = response.raw.getheaders()
+    response_headers = '\r\n'.join(['{}: {}'.format(k.capitalize(), v) for k, v in sorted(response_headers_raw.items(), key=lambda x: x[0])]) + '\r\n\r\n'
     response_headers = raw[-1].split('\r\n')[0] + '\r\n' + response_headers
     response_headers_html = highlight(response_headers, HttpLexer(), HtmlFormatter(style='friendly'))
     first_line = response_headers_html.find('<span class="nf">GET</span>')
@@ -106,10 +107,20 @@ def endpoints_request(context, request):
         response_content = response.content
 
     elif 'application/json'in response.headers['content-type']:
-        pretty_json = json.dumps(json.loads(response.content), indent=4)
-        response_html = highlight(pretty_json, JsonLexer(), HtmlFormatter(style='friendly'))
+        try:
+            pretty_json = json.dumps(json.loads(response.content), indent=4)
+            response_html = highlight(pretty_json, JsonLexer(), HtmlFormatter(style='friendly'))
+            response_type = 'json'
+        except:
+            response_type = 'text'
+            if request_method == 'head':
+                response_html = 'Resource items count: {}'.format(response_headers_raw.get('x-totalitems', 0))
+            elif response.content.replace(' ', '') == '':
+                response_html = 'Empty response'
+            else:
+                response_html = 'Invalid JSON output, check RAW Response'
+
         response_content = response.content
-        response_type = 'json'
 
     elif 'image/'in response.headers['content-type']:
         response_type = 'image'

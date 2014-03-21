@@ -65,7 +65,7 @@ def login(context, request):
             client = context.maxclient
             client.setActor(auth_user)
             client.setToken(oauth_token)
-            client.addUser(auth_user)
+            client.people[auth_user].post()
 
         # if not successful, try again
         else:

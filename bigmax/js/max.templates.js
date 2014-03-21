@@ -78,6 +78,9 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
                   <label class="btn btn-primary {{#DELETE.active}}active{{/DELETE.active}}" {{^DELETE.available}}disabled{{/DELETE.available}}>\
                       <input type="radio" name="methods-list" data-value="DELETE" id="method-delete"/>DELETE\
                   </label>\
+                  <label class="btn btn-primary {{#HEAD.active}}active{{/HEAD.active}}" {{^HEAD.available}}disabled{{/HEAD.available}}>\
+                      <input type="radio" name="methods-list" data-value="HEAD" id="method-delete"/>HEAD\
+                  </label>\
                 {{/methods}}\
               </div>\
               <div class="btn-group" id="roles-list" data-toggle="buttons">\
