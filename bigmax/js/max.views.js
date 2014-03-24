@@ -186,9 +186,8 @@ bigmax.views = function(settings) {
                     headers: headers,
                     method: this.active_method
                 }
-
                 if (this.active_method == 'POST' || this.active_method == 'PUT') {
-                    request_data['postdata'] = $('#request_data textarea').val()
+                    request_data['postdata'] = $('#request-data textarea').val()
                 }
                 jQuery.ajax({
                     url: url,
