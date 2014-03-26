@@ -11,6 +11,7 @@ from pygments.formatters import HtmlFormatter
 import requests
 import urllib
 import json
+import re
 
 
 @view_config(context=MaxServer, route_name="endpoints", renderer='bigmax:templates/endpoints.pt', permission='restricted')
@@ -97,8 +98,8 @@ def endpoints_request(context, request):
     response_headers = '\r\n'.join(['{}: {}'.format(k.capitalize(), v) for k, v in sorted(response_headers_raw.items(), key=lambda x: x[0])]) + '\r\n\r\n'
     response_headers = raw[-1].split('\r\n')[0] + '\r\n' + response_headers
     response_headers_html = highlight(response_headers, HttpLexer(), HtmlFormatter(style='friendly'))
-    first_line = response_headers_html.find('<span class="nf">GET</span>')
-    last_line = response_headers_html.find('<span class="m">1.1</span>') + 26
+    first_line = re.search(r'<span class="nf">\w+</span>', response_headers_html).start()
+    last_line = re.search('<span class="m">1.1</span>', response_headers_html).end()
 
     response_headers_html = response_headers_html[:first_line] + response_headers_html[last_line:]
     if 'text/html' in response.headers['content-type']:

@@ -221,8 +221,8 @@ bigmax.views = function(settings) {
                 _.each(parts, function(element, index, list) {
                    if (element[0] == '{') {
                     if (index > 0) {
-                        if (destination[index - 1].fixed) {
-                            destination[index - 1].text += '/';
+                        if (_.last(destination).fixed) {
+                            _.last(destination).text += '/';
                         } else {
                             destination.push({'text': '/', fixed:true, param:false});
                         }
@@ -234,8 +234,8 @@ bigmax.views = function(settings) {
                     if (index === 0) {
                         destination.push({'text': newpart, fixed:true, param:false});
                     } else {
-                        if (destination[index - 1].fixed) {
-                            destination[index - 1].text += newpart;
+                        if (_.last(destination).fixed) {
+                            _.last(destination).text += newpart;
                         } else {
                             destination.push({'text': newpart, fixed:true, param:false});
                         }
