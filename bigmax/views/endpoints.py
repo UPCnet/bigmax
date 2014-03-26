@@ -93,10 +93,12 @@ def endpoints_request(context, request):
     if request_method == 'post':
         params['data'] = request.json['postdata']
 
+    request_headers = [req for req in raw if re.search(r'{} /'.format(request_method.upper()), req)][0]
+
     response = requester(url, **params)
     response_headers_raw = response.raw.getheaders()
     response_headers = '\r\n'.join(['{}: {}'.format(k.capitalize(), v) for k, v in sorted(response_headers_raw.items(), key=lambda x: x[0])]) + '\r\n\r\n'
-    response_headers = raw[-1].split('\r\n')[0] + '\r\n' + response_headers
+    response_headers = request_headers.split('\r\n')[0] + '\r\n' + response_headers
     response_headers_html = highlight(response_headers, HttpLexer(), HtmlFormatter(style='friendly'))
     first_line = re.search(r'<span class="nf">\w+</span>', response_headers_html).start()
     last_line = re.search('<span class="m">1.1</span>', response_headers_html).end()
@@ -140,7 +142,7 @@ def endpoints_request(context, request):
         'response_type': response_type,
         'response_html': response_html,
         'response_raw': response_content,
-        'request_headers': highlight(raw[-1], HttpLexer(), HtmlFormatter(style='friendly')),
+        'request_headers': highlight(request_headers, HttpLexer(), HtmlFormatter(style='friendly')),
         'response_headers': response_headers_html
     }
     return json_response
