@@ -93,9 +93,10 @@ def endpoints_request(context, request):
     if request_method == 'post':
         params['data'] = request.json['postdata']
 
+    response = requester(url, **params)
+
     request_headers = [req for req in raw if re.search(r'{} /'.format(request_method.upper()), req)][0]
 
-    response = requester(url, **params)
     response_headers_raw = response.raw.getheaders()
     response_headers = '\r\n'.join(['{}: {}'.format(k.capitalize(), v) for k, v in sorted(response_headers_raw.items(), key=lambda x: x[0])]) + '\r\n\r\n'
     response_headers = request_headers.split('\r\n')[0] + '\r\n' + response_headers
