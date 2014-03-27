@@ -25,7 +25,7 @@ def endpoints_view(context, request):
 
 @view_config(context=MaxServer, route_name="endpoints_data", renderer='json', permission='restricted')
 def endpoints_data(context, request):
-    endpoints = context.maxclient.info.endpoints.get()
+    endpoints = context.maxclient.info.api.get()
 
     endpoints_by_category = {}
 
