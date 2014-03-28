@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="/stylesheets/bigmax.css">
   <link rel="stylesheet" href="/stylesheets/pygments.css">
+  <link rel="stylesheet" href="/stylesheets/jquery.jsonview.css">
   <link rel="stylesheet" href="/stylesheets/select2.css">
   <link rel="stylesheet" href="/stylesheets/select2-bootstrap.css">
   <link rel="stylesheet" href="/maxui/maxui.css">

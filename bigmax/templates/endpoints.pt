@@ -13,6 +13,7 @@
     <script src="${api.application_url}/js/max.templates.js"></script>
     <script src="${api.application_url}/js/max.views.js"></script>
     <script src="${api.application_url}/js/endpoints.js"></script>
+    <script src="${api.application_url}/js/jquery.jsonview.js"></script>
   </metal:main>
 </body>
 </html>

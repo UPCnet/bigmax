@@ -198,10 +198,18 @@ bigmax.views = function(settings) {
                 })
                 .done(function (data) {
                     var response_html = data.response_html
-                    if (data.response_type == 'text')
-                        response_html = '<pre>' + response_html + '</pre>'
+                    
+                    if (data.response_type == 'json' || data.response_type == 'text')
+                        $('#request-results #response-content').html('<pre></pre>')
 
-                    $('#request-results #response-content').html(response_html)
+                    if (data.response_type == 'json') {
+                        $('#request-results #response-content pre').JSONView(JSON.parse(data.response_raw));
+                    } else if (data.response_type == 'text') {
+                        $('#request-results #response-content pre').html(response_html)
+                    } else {
+                        $('#request-results #response-content').html(response_html)
+                    }
+                    
                     $('#request-results #response-raw pre').html(data.response_raw)
                     $('#request-results #response-content').attr('data-type', data.response_type)
                     $('#request-results #http-request-headers').html(data.request_headers)
