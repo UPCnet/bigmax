@@ -350,6 +350,7 @@ bigmax.views = function(settings) {
                 var variables = {
                     id: this.resource.route_id,
                     name: this.resource.route_name,
+                    filesystem: this.resource.filesystem,
                     destination: this.getDestinationParts(),
                     methods: methods,
                     roles: roles,

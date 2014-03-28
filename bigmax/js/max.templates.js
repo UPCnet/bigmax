@@ -47,7 +47,7 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
        <div class="form-group" id="resource-name">\
           <label for="resource-name" class="col-sm-2 control-label">Resource</label>\
           <div class="col-sm-10">\
-            <h5>{{name}}</h5>\
+            <h5>{{name}} {{#filesystem}}<span class="label label-primary">filesystem</span>{{/filesystem}}</h5>\
           </div>\
         </div>\
 \

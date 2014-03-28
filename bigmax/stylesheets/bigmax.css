@@ -175,6 +175,11 @@ html {
 #backbone-container #api-resource-panel .panel .form-group label.fixed {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+#backbone-container #api-resource-panel .panel .form-group#resource-name h5 .label {
+  font-size: 90%;
+  margin-left: 10px;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
 #backbone-container #api-resource-panel .panel .form-group#resource-uri input.param {
   font-weight: bold;
 }

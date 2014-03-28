@@ -43,6 +43,7 @@ def endpoints_data(context, request):
         for route_info in endpoints_by_category[category_name]:
             routes.append({
                 'route_id': route_info['id'],
+                'filesystem': route_info['filesystem'],
                 'route_name': route_info['name'],
                 'route_url': route_info['url'],
                 'methods': route_info['methods']
