@@ -21,9 +21,9 @@ window._MAXUI.onReady = function() {
            'readContext': window._MAXUI.readContext,
            'activitySource': window._MAXUI.activitySource,
            'domain': window._MAXUI.domain
-           }
+           };
 
-    $('#activityStream').maxUI(settings)
+    $('#activityStream').maxUI(settings);
 };
 
 /*
@@ -34,9 +34,9 @@ window._MAXUI.onReady = function() {
 */
 
 (function(d){
-var mui_location = window._MAXUI.server+'/maxui/maxui.js'
+var mui_location = window._MAXUI.server+'/maxui/maxui.min.js';
 var mui = d.createElement('script'); mui.type = 'text/javascript'; mui.async = true;
-mui.src = mui_location
+mui.src = mui_location;
 var s = d.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mui, s);
 
 }(document));

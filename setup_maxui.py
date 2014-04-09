@@ -15,8 +15,8 @@ DEFAULT_MAXUI_FONTS_URL = '/maxui/font'
 DEFAULT_MAXUI_FONTS_FOLDER = './maxui/font'
 DEFAULT_MAXUI_GITHUB_URL = 'https://github.com/UPCnet/max.ui.js'
 DEFAULT_MAXUI_BRANCH = 'develop'
-DEFAULT_MAXUI_JS = './max.ui.js'
-DEFAULT_MAXUI_CSS = './max.ui.css'
+DEFAULT_MAXUI_JS = './maxui.min.js'
+DEFAULT_MAXUI_CSS = './maxui.css'
 
 
 def saveConfiguration(config):
@@ -104,28 +104,28 @@ def main():
 
     saveConfiguration(config)
 
-    version = downloadFile(config, 'version').rstrip('\n')
+    version = json.loads(downloadFile(config, 'package.json'))['version']
 
-    js = downloadFile(config, 'build/js/max.ui-{}.js'.format(version))
+    js = downloadFile(config, 'builds/{}/maxui.min.js'.format(version))
     if not js:
         print ' MAX UI Version {} build not found'.format(version)
         sys.exit(1)
-    #Download and modify JS
+    # Store downloaded js
     open(config['js_location'], 'w').write(js)
 
-    js = downloadFile(config, 'build/debug/max.ui-{}-debug.js'.format(version))
+    js = downloadFile(config, 'builds/{}/maxui.min.map'.format(version))
     if not js:
-        print ' MAX UI DEBUG Version {} build not found'.format(version)
+        print ' MAX UI jsmap Version {} build not found'.format(version)
         sys.exit(1)
-    #Download and modify JS
+    # Store downloaded js map
     fname = config['js_location'].split('.js')[0]
-    open('{}-debug.js'.format(fname), 'w').write(js)
+    open('{}.map'.format(fname), 'w').write(js)
 
     #Download and modify CSS
-    css = downloadFile(config, 'build/css/max.ui-{}.css'.format(version))
-    sys.stdout.write(" Modifying image links ")
+    css = downloadFile(config, 'builds/{}/maxui.min.css'.format(version))
+    # sys.stdout.write(" Modifying image links ")
     sys.stdout.flush()
-    css = re.sub(r"(url\(['\"]?){}(['\"]?)".format(ORIGINAL_MAXUI_IMAGES_URL), r"\1{images_url}\2".format(**config), css)
+    # css = re.sub(r"(url\(['\"]?){}(['\"]?)".format(ORIGINAL_MAXUI_IMAGES_URL), r"\1{images_url}\2".format(**config), css)
     css = re.sub(r"(url\(['\"]?){}(['\"]?)".format(ORIGINAL_MAXUI_FONT_URL), r"\1{fonts_url}\2".format(**config), css)
     open(config['css_location'], 'w').write(css)
     sys.stdout.write("✓\n")
@@ -134,15 +134,15 @@ def main():
     #Download fonts
     extensions = ['eot', 'svg', 'ttf', 'woff']
     for extension in extensions:
-        fontbytes = downloadFile(config, 'font/maxicons.' + extension)
+        fontbytes = downloadFile(config, 'builds/{}/font/maxicons.'.format(version) + extension)
         open(config['fonts_location'] + '/maxicons.' + extension, 'w').write(fontbytes)
 
-    #Download images
-    images = downloadFile(config, 'img', raw=False)
-    image_urls = re.findall(r'href=".*?/%s/img/(.*?)"' % (config['branch']), images)
-    for image in image_urls:
-        imagebytes = downloadFile(config, 'img/' + image)
-        open(config['images_location'] + '/' + unquote(image), 'w').write(imagebytes)
+    # #Download images
+    # images = downloadFile(config, 'img', raw=False)
+    # image_urls = re.findall(r'href=".*?/%s/img/(.*?)"' % (config['branch']), images)
+    # for image in image_urls:
+    #     imagebytes = downloadFile(config, 'img/' + image)
+    #     open(config['images_location'] + '/' + unquote(image), 'w').write(imagebytes)
 
     print '\n MAX UI {} setup finished\n'.format(version)
 
