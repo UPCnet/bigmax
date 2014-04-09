@@ -8,7 +8,7 @@ from urllib2 import unquote
 
 
 ORIGINAL_MAXUI_IMAGES_URL = '/maxui-dev/img'
-ORIGINAL_MAXUI_FONT_URL = '../font'
+ORIGINAL_MAXUI_FONT_URL = 'font'
 DEFAULT_MAXUI_IMAGES_URL = '/maxui/img'
 DEFAULT_MAXUI_IMAGES_FOLDER = './maxui/img'
 DEFAULT_MAXUI_FONTS_URL = '/maxui/font'
@@ -126,7 +126,7 @@ def main():
     # sys.stdout.write(" Modifying image links ")
     sys.stdout.flush()
     # css = re.sub(r"(url\(['\"]?){}(['\"]?)".format(ORIGINAL_MAXUI_IMAGES_URL), r"\1{images_url}\2".format(**config), css)
-    css = re.sub(r"(url\(['\"]?){}(['\"]?)".format(ORIGINAL_MAXUI_FONT_URL), r"\1{fonts_url}\2".format(**config), css)
+    css = re.sub(r"(url\(['\"]?){}(/maxicons['\"]?)".format(ORIGINAL_MAXUI_FONT_URL), r"\1{fonts_url}\2".format(**config), css)
     open(config['css_location'], 'w').write(css)
     sys.stdout.write("✓\n")
     sys.stdout.flush()
