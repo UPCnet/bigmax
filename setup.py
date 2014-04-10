@@ -10,6 +10,7 @@ requires = [
     'pyramid',
     'pyramid_tm',
     'pyramid_debugtoolbar',
+    'pyramid_chameleon',
     'pyramid_beaker',
     'pyramid_osiris',
     'pymongo',

@@ -1,6 +1,5 @@
 from pyramid.config import Configurator
 
-
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid_beaker import session_factory_from_settings, set_cache_regions_from_settings
 

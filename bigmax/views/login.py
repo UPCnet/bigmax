@@ -17,7 +17,7 @@ logger = logging.getLogger('bigmax')
 
 def real_request_url(request):
     request_scheme = re.search(r'(https?)://', request.url).groups()[0]
-    if request.get('HTTP_X_VIRTUAL_HOST_URI'):
+    if request.headers.get('HTTP_X_VIRTUAL_HOST_URI'):
         real_scheme = re.search(r'(https?)://', request.get('HTTP_X_VIRTUAL_HOST_URI')).groups()[0]
         return request.url.replace(request_scheme, real_scheme)
     else:
