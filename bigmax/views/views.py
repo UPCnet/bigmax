@@ -70,7 +70,6 @@ def js_variables(context, request):
         'server': context.max_server,
         'stomp': context.stomp_server,
         'grant': context.oauth_grant_type,
-        'domain': context.__name__,
     }
 
     variables.update(request.session.get('maxui_settings', DEFAULT_WIDGET_SETTINGS))
