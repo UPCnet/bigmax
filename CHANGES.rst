@@ -4,7 +4,17 @@ Changelog
 3.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+* Adapt multimax cookie helpers to new CookieProfile [Carles Bruguera]
+* Latest widget [sunbit]
+* Updated maxui setup script and new 4.0.0 release [Carles Bruguera]
+* Multimax-enabled bigmax using different cookies [Carles Bruguera]
+* Api view to interact with json api [Carles Bruguera]
+* User permissions view [Carles Bruguera]
+* Add info & configuration panels [Carles Bruguera]
+* Add on-the-fly widget reloading [Carles Bruguera]
+* Store changed widget settings on user session [Carles Bruguera]
+* Add grunt and newest less bootstrap [Carles Bruguera]
+* Add information pane [Carles Bruguera]
 
 3.6 (2014-01-20)
 ----------------
