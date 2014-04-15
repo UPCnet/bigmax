@@ -32,7 +32,7 @@ def MaxRootView(context, request):
     for prop in display_properties:
         user_info[prop] = user_properties[prop]
 
-    subscriptions = user_properties['subscribedTo']
+    subscriptions = user_properties.get('subscribedTo', [])
     for subscription in subscriptions:
         subscription['selected'] = request.session.get('maxui_settings', DEFAULT_WIDGET_SETTINGS)['readContext'] == subscription['url']
 
