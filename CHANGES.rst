@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.6.1 (unreleased)
+4.0.0 (2014-04-15)
 ------------------
 
 * Adapt multimax cookie helpers to new CookieProfile [Carles Bruguera]
