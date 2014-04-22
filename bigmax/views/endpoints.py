@@ -91,7 +91,7 @@ def endpoints_request(context, request):
         'verify': False,
     }
 
-    if request_method == 'post':
+    if request_method in ['post', 'put']:
         params['data'] = request.json['postdata']
 
     response = requester(url, **params)
