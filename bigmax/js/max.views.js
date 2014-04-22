@@ -161,7 +161,7 @@ bigmax.views = function(settings) {
                 event.preventDefault()
                 event.stopPropagation()
                 var url = view.apiview.$el.attr('data-url')
-                url = url.substr(0, url.length - 4) + '_request'
+                url = url.substr(0, url.length - 4) + 'request'
 
                 url_parts = {}
                 _.each($('#resource-uri input.param'), function(element, index, list) {
