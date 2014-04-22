@@ -4,7 +4,7 @@
 <body>
   <metal:main fill-slot="main">
 
-    <div id='backbone-container' data-url="${url}/data">
+    <div id='backbone-container' data-url="${api.context_url}/api_data">
     </div>
 
   </metal:main>

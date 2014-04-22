@@ -14,7 +14,7 @@ import json
 import re
 
 
-@view_config(context=MaxServer, route_name="endpoints", renderer='bigmax:templates/endpoints.pt', permission='restricted')
+@view_config(context=MaxServer, name="api", renderer='bigmax:templates/endpoints.pt', permission='restricted')
 def endpoints_view(context, request):
     page_title = "BIG MAX Exception Log"
     api = TemplateAPI(context, request, page_title)
@@ -23,7 +23,7 @@ def endpoints_view(context, request):
                 url='%s/api' % api.application_url)
 
 
-@view_config(context=MaxServer, route_name="endpoints_data", renderer='json', permission='restricted')
+@view_config(context=MaxServer, name="api_data", renderer='json', permission='restricted')
 def endpoints_data(context, request):
     endpoints = context.maxclient.info.api.get()
 
@@ -57,7 +57,7 @@ def endpoints_data(context, request):
     return categories
 
 
-@view_config(context=MaxServer, route_name="endpoints_request", renderer='json', permission='restricted', request_method='POST')
+@view_config(context=MaxServer, name="api_request", renderer='json', permission='restricted', request_method='POST')
 def endpoints_request(context, request):
 
     import httplib

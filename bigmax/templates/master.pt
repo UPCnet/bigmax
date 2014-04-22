@@ -37,7 +37,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">Big <span class="brandBold">MAX <kbd tal:content="request.context.__name__"></kbd></span></a>
+        <a class="navbar-brand" href="${api.context_url}">Big <span class="brandBold">MAX <kbd tal:content="request.context.__name__"></kbd></span></a>
 
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -59,7 +59,7 @@
               <li><a tal:attributes="href api.application_url+'/maintenance'">Maintenance</a></li>
               <li><a tal:attributes="href api.application_url+'/explorer'">DB Explorer</a></li>
               <li class="divider"></li>
-              <li><a tal:attributes="href api.application_url+'/logout'">Logout</a></li>
+              <li><a href="${api.context_url}/logout">Logout</a></li>
             </ul>
           </li>
         </ul>
@@ -94,7 +94,7 @@
 <script src="/js/explorer.js"></script>
 <script src="/js/main.js"></script>
 <!-- ATTENTION: Changed to relative the following JS for compat with n-BIGMAX servers -->
-<script src="${api.context_url}/variables.js"></script>
+<script src="${api.context_url}//variables.js"></script>
 
   <div metal:define-slot="javascript">
       <tal:comment replace="nothing">A javascript slot</tal:comment>

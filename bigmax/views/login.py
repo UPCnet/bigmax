@@ -48,6 +48,7 @@ def login(context, request):
 
         if login is u'' or password is u'':
             return dict(
+                context_url=request.resource_url(request.context, ''),
                 message='You need to suply an username and a password.',
                 url=login_url,
                 came_from=came_from,
@@ -70,6 +71,7 @@ def login(context, request):
         # if not successful, try again
         else:
             return dict(
+                context_url=request.resource_url(requst.context, ''),
                 message='Login failed. Please try again.',
                 url=login_url,
                 came_from=came_from,
@@ -85,6 +87,7 @@ def login(context, request):
         return HTTPFound(headers=headers, location=request.resource_url(request.context))
 
     return dict(
+        context_url=request.resource_url(request.context, ''),
         message=message,
         url=login_url,
         came_from=came_from,

@@ -10,7 +10,6 @@ class MultiMaxCookieProfile(CookieProfile):
 
     @property
     def cookie_name(self):
-        import ipdb;ipdb.set_trace()
         return self.__cookie_name__
 
     @cookie_name.setter
@@ -69,17 +68,14 @@ class MultiMaxAuthTktCookieHelper(AuthTktCookieHelper):
 
     def identify(self, request):
         self.cookie_name = self.get_cookie_name(request)
-        print 'IDENTIFY    ', self.cookie_name, request.url, '     '
         return super(MultiMaxAuthTktCookieHelper, self).identify(request)
 
     def remember(self, request, userid, max_age=None, tokens=()):
         self.cookie_name = self.get_cookie_name(request)
-        print 'REMEMBER    ', self.cookie_name, request.url, '     '
         return super(MultiMaxAuthTktCookieHelper, self).remember(request, userid, max_age, tokens)
 
     def forget(self, request):
         self.cookie_name = self.get_cookie_name(request)
-        print 'FORGET    ', self.cookie_name, request.url, '     '
         return super(MultiMaxAuthTktCookieHelper, self).forget(request)
 
 

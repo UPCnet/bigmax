@@ -161,7 +161,7 @@ bigmax.views = function(settings) {
                 event.preventDefault()
                 event.stopPropagation()
                 var url = view.apiview.$el.attr('data-url')
-                url = url.substr(0, url.length - 4) + 'request'
+                url = url.substr(0, url.length - 4) + '_request'
 
                 url_parts = {}
                 _.each($('#resource-uri input.param'), function(element, index, list) {
@@ -198,7 +198,7 @@ bigmax.views = function(settings) {
                 })
                 .done(function (data) {
                     var response_html = data.response_html
-                    
+
                     if (data.response_type == 'json' || data.response_type == 'text')
                         $('#request-results #response-content').html('<pre></pre>')
 
@@ -209,7 +209,7 @@ bigmax.views = function(settings) {
                     } else {
                         $('#request-results #response-content').html(response_html)
                     }
-                    
+
                     $('#request-results #response-raw pre').html(data.response_raw)
                     $('#request-results #response-content').attr('data-type', data.response_type)
                     $('#request-results #http-request-headers').html(data.request_headers)
@@ -287,7 +287,7 @@ bigmax.views = function(settings) {
                         this.active_method = 'POST'
                     }
                     else if (methods.PUT.available) {
-                        this.active_method = 'PÛT'
+                        this.active_method = 'PUT'
                     }
                     else if (methods.DELETE.available) {
                         this.active_method = 'DELETE'
@@ -296,8 +296,12 @@ bigmax.views = function(settings) {
                         this.active_method = 'DELETE'
                     }
                 } else {
-                    $input = $(arguments[0].currentTarget).find('input')
-                    this.active_method = $input.attr('data-value')
+                    $input = $(arguments[0].currentTarget).find('input');
+                    this.active_method = $input.attr('data-value');
+                    var available_roles = _.keys(this.resource['methods'][this.active_method]);
+                    if (!_.contains(available_roles, this.active_role)) {
+                        this.active_role = _.first(available_roles);
+                    }
                     this.renderMethodDetails()
                 }
             },

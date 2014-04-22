@@ -61,7 +61,7 @@ class TemplateAPI(object):
     @property
     def context_url(self):
         try:
-            return self.request.resource_url(self.context).rstrip('/')
+            return self.request.resource_url(self.request.context, '').rstrip('/')
         except:
             return self.application_url
 
