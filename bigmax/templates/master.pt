@@ -94,7 +94,7 @@
 <script src="/js/explorer.js"></script>
 <script src="/js/main.js"></script>
 <!-- ATTENTION: Changed to relative the following JS for compat with n-BIGMAX servers -->
-<script src="${api.context_url}//variables.js"></script>
+<script src="${api.context_url}/variables.js"></script>
 
   <div metal:define-slot="javascript">
       <tal:comment replace="nothing">A javascript slot</tal:comment>
