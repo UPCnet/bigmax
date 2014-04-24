@@ -6,7 +6,6 @@ from pyramid.httpexceptions import HTTPOk
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 
-
 DEFAULT_WIDGET_SETTINGS = {
     "readContext": None,
     "language": "ca",
@@ -62,11 +61,12 @@ def users_view(context, request):
 @view_config(name='variables.js', context=MaxServer, renderer='bigmax:templates/js_variables.js.pt')
 def js_variables(context, request):
 
-    username = normalize_userdn(authenticated_userid(request))
+    api = TemplateAPI(context, request, 'Users administration')
+    username = normalize_userdn(api.impersonatedUser)
 
     variables = {
         'username': username,
-        'token': request.session.get('{}_oauth_token'.format(context.__name__)),
+        'token': api.impersonatedUserToken,
         'server': context.max_server,
         'stomp': context.stomp_server,
         'grant': context.oauth_grant_type,

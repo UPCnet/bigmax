@@ -25,7 +25,7 @@
   <script src="/js/libs/modernizr-2.6.2.min.js"></script>
 
 </head>
-<body>
+<body tal:attributes="class 'impersonated' if api.impersonated else ''">
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 <header>
   <nav class="navbar navbar-fixed-top" role="navigation">
@@ -45,9 +45,24 @@
         <ul class="nav navbar-nav">
           <li><a href="${api.context_url}/users">Users</a></li>
           <li><a href="${api.context_url}/api">Api</a></li>
+
         </ul>
+
         <ul class="nav navbar-nav navbar-right"
             tal:condition="api.authenticatedUser">
+          <li class="impersonation">
+            <form class="form-inline" role="form" name="impersonation_form" method="POST" action="${api.context_url}/impersonate">
+              <tal:impersonate condition="not api.impersonated">
+                <input type="submit" class="btn btn-info" value="Impersonate as"/>
+                <input type="text" name="set_impersonation" class="form-control" name="impersonation_username" placeholder="Enter username">
+              </tal:impersonate>
+
+              <tal:unimpersonate condition="api.impersonated">
+                <input type="submit" name="unset_impersonation" class="btn btn-danger" value="Cancel ${api.impersonatedUser} impersonation"/>
+              </tal:unimpersonate>
+            </form>
+          </li>
+
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <tal:username content="api.authenticatedUser">Username</tal:username>

@@ -71,7 +71,7 @@ def login(context, request):
         # if not successful, try again
         else:
             return dict(
-                context_url=request.resource_url(requst.context, ''),
+                context_url=request.resource_url(request.context, ''),
                 message='Login failed. Please try again.',
                 url=login_url,
                 came_from=came_from,

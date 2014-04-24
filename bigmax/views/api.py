@@ -2,6 +2,7 @@ from pyramid.security import authenticated_userid
 from pyramid.renderers import get_renderer
 from bigmax.utils import normalize_userdn
 
+
 class TemplateAPI(object):
 
     def __init__(self, context, request, page_title=None):
@@ -14,8 +15,20 @@ class TemplateAPI(object):
         return master
 
     @property
+    def impersonatedUser(self):
+        return self.request.session['impersonated_username'] if self.impersonated else self.authenticatedUser
+
+    @property
+    def impersonatedUserToken(self):
+        return self.request.session['impersonated_token'] if self.impersonated else self.authenticatedUserToken
+
+    @property
     def authenticatedUser(self):
         return normalize_userdn(authenticated_userid(self.request))
+
+    @property
+    def authenticatedUserToken(self):
+        return self.request.session['{}_oauth_token'.format(self.context.__name__)]
 
     _snippets = None
 
@@ -71,3 +84,7 @@ class TemplateAPI(object):
     @property
     def show_user_contexts(self):
         return self.request.view_name == u''
+
+    @property
+    def impersonated(self):
+        return 'impersonated_username' in self.request.session

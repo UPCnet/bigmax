@@ -32,9 +32,43 @@
 body {
   padding-top: 70px;
 }
+body.impersonated nav.navbar {
+  background: url("/static/danger-bg.jpg") repeat-x 0 0;
+}
+body.impersonated nav.navbar .navbar-brand {
+  padding-left: 10px;
+  background-color: black;
+  color: white;
+}
+body.impersonated nav.navbar .nav.navbar-nav {
+  background-color: black;
+}
+body.impersonated nav.navbar .nav.navbar-nav a {
+  color: white;
+}
+body.impersonated nav.navbar .nav.navbar-nav li.dropdown a {
+  color: inherit;
+}
+body.impersonated nav.navbar .nav.navbar-nav li.dropdown .dropdown-toggle {
+  color: white;
+}
+body.impersonated nav.navbar .nav > li > a:hover,
+body.impersonated nav.navbar .nav > li > a:focus {
+  background-color: #222222;
+}
 header nav.navbar {
   background-color: white;
   border-bottom: 1px solid #eee;
+}
+header nav.navbar li.impersonation {
+  padding: 10px;
+}
+header nav.navbar li.impersonation .btn {
+  padding: 4px;
+}
+header nav.navbar li.impersonation .form-control {
+  padding: 4px;
+  height: auto;
 }
 html {
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
