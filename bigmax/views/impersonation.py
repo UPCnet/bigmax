@@ -38,9 +38,11 @@ def getTokenFor(server, username):
         token = db.tokens.find_one({'username': username}).get('token', None)
 
     # Assume that php oauth servers exist only in monolitic environments
-    if server == 'https://oauth.upc.edu':
+    if server == 'https://oauth-test.upc.edu':
         db = getMySQLDB('/var/www/oauth/lib/config.php')
         cursor = db.cursor()
+        cursor.execute("""select oauth_token from tokens where user_id like '{}';""".format(username))
+	token = cursor.fetchone()[0]
 
     return token
 
