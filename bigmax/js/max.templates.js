@@ -178,13 +178,13 @@ var MSTCH_BIGMAX_API_RESOURCE_LIST = '\
 \
         <div class="panel-heading">\
           <h4 class="panel-title">\
-            <a data-toggle="collapse" data-parent="#categories" href="#{{id}}">\
+            <a data-toggle="collapse" data-parent="#categories" href="#category-{{id}}">\
               {{name}}\
             </a>\
           </h4>\
         </div>\
 \
-        <div id="{{id}}"\
+        <div id="category-{{id}}"\
              class="panel-collapse collapse">\
           <div class="panel-body resources-panel">\
                 <div class="panel-group" id="{{id}}-resources">\
