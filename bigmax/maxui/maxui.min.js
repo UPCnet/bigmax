@@ -6648,6 +6648,7 @@ var views = function() {
 
     MaxConversationsList.prototype.show = function() {
         var self = this;
+        self.mainview.$newparticipants.show();
          // Load conversations from max if never loaded
         if (self.conversations.length === 0) {
             self.load();
@@ -6931,6 +6932,18 @@ var views = function() {
 
     MaxConversationMessages.prototype.show = function(conversation_hash) {
         var self = this;
+        self.mainview.loadWrappers();
+
+        // PLEASE CLEAN THIS SHIT
+        $button = jq('#maxui-newactivity').find('input.maxui-button');
+        $button.removeAttr('disabled');
+        $button.attr('class', 'maxui-button');
+        self.mainview.$newmessagebox.find('textarea').attr('class', 'maxui-text-input');
+        self.mainview.$newmessagebox.find('.maxui-error-box').animate({
+                    'margin-top': -26
+                }, 200);
+        self.mainview.$newparticipants.hide();
+        // UNTIL HERE
 
         self.mainview.active = conversation_hash;
         self.mainview.listview.resetUnread(conversation_hash);
@@ -7036,6 +7049,7 @@ var views = function() {
         self.$common_header = self.$conversations.find('#maxui-common-header');
         self.$addpeople = jq('#maxui-add-people-box');
         self.$newparticipants = $('#maxui-new-participants');
+        self.$newmessagebox = jq('#maxui-newactivity');
     };
 
     MaxConversations.prototype.render = function() {
@@ -9856,14 +9870,11 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         jq('#maxui-new-participants').html(participants_items);
         jq('#maxui-add-people-box .maxui-label .maxui-count').text('({0}/{1})'.format(participants_box.people.length + 1, maxui.settings.maximumConversations));
         if (participants_box.people.length > 0) {
-            if ((participants_box.people.length == 1 || displayName !== '') && message !== '' && message != placeholder) {
-                $button.removeAttr('disabled');
-                $button.attr('class', 'maxui-button');
-                $newmessagebox.find('textarea').attr('class', 'maxui-text-input');
-                $newmessagebox.find('.maxui-error-box').animate({
-                    'margin-top': -26
-                }, 200);
-            } else {
+
+            var has_more_than_one_participant = participants_box.people.length > 1;
+            var has_a_displayname = displayName !== '';
+
+            if (has_more_than_one_participant && !has_a_displayname) {
                 $button.attr('disabled', 'disabled');
                 $button.attr('class', 'maxui-button maxui-disabled');
                 if (displayName === '') {
@@ -9873,7 +9884,15 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                         'margin-top': -4
                     }, 200);
                 }
+            } else {
+                $button.removeAttr('disabled');
+                $button.attr('class', 'maxui-button');
+                $newmessagebox.find('textarea').attr('class', 'maxui-text-input');
+                $newmessagebox.find('.maxui-error-box').animate({
+                    'margin-top': -26
+                }, 200);
             }
+
             $participants_box.show();
             $newmessagebox.show();
             if (participants_box.people.length > 1) {
@@ -9882,7 +9901,8 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 $newdisplaynamebox.hide();
                 $newdisplaynamebox.find('.maxui-text-input').val('');
             }
-        } else {
+
+        } else if (message !== '' && message != placeholder) {
             $button.attr('disabled', 'disabled');
             $button.attr('class', 'maxui-button maxui-disabled');
             $participants_box.hide();
@@ -9986,6 +10006,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             $postbox.show();
         }
         if (sectionToEnable == 'timeline') {
+            maxui.conversations.listview.show();
             $timeline.show();
             var timeline_height = $timeline_wrapper.height();
             $timeline.animate({
@@ -10009,6 +10030,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             if (maxui.settings.hidePostboxOnTimeline) {
                 $postbox.hide();
             }
+
         }
     };
     /**
