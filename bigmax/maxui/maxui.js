@@ -6842,6 +6842,7 @@ var views = function() {
             // If it's a message from max, update last message on listview
             self.mainview.listview.updateLastMessage(_message.destination, {'content': _message.data.text, 'published': _message.published});
         } else {
+            _message = message;
             // Is a message from rabbit, update last message on listview and increment unread counter
             self.mainview.listview.updateLastMessage(_message.destination, {'content': _message.data.text, 'published': _message.published}, true);
         }
@@ -6872,6 +6873,7 @@ var views = function() {
             };
 
             if (_.contains(['image', 'file'], message.object.objectType)) {
+                _message = message;
                 _message.data.fullURL = message.object.fullURL;
                 _message.data.thumbURL = message.object.thumbURL;
             }
