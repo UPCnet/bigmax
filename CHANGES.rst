@@ -1,11 +1,18 @@
 Changelog
 =========
 
-4.0.1 (unreleased)
+4.0.1 (2014-05-08)
 ------------------
 
-- Nothing changed yet.
-
+* Update widget to 4.0.1 [Carles Bruguera]
+* Fix id conflicts [Carles Bruguera]
+* Add mysql query for local php token impersonation [Carles Bruguera]
+* Add impersonation feature [Carles Bruguera]
+* Send body on put requests [Carles Bruguera]
+* Enable api view for subcontexts [Carles Bruguera]
+* Fix urls in templates [Carles Bruguera]
+* Show data area for PUT requests [Carles Bruguera]
+* Don't assume there are subscriptions [Carles Bruguera]
 
 4.0.0 (2014-04-15)
 ------------------
