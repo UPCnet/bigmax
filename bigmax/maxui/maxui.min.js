@@ -7813,7 +7813,7 @@ var max = max || {};
         };
 
         self.stomp.connect(
-            self.maxui.settings.username,
+            self.login,
             self.token,
             // Define stomp stomp ON CONNECT callback
             function(x) {
