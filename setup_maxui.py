@@ -110,11 +110,12 @@ def main():
         print ' MAX UI js source Version {} build not found'.format(version)
         sys.exit(1)
     # Store downloaded js source for map
-    open(config['js_location'], 'w').write(js)
+    path = '/'.join(config['js_location'].split('/')[:-1])
+    open(path + '/maxui.js', 'w').write(js)
 
     #Download and modify CSS
     css = downloadFile(config, 'builds/{}/maxui.min.css'.format(version))
-    # sys.stdout.write(" Modifying image links ")
+    sys.stdout.write(" Modifying font links ")
     sys.stdout.flush()
     # css = re.sub(r"(url\(['\"]?){}(['\"]?)".format(ORIGINAL_MAXUI_IMAGES_URL), r"\1{images_url}\2".format(**config), css)
     css = re.sub(r"(url\(['\"]?){}(/maxicons['\"]?)".format(ORIGINAL_MAXUI_FONT_URL), r"\1{fonts_url}\2".format(**config), css)
