@@ -1,11 +1,10 @@
 Changelog
 =========
 
-4.0.2 (unreleased)
+4.0.2 (2014-05-09)
 ------------------
 
-- Nothing changed yet.
-
+* Updated widget to 4.0.2 [Carles Bruguera]
 
 4.0.1 (2014-05-08)
 ------------------
