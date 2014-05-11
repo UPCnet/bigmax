@@ -39,6 +39,7 @@ def main(global_config, **settings):
 
     config.add_route('profiles', '/profiles/{username}')
     config.add_route('exception', '/exceptions/{id}')
+    config.add_route('maxserver_maxui_files', '/{domain}/maxui/*filepath')
 
     # Set MAX settings
     config.registry.max_settings = loadMAXSettings(settings, config)

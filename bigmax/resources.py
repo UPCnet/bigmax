@@ -3,6 +3,7 @@ from maxclient.rest import MaxClient
 from pyramid.security import Allow
 from pyramid.security import Authenticated
 from pyramid.security import authenticated_userid
+from pyramid.view import view_config
 
 import ConfigParser
 
@@ -103,3 +104,15 @@ def getMAXSecurity(client):
         return client.admin.security.get()
     except:
         return []
+
+from pyramid.response import FileResponse
+import os
+
+
+@view_config(route_name="maxserver_maxui_files")
+def maxui_static_files(context, request):
+    """
+    """
+    here = os.path.dirname(__file__)
+    resource = os.path.join(here, 'maxui', *request.matchdict.get('filepath'))
+    return FileResponse(resource, request=request)

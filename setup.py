@@ -19,7 +19,7 @@ requires = [
     'waitress',
     'pygments',
     'DateTime',
-    'MySQL-python'
+    'pymysql'
 ]
 
 test_requires = ['WebTest', 'mock', ]
