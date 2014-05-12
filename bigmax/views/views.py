@@ -6,6 +6,7 @@ from pyramid.httpexceptions import HTTPOk
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 
+
 DEFAULT_WIDGET_SETTINGS = {
     "readContext": None,
     "language": "ca",

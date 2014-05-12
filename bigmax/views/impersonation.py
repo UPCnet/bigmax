@@ -4,7 +4,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 import pymongo
 import re
-import MySQLdb
+import pymysql
 
 SERVERS_DB = {
     'oauth.upcnet.es': {
@@ -17,7 +17,7 @@ SERVERS_DB = {
 def getMySQLDB(config_path):
     config = open(config_path).read()
     dbname, user, password = re.search('"PDO_DSN", "mysql:dbname=(\w+);host=localhost".*?"PDO_USER", "(\w+)".*?"PDO_PASS", "(\w+)"', config, re.MULTILINE | re.DOTALL).groups()
-    return MySQLdb.connect('localhost', user, password, dbname)
+    return pymysql.connect('localhost', user, password, dbname)
 
 
 def getMongoDB(server, db_name):
@@ -42,7 +42,7 @@ def getTokenFor(server, username):
         db = getMySQLDB('/var/www/oauth/lib/config.php')
         cursor = db.cursor()
         cursor.execute("""select oauth_token from tokens where user_id like '{}';""".format(username))
-	token = cursor.fetchone()[0]
+    token = cursor.fetchone()[0]
 
     return token
 
