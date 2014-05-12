@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.0.3 (unreleased)
+4.0.3 (2014-05-12)
 ------------------
 
 * Update widget to 4.0.3 [Carles Bruguera]
