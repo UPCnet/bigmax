@@ -5,6 +5,7 @@ Changelog
 ------------------
 
 * Fix impersonation [Carles Bruguera]
+* Add 4.0.4 version [Carles Bruguera]
 
 4.0.3 (2014-05-12)
 ------------------
