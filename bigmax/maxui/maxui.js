@@ -6559,13 +6559,15 @@ var views = function() {
         var self = this;
         if (_.isArray(conversations)) {
             self.conversations = conversations;
-            self.render();
+            self.render(false);
         } else if (_.isFunction(conversations)) {
             self.maxui.maxClient.getConversationsForUser.apply(self.maxui.maxClient, [
             self.maxui.settings.username,
                 function(data) {
+                    self.maxui.logger.info('Loaded {0} conversations from max'.format(self.maxui.settings.username), self.mainview.logtag);
                     self.conversations = data;
                     self.render();
+                    // In this point, converations is a callback argument
                     conversations();
                 }
             ]);
@@ -6589,7 +6591,7 @@ var views = function() {
                     }
                 });
             } else {
-                data.messages = 1;
+                data.unread_messages = 1;
                 self.conversations.push(data);
             }
             self.sort();
@@ -6602,12 +6604,15 @@ var views = function() {
         var self = this;
         var increment = 0;
         if (arguments.length > 2)
-            increment = 1;
+            if (arguments[2]) {
+                increment = arguments[2];
+            }
 
         self.conversations = _.map(self.conversations, function(conversation) {
             if (conversation.id == conversation_id) {
                 conversation.lastMessage = message;
-                conversation.messages += increment;
+                _.defaults(conversation, {unread_messages: 0});
+                conversation.unread_messages += increment;
             }
             return conversation;
         }, self);
@@ -6619,7 +6624,7 @@ var views = function() {
 
         self.conversations = _.map(self.conversations, function(conversation) {
             if (conversation.id == conversation_id) {
-                conversation.messages = 0;
+                conversation.unread_messages = 0;
             }
             return conversation;
         }, self);
@@ -6665,7 +6670,6 @@ var views = function() {
         var self = this;
         self.mainview.loadWrappers();
         var literal = '';
-
         if (!self.mainview.visible()) {
             self.mainview.$addpeople.css({
                 'border-color': '#ccc'
@@ -6699,6 +6703,10 @@ var views = function() {
 
     // Renders the conversations list of the current user, defined in settings.username
     MaxConversationsList.prototype.render = function() {
+        var overwrite_postbox = true;
+        if (arguments.length > 0) {
+            overwrite_postbox = arguments[0];
+        }
         var self = this;
         // String to store the generated html pieces of each conversation item
         // by default showing a "no conversations" message
@@ -6718,8 +6726,9 @@ var views = function() {
 
         var postbox = self.maxui.templates.postBox.render(params);
         var $postbox = jq('#maxui-newactivity');
-        $postbox.html(postbox);
-
+        if (overwrite_postbox) {
+            $postbox.html(postbox);
+        }
 
         // Reset the html container if we have conversations
         if (self.conversations.length > 0) html = '';
@@ -6746,11 +6755,11 @@ var views = function() {
                 id: conversation.id,
                 displayName: displayName,
                 text: self.maxui.utils.formatText(conversation.lastMessage.content),
-                messages: conversation.messages,
+                messages: conversation.unread_messages,
                 literals: self.maxui.settings.literals,
                 date: self.maxui.utils.formatDate(conversation.lastMessage.published, self.maxui.language),
                 avatarURL: avatar_url,
-                hasUnread: conversation.messages > 0
+                hasUnread: conversation.unread_messages > 0
             };
             // Render the conversations template and append it at the end of the rendered covnersations
             html += self.maxui.templates.conversation.render(conv_params);
@@ -6775,13 +6784,28 @@ var views = function() {
     // Loads the last 10 messages of a conversation
     MaxConversationMessages.prototype.load = function() {
         var self = this;
-        self.messages[self.mainview.active] = [];
-        self.maxui.maxClient.getMessagesForConversation(self.mainview.active, {limit:10}, function(messages) {
+        var conversation_id = self.mainview.active;
+        var set_unread = false;
+        if (arguments.length > 0) {
+            conversation_id = arguments[0];
+            set_unread = true;
+        }
+        self.messages[conversation_id] = [];
+        self.maxui.maxClient.getMessagesForConversation(conversation_id, {limit:10}, function(messages) {
+            self.maxui.logger.info('Loaded conversation {0} messages from max'.format(conversation_id), self.mainview.logtag);
             self.remaining = this.getResponseHeader('X-Has-Remaining-Items');
             _.each(messages, function(message, index, list) {
                 message.ack = true;
                 self.append(message);
             });
+
+            // Update last message and unread indicators.
+            // Increment of unread counter will be done only when loading a specific conversation.
+            // As the only time we specify a conversation id is on refreshing,only then will increment unread count
+            var last_message = _.last(self.messages[conversation_id]);
+            self.mainview.listview.updateLastMessage(conversation_id, {'content': last_message.data.text, 'published': last_message.published}, set_unread);
+            self.mainview.listview.render(false);
+            self.mainview.updateUnreadConversations();
             self.render();
         });
     };
@@ -6800,6 +6824,21 @@ var views = function() {
         var self = this;
         self.mainview.$common_header.find('#maxui-back-conversations h3').text(title);
     };
+
+
+    MaxConversationMessages.prototype.loadNew = function() {
+        var self = this;
+        var newest_loaded = _.last(self.messages[self.mainview.active]);
+        self.maxui.maxClient.getMessagesForConversation(self.mainview.active, {limit:10, after:newest_loaded.uuid}, function(messages) {
+            self.remaining = this.getResponseHeader('X-Has-Remaining-Items');
+            _.each(messages, function(message, index, list) {
+                message.ack = true;
+                self.prepend(message, index);
+            });
+            self.render();
+        });
+    };
+
 
     MaxConversationMessages.prototype.loadOlder = function() {
         var self = this;
@@ -7004,6 +7043,7 @@ var views = function() {
 
     function MaxConversations(maxui, options) {
         var self = this;
+        self.logtag = 'CONVERSATIONS';
         self.el = '#maxui-conversations';
         self.$el = jq(self.el);
         self.maxui = maxui;
@@ -7115,6 +7155,7 @@ var views = function() {
         jq('#maxui-newactivity textarea').val('');
         jq('#maxui-newactivity .maxui-button').attr('disabled', 'disabled');
         sent.ack = false;
+
         sent.destination = self.active;
         self.messagesview.append(sent);
         self.messagesview.render();
@@ -7166,7 +7207,7 @@ var views = function() {
         var self = this;
         var $showconversations = $('#maxui-show-conversations .maxui-unread-conversations');
         var conversations_with_unread_messages = _.filter(self.listview.conversations, function(conversation) {
-            if (conversation.messages > 0) return conversation;
+            if (conversation.unread_messages > 0) return conversation;
         });
         if (conversations_with_unread_messages.length > 0) {
             $showconversations.text(conversations_with_unread_messages.length);
@@ -7180,7 +7221,7 @@ var views = function() {
         var self = this;
         // Insert message only if the message is from another user.
         if (message.user.username != self.maxui.settings.username) {
-            console.log('New message from user {0} on {1}'.format(message.user, message.destination));
+            self.maxui.logger.log('New message from user {0} on {1}'.format(message.user, message.destination));
             self.messagesview.append(message);
 
             if (self.maxui.settings.UISection == 'conversations' && self.maxui.settings.conversationsSection == 'messages') {
@@ -7189,24 +7230,13 @@ var views = function() {
 
             } else if (self.maxui.settings.UISection == 'conversations' && self.maxui.settings.conversationsSection == 'conversations') {
                 self.listview.render();
-                $('.maxui-message-count:first').css({
-                    'background-color': 'red'
-                });
             } else if (self.maxui.settings.UISection == 'timeline') {
                 self.updateUnreadConversations();
                 self.listview.render();
             }
-        } else {
-            console.log('Message {0} succesfully delivered'.format(message.uuid));
-            var interval = setInterval(function(event) {
-                var $message = jq('#' + message.uuid + ' .maxui-icon-check');
-                if ($message) {
-                    $message.addClass('maxui-ack');
-                    self.messagesview.ack(message.uuid);
-                    clearInterval(interval);
-                }
-            }, 10);
-        }
+        } //else {
+          //  Receiving our own message after going trough rabbitmq
+        //}
     };
 
     MaxConversations.prototype.ReceiveConversation = function(message) {
@@ -7629,6 +7659,7 @@ var max = max || {};
 
     function MaxMessaging(maxui) {
         var self = this;
+        self.logtag = 'MESSAGING';
         self.maxui = maxui;
         self.active = false;
         self.vhost = '/';
@@ -7680,7 +7711,9 @@ var max = max || {};
                 values: {
                     'add': {id: 'a'},
                     'delete': {id: 'd'},
-                    'modify': {id: 'm'}
+                    'modify': {id: 'm'},
+                    'refresh': {id: 'r'},
+                    'ack': {id: 'k'}
                 }
             },
             object: {
@@ -7702,7 +7735,9 @@ var max = max || {};
                     max: {id: 'm'},
                     widget: {id: 'w'},
                     ios: {id: 'i'},
-                    android: {id: 'a'}
+                    android: {id: 'a'},
+                    tweety: {id: 't'},
+                    maxbunny: {id: 'b'},
                 }
             },
             domain: {
@@ -7769,18 +7804,19 @@ var max = max || {};
 
     MaxMessaging.prototype.start = function() {
         var self = this;
+        self.maxui.logger.info('Connecting ...', self.logtag);
         self.connect();
         var current_try = 1;
         // Retry connection if initial failed
         interval = setInterval(function(event) {
             if (!self.active && current_try <= self.max_retries) {
-                window.console.log('Connection retry #{0}'.format(current_try));
+                self.maxui.logger.debug('Connection retry #{0}'.format(current_try), self.logtag);
                 self.ws.close();
                 self.ws = new SockJS(self.maxui.settings.maxTalkURL);
                 self.connect();
             } else {
                 if (!self.active) {
-                    window.console.log('Connection failure after {0} reconnect attempts'.format(self.max_retries));
+                    self.maxui.logger.error('Connection failure after {0} reconnect attempts'.format(self.max_retries), self.logtag);
                 }
                 clearInterval(interval);
             }
@@ -7802,8 +7838,8 @@ var max = max || {};
                     return binding;
                     }
         });
-        if (self.debug && _.isEmpty(matched_bindings)) {
-            window.console.error('No defined binding found for this message');
+        if (_.isEmpty(matched_bindings)) {
+            self.maxui.logger.warning('Ignoring received message\n{0}\n No binding found for this message', self.logtag);
         } else {
             _.each(matched_bindings, function(binding, index, list) {
                 var unpacked = self.unpack(message);
@@ -7822,8 +7858,8 @@ var max = max || {};
         self.stomp.heartbeat.outgoing = 0;
         self.stomp.heartbeat.incoming = 0;
 
-        if (self.debug) self.stomp.debug = function(message) {
-            window.console.log(message);
+        self.stomp.debug = function(message) {
+            self.maxui.logger.debug(message, self.logtag);
         };
 
         self.stomp.connect(
@@ -7837,10 +7873,11 @@ var max = max || {};
                    self.on_message(data, routing_key);
                 });
                 self.active = true;
+                self.maxui.logger.info('Succesfully connected to {0}'.format(self.stompServer), self.logtag);
             },
             // Define stomp stomp ON ERROR callback
             function(error) {
-                window.console.log(error.body);
+                self.maxui.logger.error(error.body);
             },
             self.vhost);
     };
@@ -7962,6 +7999,84 @@ max.MaxMessaging = MaxMessaging;
 ;
 
 var max = max || {};
+
+(function(jq) {
+
+
+    /** MaxLogging
+    *
+    *
+    */
+
+    var levels = {
+        debug: 0,
+        info:  1,
+        warn:  2,
+        error: 3,
+    };
+
+    function MaxLogging(options) {
+        self = this;
+        self.level = 0;
+    }
+
+    MaxLogging.prototype.setLevel = function(level) {
+        self = this;
+        self.level = levels[level];
+    };
+
+    MaxLogging.prototype.log = function(message, tag) {
+        var self = this;
+        window.console.log('{0}: {1}'.format(tag, message));
+    };
+
+    MaxLogging.prototype.debug = function(message) {
+        var tag = 'MAXUI';
+        if (arguments.length > 1) tag = arguments[1];
+        var self = this;
+        if (self.level <= levels.debug) {
+            self.log(message, tag);
+        }
+    };
+
+    MaxLogging.prototype.info = function(message) {
+        var tag = 'MAXUI';
+        if (arguments.length > 1) tag = arguments[1];
+        var self = this;
+        if (self.level <= levels.info) {
+            self.log(message, tag);
+        }
+    };
+
+    MaxLogging.prototype.warn = function(message) {
+        var tag = 'MAXUI';
+        if (arguments.length > 1) tag = arguments[1];
+        var self = this;
+        if (self.level <= levels.warn) {
+            self.log(message, tag);
+        }
+    };
+
+    MaxLogging.prototype.error = function(message) {
+        var tag = 'MAXUI';
+        if (arguments.length > 1) tag = arguments[1];
+
+        var self = this;
+        if (self.level <= levels.error) {
+            self.log(message, tag);
+        }
+    };
+
+
+
+max.MaxLogging = MaxLogging;
+
+})(jQuery);
+
+
+;
+
+var max = max || {};
 /**
  * @fileoverview Provides literals in several languages
  */
@@ -8040,14 +8155,14 @@ max.literals = function(language) {
         'conversations_info_leave': 'Abandonar chat',
         'conversations_info_delete': 'Borra el chat',
         'conversations_info_delete_warning': 'Atención!',
-        'conversations_info_delete_help': 'Si eliminas el chat, los participantes dejarán de poder ver los mensajes. Para evitar esto cancela y luego traspasa el chat a otra persona.',
+        'conversations_info_delete_help': 'Si eliminas el chat, los participantes dejarán de ver los mensajes. Para evitar esto, cancela y luego traspasa el chat a otra persona.',
         'conversations_info_kick_message_1': 'Clica para echar a',
         'conversations_info_kick_message_2': 'de este chat',
         'conversations_info_transfer_message_1': 'Clica para dar a ',
         'conversations_info_transfer_message_2': 'la administración del chat',
         'participants': 'Chatear con',
         'chats_load_older': 'Cargar antiguos',
-        'conversation_name': 'Nombre de la chat',
+        'conversation_name': 'Nombre del chat',
         'message': 'Mensaje',
         'no_chats': 'No hay chats',
         'no_match_found': 'No hay coincidencias',
@@ -8937,6 +9052,8 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
      *    MaxUI plugin definition
      *    @param {Object} options    Object containing overrides for default values
      **/
+    var settings = {};
+
     jq.fn.maxUI = function(options) {
         // Keep a reference of the context object
         var maxui = this;
@@ -8962,11 +9079,15 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             'widgetWidth': '0',
             'sectionHorizontalPadding': 20,
             'widgetBorder': 2,
+            'loglevel': 'info',
             'hidePostboxOnTimeline': false
         };
 
         // extend defaults with user-defined settings
         maxui.settings = jq.extend(defaults, options);
+        maxui.logger = new max.MaxLogging(maxui);
+        maxui.logger.setLevel(maxui.settings.loglevel);
+
         // Check timeline/activities consistency
         if (maxui.settings.UISection == 'timeline' && maxui.settings.activitySource == 'timeline' && maxui.settings.readContext) {
             maxui.settings.readContext = undefined;
@@ -9022,7 +9143,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         // View representing the conversations section
         maxui.conversations = new max.views.MaxConversations(maxui, {});
 
-        // Bind conversastion message receiving
+        // Bind conversation message receiving
         if (!maxui.settings.disableConversations) {
             maxui.messaging.bind(
                 {action: 'add', object: 'message'},
@@ -9034,6 +9155,25 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 {action: 'add', object: 'conversation'},
                 function(message) {
                     maxui.conversations.ReceiveConversation(message);
+                }
+            );
+            maxui.messaging.bind(
+                {action: 'refresh', object: 'conversation'},
+                function(message) {
+                    maxui.conversations.messagesview.load(message.destination);
+                }
+            );
+            maxui.messaging.bind(
+                {action: 'ack', object: 'message'},
+                function(message) {
+                    maxui.logger.info("Message {0} succesfully delivered".format(message.uuid), 'CONVERSATIONS');
+                    var $message = jq('#' + message.uuid);
+                    var $message_ack = $message.find('.maxui-icon-check');
+                    if ($message_ack) {
+                        $message_ack.addClass('maxui-ack');
+                        maxui.conversations.messagesview.ack(message.uuid);
+                        $message.attr('id', message.data.id);
+                    }
                 }
             );
         }
@@ -9232,7 +9372,6 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         //Assign user mention suggestion to input by click
         jq('#maxui-conversation-predictive').on('click', '.maxui-prediction', function(event) {
             event.preventDefault();
-            console.log('click');
             var $selected = jq(this);
             var $area = jq('#maxui-add-people-box .maxui-text-input');
             var $predictive = jq('#maxui-conversation-predictive');
@@ -9296,7 +9435,6 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         });
         //Assign activity removal confirmation dialog toggle via delegating the click to the activities container
         jq('#maxui-activities').on('click', '.maxui-action.maxui-delete', function(event) {
-            console.log('delete');
             event.preventDefault();
             var $activity = jq(this).closest('.maxui-activity');
             var $dialog = $activity.find('.maxui-actions > .maxui-popover');
@@ -9329,7 +9467,6 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         });
         //Assign activity removal via delegating the click to the activities container
         jq('#maxui-activities').on('click', '.maxui-actions .maxui-button-delete', function(event) {
-            console.log('delete activityid');
             event.preventDefault();
             var $activity = jq(this).closest('.maxui-activity');
             var activityid = $activity.attr('id');
@@ -9384,7 +9521,6 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         });
         //Assign activity comment removal via delegating the click to the activities container
         jq('#maxui-activities').on('click', '.maxui-comment .maxui-button-delete', function(event) {
-            console.log('delete comment');
             event.preventDefault();
             var $comment = jq(this).closest('.maxui-comment');
             var $activity = $comment.closest('.maxui-activity');
@@ -9628,7 +9764,6 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         });
         //Assign Search box search action And input behaviour
         maxui.bindActionBehaviour('#maxui-search', '#maxui-search-box', {}, function(text) {
-            console.log('behaviour');
             maxui.textSearch(text);
             jq('#maxui-search').toggleClass('folded', false);
             jq('#maxui-search-text').val('');
@@ -9636,7 +9771,6 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         // // Execute search if <enter> pressed
         // jq('#maxui-search .maxui-text-input').keyup(function(e) {
         //           if (e.keyCode == 13) {
-        //             console.log('enter')
         //              maxui.textSearch(jq(this).attr('value'))
         //              jq('#maxui-search').toggleClass('folded',false)
         //           }
@@ -9975,6 +10109,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
      **/
     jq.fn.toggleSection = function(sectionToEnable) {
         maxui = this;
+        var textarea_literal;
         var $search = jq('#maxui-search');
         var $activitysort = jq('#maxui-activity-sort');
         var $timeline = jq('#maxui-timeline');
@@ -9987,6 +10122,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         var $conversations_wrapper = jq('#maxui-conversations .maxui-wrapper');
         var $postbutton = jq('#maxui-newactivity-box .maxui-button');
         var $postbox = jq('#maxui-newactivity');
+        var $postbox_text = jq('#maxui-newactivity-box textarea');
         var $conversationsbutton = jq('#maxui-show-conversations');
         var $timelinebutton = jq('#maxui-show-timeline');
         var $addpeople = jq('#maxui-add-people-box');
@@ -10015,6 +10151,8 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             $activitysort.hide(400);
             maxui.settings.UISection = 'conversations';
             $postbutton.val(maxui.settings.literals.new_message_post);
+            textarea_literal = maxui.settings.literals.new_conversation_text;
+            $postbox_text.val(textarea_literal).attr('data-literal', textarea_literal);
             $conversationsbutton.hide();
             if (!maxui.settings.disableTimeline) $timelinebutton.show();
             maxui.conversations.scrollbar.setHeight(height - 45);
@@ -10022,7 +10160,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             $postbox.show();
         }
         if (sectionToEnable == 'timeline') {
-            maxui.conversations.listview.show();
+            maxui.conversations.listview.toggle();
             $timeline.show();
             var timeline_height = $timeline_wrapper.height();
             $timeline.animate({
@@ -10038,9 +10176,11 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             });
             $search.show(400);
             $activitysort.show(400);
-            //maxui.settings.currentConversationSection=='conversations'
+
             maxui.settings.UISection = 'timeline';
             $postbutton.val(maxui.settings.literals.new_activity_post);
+            textarea_literal = maxui.settings.literals.new_activity_text;
+            $postbox_text.val(textarea_literal).attr('data-literal', textarea_literal);
             if (!maxui.settings.disableConversations) $conversationsbutton.show();
             $timelinebutton.hide();
             if (maxui.settings.hidePostboxOnTimeline) {
@@ -10268,7 +10408,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         }
 
         _.each(images_to_render, function(activity, index, list) {
-            self.maxui.maxClient.getMessageImage('/activities/{0}/image/thumb'.format(activity.id), function(encoded_image_data) {
+            maxui.maxClient.getMessageImage('/activities/{0}/image/thumb'.format(activity.id), function(encoded_image_data) {
                 var imagetag = '<img class="maxui-embedded" alt="" src="data:image/png;base64,{0}" />'.format(encoded_image_data);
                 $('.maxui-activity#{0} .maxui-body'.format(activity.id)).after(imagetag);
             });
@@ -10432,7 +10572,12 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         });
         this.maxClient.getCommentsForActivity.apply(this.maxClient, func_params);
     };
-})(jQuery);
+
+    jq.maxui = function() {};
+    jq.maxui.settings = function() {return maxui.settings;};
+
+
+}(jQuery));
 
 
 ;
