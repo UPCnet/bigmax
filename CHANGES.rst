@@ -1,11 +1,10 @@
 Changelog
 =========
 
-4.0.4 (unreleased)
+4.0.4 (2014-05-13)
 ------------------
 
-- Nothing changed yet.
-
+* Fix impersonation [Carles Bruguera]
 
 4.0.3 (2014-05-12)
 ------------------
