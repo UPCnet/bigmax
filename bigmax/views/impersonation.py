@@ -42,7 +42,7 @@ def getTokenFor(server, username):
         db = getMySQLDB('/var/www/oauth/lib/config.php')
         cursor = db.cursor()
         cursor.execute("""select oauth_token from tokens where user_id like '{}';""".format(username))
-    token = cursor.fetchone()[0]
+        token = cursor.fetchone()[0]
 
     return token
 
