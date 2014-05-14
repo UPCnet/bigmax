@@ -3,7 +3,7 @@
 <head></head>
 <body>
   <metal:main fill-slot="main">
-    <div class="row">
+    <div class="row" tal:condition="exception_id">
         <div class="span10 offset1">
             <h3>Hash de l'error <pre tal:content="exception_id"></pre></h3>
             <h3>Data <pre tal:content="date"></pre></h3>
@@ -14,6 +14,12 @@
             <h3>Traceback de l'error</h3>
             <div tal:replace="structure traceback"></div>
 
+        </div>
+    </div>
+
+    <div class="row" tal:condition="not:exception_id">
+        <div class="span10 offset1">
+            <h3>No s'ha trobat aquesta excepció</h3>
         </div>
     </div>
   </metal:main>
