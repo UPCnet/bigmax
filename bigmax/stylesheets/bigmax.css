@@ -263,3 +263,7 @@ html {
   padding: 10px;
   margin: 10px;
 }
+.exception a {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-weight: bold;
+}
