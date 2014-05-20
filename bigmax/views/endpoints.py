@@ -106,7 +106,15 @@ def endpoints_request(context, request):
     last_line = re.search('<span class="m">1.1</span>', response_headers_html).end()
 
     response_headers_html = response_headers_html[:first_line] + response_headers_html[last_line:]
-    if 'text/html' in response.headers['content-type']:
+    content_type = response.headers.get('content-type', None)
+    response_code = response.status_code
+
+    if content_type is None:
+        response_html = 'Empty response'
+        response_type = 'text'
+        response_content = 'Empty response'
+
+    elif 'text/html' in response.headers['content-type']:
         response_html = highlight(response.content, HtmlLexer(), HtmlFormatter(style='friendly')),
         response_type = 'html'
         response_content = response.content
@@ -139,8 +147,7 @@ def endpoints_request(context, request):
         response_content = response.content
 
     json_response = {
-        # request = highlight(exception_report['request'], HttpLexer(), HtmlFormatter(style='friendly')),
-        # response_headers = highlight(exception_report['request'], HttpLexer(), HtmlFormatter(style='friendly')),
+        'response_code': response_code,
         'response_type': response_type,
         'response_html': response_html,
         'response_raw': response_content,
