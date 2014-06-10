@@ -1,11 +1,13 @@
 Changelog
 =========
 
-4.0.5 (unreleased)
+4.0.5 (2014-06-10)
 ------------------
 
-- Nothing changed yet.
-
+* Updated to latest widget [Carles Bruguera]
+* Fix 204 responses [Carles Bruguera]
+* Add exceptions list view [Carles Bruguera]
+* Fix exceptions view for domains [Carles Bruguera]
 
 4.0.4 (2014-05-13)
 ------------------
