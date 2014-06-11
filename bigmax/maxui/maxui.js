@@ -7684,8 +7684,10 @@ max.templates = function() {
                   <img src="{{avatar}}">\
               </a>\
               <div id="maxui-newactivity-box">\
-                   <textarea class="maxui-empty maxui-text-input" data-literal="{{textLiteral}}">{{textLiteral}}</textarea>\
-                   <div class="maxui-error-box"></div>\
+                   <div class="maxui-wrapper">\
+                       <textarea class="maxui-empty maxui-text-input" data-literal="{{textLiteral}}">{{textLiteral}}</textarea>\
+                       <div class="maxui-error-box"></div>\
+                   </div>\
                    <input disabled="disabled" type="button" class="maxui-button maxui-disabled" value="{{buttonLiteral}}">\
               </div>\
             '),
@@ -9162,7 +9164,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
     jq.fn.maxUI = function(options) {
         // Keep a reference of the context object
         var maxui = this;
-        maxui.version = '4.0.6';
+        maxui.version = '4.0.7';
         maxui.templates = max.templates();
         maxui.utils = max.utils();
         var defaults = {
@@ -9942,8 +9944,9 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 jq(button).attr('class', 'maxui-button maxui-disabled');
                 jq(this).attr('class', 'maxui-empty maxui-text-input');
                 jq(this).removeAttr('title');
+                jq('.maxui-error-box').width(jq(this).width() - 4);
                 jq('.maxui-error-box').animate({
-                    'margin-top': -26
+                    'bottom': 0
                 }, 200);
             } else {
                 if (maxui.settings.canwrite && !options.ignore_button) {
@@ -10168,16 +10171,18 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 if (displayName === '') {
                     $newmessagebox.find('textarea').attr('class', 'maxui-text-input error');
                     $newmessagebox.find('.maxui-error-box').text(maxui.settings.literals.post_permission_missing_displayName);
+                    $newmessagebox.find('.maxui-error-box').width($newmessagebox.find('textarea').width() - 4);
                     $newmessagebox.find('.maxui-error-box').animate({
-                        'margin-top': -4
+                        'bottom': -25
                     }, 200);
                 }
             } else {
                 $button.removeAttr('disabled');
                 $button.attr('class', 'maxui-button');
                 $newmessagebox.find('textarea').attr('class', 'maxui-text-input');
+                $newmessagebox.find('.maxui-error-box').width($newmessagebox.find('textarea').width() - 4);
                 $newmessagebox.find('.maxui-error-box').animate({
-                    'margin-top': -26
+                    'bottom': 0
                 }, 200);
             }
 
@@ -10196,8 +10201,9 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             $participants_box.hide();
             $newmessagebox.find('textarea').attr('class', 'maxui-text-input error');
             $newmessagebox.find('.maxui-error-box').text(maxui.settings.literals.post_permission_not_enough_participants);
+            $newmessagebox.find('.maxui-error-box').width($newmessagebox.find('textarea').width() - 4);
             $newmessagebox.find('.maxui-error-box').animate({
-                'margin-top': -4
+                'bottom': -25
             }, 200);
             $newdisplaynamebox.hide();
             $newdisplaynamebox.find('.maxui-text-input').val('');
