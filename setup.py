@@ -25,7 +25,7 @@ requires = [
 test_requires = ['WebTest', 'mock', ]
 
 setup(name='bigmax',
-      version='4.0.7',
+      version='4.0.8.dev0',
       description='Big MAX - MAX Web Administration Interface',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
