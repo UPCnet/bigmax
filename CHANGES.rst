@@ -1,11 +1,10 @@
 Changelog
 =========
 
-4.0.8 (unreleased)
+4.0.8 (2014-06-27)
 ------------------
 
-- Nothing changed yet.
-
+* New maxui release [Carles Bruguera]
 
 4.0.7 (2014-06-11)
 ------------------
