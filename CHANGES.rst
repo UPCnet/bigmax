@@ -1,11 +1,11 @@
 Changelog
 =========
 
-4.0.11 (unreleased)
+4.0.11 (2014-07-04)
 -------------------
 
-- Nothing changed yet.
-
+* Use real user to generate acl's [Carles Bruguera]
+* Remove impersonation on logout [Carles Bruguera]
 
 4.0.10 (2014-07-04)
 -------------------
