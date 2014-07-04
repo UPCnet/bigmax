@@ -1,11 +1,11 @@
 Changelog
 =========
 
-4.0.10 (unreleased)
+4.0.10 (2014-07-04)
 -------------------
 
-- Nothing changed yet.
-
+* Fix impersonation [Carles Bruguera]
+* Update widget [Carles Bruguera]
 
 4.0.9 (2014-06-30)
 ------------------
