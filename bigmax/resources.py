@@ -35,8 +35,20 @@ class MaxServer(dict):
         return maxclient
 
     @property
+    def real_maxclient(self):
+        maxclient = MaxClient(self.max_server, self.oauth_server)
+        # Set authentication on max if we're authenticated on bigmax
+        # otherwise return a raw maxclient
+        userid = self.real_authenticated_username
+        if userid:
+            token = self.real_authenticated_token
+            maxclient.setActor(userid)
+            maxclient.setToken(token)
+        return maxclient
+
+    @property
     def __acl__(self):
-        security_settings = getMAXSecurity(self.maxclient)
+        security_settings = getMAXSecurity(self.real_maxclient)
         if security_settings:
             for user in security_settings[0]['roles']['Manager']:
                 yield (Allow, user, 'restricted')

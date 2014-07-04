@@ -100,4 +100,9 @@ def login(context, request):
 @view_config(name='logout', context=MaxServer)
 def logout(context, request):
     headers = forget(request)
+    try:
+        del request.session['impersonated_username']
+        del request.session['impersonated_token']
+    except:
+        pass
     return HTTPFound(location=request.resource_url(request.context), headers=headers)
