@@ -4,6 +4,7 @@ from pyramid.security import Allow
 from pyramid.security import Authenticated
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
+from bigmax.utils import normalize_userdn
 
 import ConfigParser
 
@@ -26,9 +27,9 @@ class MaxServer(dict):
         maxclient = MaxClient(self.max_server, self.oauth_server)
         # Set authentication on max if we're authenticated on bigmax
         # otherwise return a raw maxclient
-        userid = authenticated_userid(self.request)
+        userid = self.authenticated_username
         if userid:
-            token = self.request.session.get('{}_oauth_token'.format(self.__name__), None)
+            token = self.authenticated_token
             maxclient.setActor(userid)
             maxclient.setToken(token)
         return maxclient
@@ -47,6 +48,27 @@ class MaxServer(dict):
 
     def __repr__(self):
         return '<MaxServer "{}" @ {}>'.format(self.__name__, self.max_server)
+
+    @property
+    def real_authenticated_username(self):
+        return normalize_userdn(authenticated_userid(self.request))
+
+    @property
+    def real_authenticated_token(self):
+        return self.request.session['{}_oauth_token'.format(self.__name__)]
+
+    @property
+    def authenticated_username(self):
+        username = self.request.session['impersonated_username'] if self.impersonated else self.real_authenticated_username
+        return normalize_userdn(username)
+
+    @property
+    def authenticated_token(self):
+        return self.request.session['impersonated_token'] if self.impersonated else self.real_authenticated_token
+
+    @property
+    def impersonated(self):
+        return 'impersonated_username' in self.request.session
 
 
 class RootMaxServer(MaxServer):

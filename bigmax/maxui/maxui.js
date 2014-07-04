@@ -7733,11 +7733,6 @@ var max = max || {};
         self.token = self.maxui.settings.oAuthToken;
         self.stompServer = self.maxui.settings.maxTalkURL;
 
-        // Sensible default for stomp server
-        if (_.isUndefined(self.stompServer)) {
-            self.stompServer = self.maxui.settings.maxServerURL + '/stomp';
-        }
-
         // Construct login merging username with domain (if any)
         // if domain explicitly specified, take it, otherwise deduce it from url
         if (maxui.settings.domain) {
@@ -9166,7 +9161,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
     jq.fn.maxUI = function(options) {
         // Keep a reference of the context object
         var maxui = this;
-        maxui.version = '4.0.11';
+        maxui.version = '4.0.12';
         maxui.templates = max.templates();
         maxui.utils = max.utils();
         var defaults = {
@@ -9189,13 +9184,31 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             'sectionHorizontalPadding': 20,
             'widgetBorder': 2,
             'loglevel': 'info',
-            'hidePostboxOnTimeline': false
+            'hidePostboxOnTimeline': false,
+            'maxTalkURL': "",
+            'domain': ""
         };
 
         // extend defaults with user-defined settings
         maxui.settings = jq.extend(defaults, options);
         maxui.logger = new max.MaxLogging(maxui);
         maxui.logger.setLevel(maxui.settings.loglevel);
+
+        // Configure maxui without CORS if CORS not available
+        if (!maxui.utils.isCORSCapable()) {
+            // IF it has been defined an alias, set as max server url
+            if (maxui.settings.maxServerURLAlias) {
+                maxui.settings.maxServerURL = maxui.settings.maxServerURLAlias;
+            }
+        }
+
+        // Normalize maxTalkURL and provide sensible default for stomp server
+        // The base url for stomp url construction is basef on the max url AFTER
+        // checking for CORS avalability
+        maxui.settings.maxTalkURL = maxui.utils.normalizeWhiteSpace(maxui.settings.maxTalkURL);
+        if (_.isUndefined(maxui.settings.maxTalkURL) || maxui.settings.maxTalkURL === "") {
+            maxui.settings.maxTalkURL = maxui.settings.maxServerURL + '/stomp';
+        }
 
         // Check timeline/activities consistency
         if (maxui.settings.UISection === 'timeline' && maxui.settings.activitySource === 'timeline' && maxui.settings.readContext) {
@@ -9207,13 +9220,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         maxui.language = options.language || 'en';
         var user_literals = options.literals || {};
         maxui.settings.literals = jq.extend(max.literals(maxui.language), user_literals);
-        // Configure maxui without CORS if CORS not available
-        if (!maxui.utils.isCORSCapable()) {
-            // IF it has been defined an alias, set as max server url
-            if (maxui.settings.maxServerURLAlias) {
-                maxui.settings.maxServerURL = maxui.settings.maxServerURLAlias;
-            }
-        }
+
         if (maxui.settings.readContext) {
             // Calculate readContextHash
             maxui.settings.readContextHash = maxui.utils.sha1(maxui.settings.readContext);

@@ -15,3 +15,5 @@ def normalize_userdn(dn):
 
 def oauth2Header(username, token):
     return {"X-Oauth-Token": token, "X-Oauth-Username": username, "X-Oauth-Scope": "widgetcli"}
+
+

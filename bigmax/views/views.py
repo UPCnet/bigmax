@@ -22,6 +22,7 @@ def MaxRootView(context, request):
     page_title = "%s's Activity Stream" % username
     api = TemplateAPI(context, request, page_title)
 
+    username = context.authenticated_username
     maxserver_info = OrderedDict()
     maxserver_info['Max Server'] = context.max_server
     maxserver_info['Oauth Server'] = context.oauth_server
@@ -62,12 +63,11 @@ def users_view(context, request):
 @view_config(name='variables.js', context=MaxServer, renderer='bigmax:templates/js_variables.js.pt')
 def js_variables(context, request):
 
-    api = TemplateAPI(context, request, 'Users administration')
-    username = normalize_userdn(api.impersonatedUser)
+    username = context.authenticated_username
 
     variables = {
         'username': username,
-        'token': api.impersonatedUserToken,
+        'token': context.authenticated_token,
         'server': context.max_server,
         'stomp': context.stomp_server,
         'grant': context.oauth_grant_type,
