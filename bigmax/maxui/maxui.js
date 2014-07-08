@@ -6617,7 +6617,7 @@ var max = max || {};
                 self.sort();
                 self.render();
                 if (!_.isUndefined(callback)) {
-                    callback();
+                    callback.call(self.mainview);
                 }
             });
         };
@@ -6863,7 +6863,7 @@ var max = max || {};
 
         MaxConversationMessages.prototype.setTitle = function(title) {
             var self = this;
-            self.mainview.$common_header.find('#maxui-back-conversations h3').text(title);
+            self.mainview.$common_header.find('#maxui-back-conversations .maxui-title').text(title);
         };
 
 
@@ -6972,6 +6972,7 @@ var max = max || {};
             // Iterate through all the conversations
             var images_to_render = [];
             if (self.messages[self.mainview.active]) {
+                self.setTitle(self.mainview.getActive().displayName);
                 for (var i = 0; i < self.messages[self.mainview.active].length; i++) {
                     var message = self.messages[self.mainview.active][i];
                     var avatar_url = self.maxui.settings.avatarURLpattern.format(message.user.username);
@@ -7296,16 +7297,29 @@ var max = max || {};
         MaxConversations.prototype.ReceiveConversation = function(message) {
             var self = this;
             // Insert conversation only if the message is from another user.
-            if (message.user.username !== self.maxui.settings.username) {
+            var message_from_another_user = message.user.username !== self.maxui.settings.username;
+            var message_not_in_list = self.messagesview.exists(message);
+
+            if (message_from_another_user || message_not_in_list) {
 
                 if (self.maxui.settings.UISection === 'conversations' && self.maxui.settings.conversationsSection === 'conversations') {
                     self.active = message.destination;
                     self.listview.loadConversation(message.destination, function(event) {
-                        //self.messagesview.show(chash);
+                        this.messagesview.show(message.destination);
+                    });
+                } else if (self.maxui.settings.UISection === 'conversations' && self.maxui.settings.conversationsSection === 'messages') {
+                    self.active = message.destination;
+                    self.listview.loadConversation(message.destination, function(event) {
+                        this.messagesview.load();
+                        this.listview.resetUnread(message.destination);
+                    });
+
+                } else if (self.maxui.settings.UISection === 'timeline') {
+                    self.listview.loadConversation(message.destination, function(event) {
+                        self.updateUnreadConversations();
+                        self.listview.render();
                     });
                 }
-
-            } else {
             }
         };
 
@@ -7896,9 +7910,10 @@ var max = max || {};
             }
         });
         if (_.isEmpty(matched_bindings)) {
-            self.maxui.logger.warning('Ignoring received message\n{0}\n No binding found for this message', self.logtag);
+            self.maxui.logger.warning('Ignoring received message\n{0}\n No binding found for this message'.format(message), self.logtag);
         } else {
             _.each(matched_bindings, function(binding, index, list) {
+                self.maxui.logger.debug('Matched binding "{1}"'.format(message, binding.key), self.logtag);
                 var unpacked = self.unpack(message);
                 // format routing key to extract first part before dot (.)
                 var destination = routing_key.replace(/(\w+)\.(.*)/g, "$1");
@@ -9161,7 +9176,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
     jq.fn.maxUI = function(options) {
         // Keep a reference of the context object
         var maxui = this;
-        maxui.version = '4.0.12';
+        maxui.version = '4.0.13';
         maxui.templates = max.templates();
         maxui.utils = max.utils();
         var defaults = {
