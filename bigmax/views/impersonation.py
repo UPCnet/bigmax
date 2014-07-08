@@ -47,7 +47,8 @@ def getTokenFor(server, username):
             "username": username,
             "password": "itdoesntmatter"
         }
-        requests.post('{}/cas-token'.format(server), data=payload, verify=False).content
+        resp = requests.post('{}/cas-token'.format(server), data=payload, verify=False).content
+        token = resp.json()['oauth_token']
     return token
 
 
