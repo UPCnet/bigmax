@@ -8045,10 +8045,12 @@ var max = max || {};
                 'username': self.maxui.settings.username,
                 'displayname': self.maxui.settings.displayName
             },
-            'domain': self.domain,
             'published': self.maxui.utils.rfc3339(self.maxui.utils.now()),
             'uuid': uuid.v1()
         };
+        if (self.domain) {
+            base.domain = self.domain;
+        }
         // Overwrite any key-value pair in params already defined in base
         // Trim any key from params not in specification
         return _.extend(_.pick(params, _.keys(self.specification)), base);
