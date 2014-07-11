@@ -14,12 +14,12 @@ requires = [
     'pyramid_beaker',
     'pyramid_osiris',
     'pymongo',
-    'rfc3339',
     'requests',
     'waitress',
     'pygments',
     'DateTime',
-    'pymysql'
+    'maxclient',
+    'maxcarrot'
 ]
 
 test_requires = ['WebTest', 'mock', ]

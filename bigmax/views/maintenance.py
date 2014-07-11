@@ -1,9 +1,8 @@
 from pyramid.view import view_config
 from bigmax.views.api import TemplateAPI
-from max.rest.utils import findKeywords, findHashtags
 
 
-@view_config(name="maintenance", renderer='bigmax:templates/maintenance.pt', permission='restricted')
+#@view_config(name="maintenance", renderer='bigmax:templates/maintenance.pt', permission='restricted')
 def configView(context, request):
 
     # XXX TODO Refactor this into a maintenance webservice in MAX
