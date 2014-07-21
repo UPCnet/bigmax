@@ -1,11 +1,10 @@
 Changelog
 =========
 
-4.0.13 (unreleased)
+4.0.13 (2014-07-21)
 -------------------
 
-- Nothing changed yet.
-
+* Fix dependencies [Carles Bruguera]
 
 4.0.12 (2014-07-08)
 -------------------
