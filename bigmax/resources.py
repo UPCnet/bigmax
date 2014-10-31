@@ -67,7 +67,7 @@ class MaxServer(dict):
 
     @property
     def real_authenticated_token(self):
-        return self.request.session['{}_oauth_token'.format(self.__name__)]
+        return self.request.session.get('{}_oauth_token'.format(self.__name__), '')
 
     @property
     def authenticated_username(self):
