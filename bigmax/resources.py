@@ -113,12 +113,21 @@ def getInstances(request):
 
     instances = []
     for section in instances_file.sections():
-        instances.append({
-            "name": section,
-            "max_server": instances_file.get(section, "max_server"),
-            "stomp_server": instances_file.get(section, "stomp_server"),
-            "oauth_server": instances_file.get(section, "oauth_server")
-        })
+        max_server_url = instances_file.get(section, "server")
+        try:
+            server_info = MaxClient(max_server_url).server_info
+        except:
+            pass
+        else:
+            oauth_server_url = server_info['max.oauth_server']
+            stomp_server_url = server_info.get('max.stomp_server', '{}/stomp'.format(max_server_url))
+
+            instances.append({
+                "name": section,
+                "max_server": max_server_url,
+                "stomp_server": stomp_server_url,
+                "oauth_server": oauth_server_url
+            })
 
     return instances
 
