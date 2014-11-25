@@ -1,11 +1,11 @@
 Changelog
 =========
 
-4.0.15 (unreleased)
+4.0.15 (2014-11-25)
 -------------------
 
-- Nothing changed yet.
-
+* Fail-safe read from new unified instances.ini [Carles Bruguera]
+* Dont break when oauth token not found [Carles Bruguera]
 
 4.0.14 (2014-09-25)
 -------------------
