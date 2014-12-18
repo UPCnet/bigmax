@@ -1,11 +1,10 @@
 Changelog
 =========
 
-4.0.17 (unreleased)
+4.0.17 (2014-12-18)
 -------------------
 
-- Nothing changed yet.
-
+* Show status code and response time [Carles Bruguera]
 
 4.0.16 (2014-12-01)
 -------------------
