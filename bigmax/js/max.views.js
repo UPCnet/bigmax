@@ -214,8 +214,7 @@ bigmax.views = function(settings) {
                     $('#request-results #response-content').attr('data-type', data.response_type)
                     $('#request-results #http-request-headers').html(data.request_headers)
                     $('#request-results #http-response-headers').html(data.response_headers)
-
-
+                    $('#response-info').html('<p><strong>'+ data.response_code_desc + '</strong> ('+ data.response_time +' ms)</p>')
                 })
             },
             update: function(resource){

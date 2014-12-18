@@ -108,6 +108,8 @@ def endpoints_request(context, request):
     response_headers_html = response_headers_html[:first_line] + response_headers_html[last_line:]
     content_type = response.headers.get('content-type', None)
     response_code = response.status_code
+    response_desc = httplib.responses.get(response_code, 'Unknown HTTP Status Code')
+    response_time = '{:.2f}'.format(response.elapsed.total_seconds() * 1000)
 
     if content_type is None:
         response_html = 'Empty response'
@@ -148,6 +150,8 @@ def endpoints_request(context, request):
 
     json_response = {
         'response_code': response_code,
+        'response_code_desc': '{} {}'.format(response_code, response_desc),
+        'response_time': response_time,
         'response_type': response_type,
         'response_html': response_html,
         'response_raw': response_content,

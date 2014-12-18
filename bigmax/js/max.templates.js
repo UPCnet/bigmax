@@ -110,6 +110,7 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
     </form>\
 </div>\
 {{/name}}\
+<div id="response-info"></div>\
 <div id="request-results">\
     <!-- Nav tabs -->\
     <ul class="nav nav-tabs">\
@@ -134,7 +135,6 @@ var MSTCH_BIGMAX_API_RESOURCE_PANEL = '\
     </div>\
 </div>\
 ';
-
 
 var MSTCH_BIGMAX_API_RESOURCE_PANEL_DETAILS = '\
        <div class="form-group" id="resource-description">\
