@@ -8006,6 +8006,9 @@ max.templates = function() {
                     <a href="" class="maxui-action maxui-commentaction maxui-icon- {{#replies}}maxui-has-comments{{/replies}}"><strong>{{replies.length}}</strong> {{literals.toggle_comments}}</a>\
                     <a href="" class="maxui-action maxui-favorites {{#favorited}}maxui-favorited{{/favorited}} maxui-icon-">{{literals.favorite}}</a>\
                     <a href="" class="maxui-action maxui-likes {{#liked}}maxui-liked{{/liked}} maxui-icon-">{{literals.like}}</a>\
+                    {{#canFlagActivity}}\
+                    <a href="" class="maxui-action maxui-flag {{#flagged}}maxui-flagged{{/flagged}} maxui-icon-">{{literals.flag_activity_icon}}</a>\
+                    {{/canFlagActivity}}\
                     {{#canDeleteActivity}}\
                     <a href="" class="maxui-action maxui-delete maxui-icon-">{{literals.delete_activity_icon}}</a>\
                     <div class="maxui-popover left">\
@@ -8212,9 +8215,11 @@ max.templates = function() {
            <div id="maxui-show-timeline" class="maxui-togglebar maxui-icon-" style="{{showTimelineToggle}}"><a href="#">{{literals.activity}}</a></div>\
         \
               <div id="maxui-activity-sort">\
-                <a class="maxui-sort-action maxui-most-recent active" href="#">{{literals.recent_activity}}</a>\
+                <a class="maxui-sort-action maxui-most-recent {{orderViewRecent}}" href="#">{{literals.recent_activity}}</a>\
                 /\
-                <a class="maxui-sort-action maxui-most-valued" href="#">{{literals.valued_activity}}</a>\
+                <a class="maxui-sort-action maxui-most-valued {{orderViewLikes}}" href="#">{{literals.valued_activity}}</a>\
+                /\
+                <a class="maxui-sort-action maxui-flagged {{orderViewFlagged}}" href="#">{{literals.flagged_activity}}</a>\
               </div>\
            <div id="maxui-timeline" style="{{showTimeline}}">\
               <div class="maxui-wrapper">\
@@ -8557,12 +8562,10 @@ var max = max || {};
         self.stomp.debug = function(message) {
             self.maxui.logger.debug(message, self.logtag);
         };
-
         var product = 'maxui';
         if (self.maxui.settings.generator) {
             product += '[{0}]'.format(self.maxui.settings.generator);
         }
-
         var headers = {
             login: self.login,
             passcode: self.token,
@@ -8817,6 +8820,7 @@ max.literals = function(language) {
         'delete_activity_delete': "Delete",
         'delete_activity_cancel': "Cancel",
         'delete_activity_icon': "delete",
+        'flag_activity_icon': "flagged",
         'favorites_filter_hint': 'Filter by favorited activity',
         'favorites': 'Favorites',
         'favorite': 'favorite',
@@ -8825,6 +8829,7 @@ max.literals = function(language) {
         'unlike': 'unlike',
         'recent_activity': "Latest activity",
         'valued_activity': "Most valued activity",
+        'flagged_activity': "Flagged activity",
         'recent_favorited_activity': "Latest favorites",
         'valued_favorited_activity': "Most valued favorites"
     };
@@ -8875,6 +8880,7 @@ max.literals = function(language) {
         'delete_activity_delete': "Borrar",
         'delete_activity_cancel': "Cancelar",
         'delete_activity_icon': "borrar",
+        'flag_activity_icon': "destacada",
         'favorites_filter_hint': 'Filtra por actividad favorita',
         'favorites': 'Favoritos',
         'favorite': 'favorito',
@@ -8883,6 +8889,7 @@ max.literals = function(language) {
         'unlike': 'ya no me gusta',
         'recent_activity': "Últimas actividades",
         'valued_activity': "Actividades más valoradas",
+        'flagged_activity': "Actividades destacadas",
         'recent_favorited_activity': "Últimas favoritas",
         'valued_favorited_activity': "Favoritas más valoradas"
     };
@@ -8933,6 +8940,7 @@ max.literals = function(language) {
         'delete_activity_delete': "Esborra",
         'delete_activity_cancel': "No ho toquis!",
         'delete_activity_icon': "esborra",
+        'flag_activity_icon': "destacada",
         'favorites_filter_hint': 'Filtra per activitat favorita',
         'favorites': 'Favorits',
         'favorite': 'favorit',
@@ -8941,6 +8949,7 @@ max.literals = function(language) {
         'unlike': "ja no m'agrada",
         'recent_activity': "Darreres activitats",
         'valued_activity': "Activitats més valorades",
+        'flagged_activity': "Activitats destacades",
         'recent_favorited_activity': "Darreres favorites",
         'valued_favorited_activity': "Favorites més valorades"
     };
@@ -9339,6 +9348,7 @@ function MaxClient() {
         comment: '/activities/{0}/comments/{1}',
         likes: '/activities/{0}/likes',
         like: '/activities/{0}/likes/{1}',
+        flag: '/activities/{0}/flag',
         favorites: '/activities/{0}/favorites',
         favorite: '/activities/{0}/favorites/{1}',
         shares: '/activities/{0}/shares',
@@ -9730,6 +9740,16 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
     var route = this.ROUTES.like.format(activityid, this.actor.username);
     this.DELETE(route, query, callback);
 };
+MaxClient.prototype.flagActivity = function(activityid, callback) {
+    var query = {};
+    var route = this.ROUTES.flag.format(activityid);
+    this.POST(route, query, callback);
+};
+MaxClient.prototype.unflagActivity = function(activityid, callback) {
+    var query = {};
+    var route = this.ROUTES.flag.format(activityid);
+    this.DELETE(route, query, callback);
+};
 
 
 ;
@@ -9759,6 +9779,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             'conversationsSection': 'conversations',
             'currentConversationSection': 'conversations',
             'activitySortOrder': 'activities',
+            'activitySortView': 'recent',
             'maximumConversations': 20,
             'contextTagsFilter': [],
             'scrollbarWidth': 10,
@@ -9913,6 +9934,9 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
             var toggleTL = maxui.settings.disableTimeline === false && !showTL;
             var toggleCT = maxui.settings.disableConversations === false && !showCT;
             var containerWidth = maxui.width() - maxui.settings.scrollbarWidth;
+            var showRecentOrder = maxui.settings.activitySortView === 'recent';
+            var showLikesOrder = maxui.settings.activitySortView === 'likes';
+            var showFlaggedOrder = maxui.settings.activitySortView === 'flagged';
             var params = {
                 username: maxui.settings.username,
                 literals: maxui.settings.literals,
@@ -9920,6 +9944,9 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 showConversationsToggle: toggleCT ? 'display:block;' : 'display:none;',
                 showTimeline: showTL ? 'display:block;' : 'display:none;',
                 showTimelineToggle: toggleTL ? 'display:block;' : 'display:none;',
+                orderViewRecent: showRecentOrder ? 'active' : '',
+                orderViewLikes: showLikesOrder ? 'active' : '',
+                orderViewFlagged: showFlaggedOrder ? 'active' : '',
                 messagesStyle: 'width:{0}px;left:{0}px;'.format(containerWidth),
                 hidePostbox: maxui.settings.hidePostboxOnTimeline
             };
@@ -9939,7 +9966,14 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 maxui.bindEvents();
                 maxui.toggleSection('conversations');
             } else if (maxui.settings.UISection === 'timeline') {
-                maxui.printActivities({}, function(event) {
+                var sort_orders_by_view = {
+                    recent: maxui.settings.activitySortOrder,
+                    likes: 'likes',
+                    flagged: 'flagged'
+                };
+                maxui.printActivities({
+                    sortBy: sort_orders_by_view[maxui.settings.activitySortView]
+                }, function(event) {
                     maxui.bindEvents();
                 });
             }
@@ -10126,6 +10160,23 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 });
             }
         });
+        //Toggle flagged status via delegating the click to the activities container
+        jq('#maxui-activities').on('click', '.maxui-action.maxui-flag', function(event) {
+            event.preventDefault();
+            var $flag = jq(this);
+            var $activity = jq(this).closest('.maxui-activity');
+            var activityid = $activity.attr('id');
+            var flagged = $flag.hasClass('maxui-flagged');
+            if (flagged) {
+                maxui.maxClient.unflagActivity(activityid, function(event) {
+                    $flag.toggleClass('maxui-flagged', false);
+                });
+            } else {
+                maxui.maxClient.flagActivity(activityid, function(event) {
+                    $flag.toggleClass('maxui-flagged', true);
+                });
+            }
+        });
         //Assign activity removal confirmation dialog toggle via delegating the click to the activities container
         jq('#maxui-activities').on('click', '.maxui-action.maxui-delete', function(event) {
             event.preventDefault();
@@ -10250,6 +10301,17 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 $sortbutton.toggleClass('active', true);
                 maxui.printActivities({
                     sortBy: 'likes'
+                });
+            }
+        });
+        jq('#maxui-activity-sort').on('click', 'a.maxui-sort-action.maxui-flagged', function(event) {
+            event.preventDefault();
+            var $sortbutton = jq(this);
+            if (!$sortbutton.hasClass('active')) {
+                jq('#maxui-activity-sort .maxui-sort-action.active').toggleClass('active', false);
+                $sortbutton.toggleClass('active', true);
+                maxui.printActivities({
+                    sortBy: 'flagged'
                 });
             }
         });
@@ -11088,9 +11150,11 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 likes: activity.likesCount ? activity.likesCount : 0,
                 showLikesCount: maxui.currentSortOrder === 'likes',
                 liked: activity.liked,
+                flagged: activity.flagged,
                 avatarURL: avatar_url,
                 publishedIn: contexts,
                 canDeleteActivity: activity.deletable,
+                canFlagActivity: maxui.settings.canflag,
                 via: generator,
                 fileDownload: activity.object.objectType === 'file',
                 filename: activity.object.filename
@@ -11228,6 +11292,8 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
         if (!filters.sortBy) {
             if (jq('#maxui-activity-sort .maxui-sort-action.maxui-most-valued').hasClass('active')) {
                 filters.sortBy = 'likes';
+            } else if (jq('#maxui-activity-sort .maxui-sort-action.maxui-flagged').hasClass('active')) {
+                filters.sortBy = 'flagged';
             } else {
                 filters.sortBy = maxui.settings.activitySortOrder;
             }
@@ -11253,7 +11319,7 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                 // If we don't have a context, we're in timeline, so we can write
                 if (maxui.settings.activitySource === 'activities') {
                     maxui.maxClient.getContext(maxui.settings.readContextHash, function(context) {
-                        // Add read context if user is not subscribed to it{
+                        // Add read context if user is not subscribed to it
                         var subscriptions = maxui.settings.subscriptions;
                         if (!subscriptions[context.hash]) {
                             subscriptions[context.hash] = {};
@@ -11271,8 +11337,14 @@ MaxClient.prototype.unlikeActivity = function(activityid, callback) {
                                 if (subscriptions[write_context].permissions.write !== true) {
                                     maxui.settings.canwrite = false;
                                 }
+                                if (subscriptions[write_context].permissions.flag === true) {
+                                    maxui.settings.canflag = true;
+                                } else {
+                                    maxui.settings.canflag = false;
+                                }
                             } else {
                                 maxui.settings.canwrite = false;
+                                maxui.settings.canflag = false;
                             }
                         }
                         maxui.renderPostbox();
