@@ -7964,7 +7964,7 @@ var max = max || {};
 max.templates = function() {
     var templates = {
         activity: Hogan.compile('\
-<div class="maxui-activity" id="{{id}}" userid="{{actor.id}}" username="{{actor.username}}">\
+<div class="maxui-activity {{#flagged}}maxui-flagged{{/flagged}}" id="{{id}}" userid="{{actor.id}}" username="{{actor.username}}">\
             <div class="maxui-activity-content">\
                 <div class="maxui-topright">\
                     {{^showLikesCount}}<span class="maxui-publisheddate">{{date}}</span>{{/showLikesCount}}\
@@ -9763,7 +9763,7 @@ MaxClient.prototype.unflagActivity = function(activityid, callback) {
     jq.fn.maxUI = function(options) {
         // Keep a reference of the context object
         var maxui = this;
-        maxui.version = '4.0.16';
+        maxui.version = '4.1.1';
         maxui.templates = max.templates();
         maxui.utils = max.utils();
         var defaults = {
@@ -10170,10 +10170,12 @@ MaxClient.prototype.unflagActivity = function(activityid, callback) {
             if (flagged) {
                 maxui.maxClient.unflagActivity(activityid, function(event) {
                     $flag.toggleClass('maxui-flagged', false);
+                    $activity.toggleClass('maxui-flagged', false);
                 });
             } else {
                 maxui.maxClient.flagActivity(activityid, function(event) {
                     $flag.toggleClass('maxui-flagged', true);
+                    $activity.toggleClass('maxui-flagged', false);
                 });
             }
         });
