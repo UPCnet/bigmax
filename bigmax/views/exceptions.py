@@ -7,7 +7,7 @@ from pygments import highlight
 from pygments.lexers import PythonTracebackLexer, HttpLexer
 from pygments.formatters import HtmlFormatter
 from pyramid.renderers import render_to_response
-from DateTime import DateTime
+from datetime import datetime
 
 
 @view_config(context=MaxServer, name="exceptions", renderer='bigmax:templates/exceptions.pt', permission='restricted')
@@ -26,7 +26,7 @@ def configView(context, request):
         else:
             result = dict(
                 api=api,
-                date=DateTime(exception_report['date']).strftime('%Y/%M/%d %H:%M:%S'),
+                date=datetime.strptime(exception_report['date'], '%Y-%m-%dT%H:%M:%S.%f').strftime('%Y/%m/%d %H:%M:%S'),
                 exception_id=exception_id,
                 http_request=highlight(exception_report['request'], HttpLexer(), HtmlFormatter(style='friendly')),
                 traceback=highlight(exception_report['traceback'], PythonTracebackLexer(), HtmlFormatter(style="friendly")),
@@ -35,7 +35,7 @@ def configView(context, request):
         template = 'bigmax:templates/exceptions.pt'
         exceptions_list = context.maxclient.admin.maintenance.exceptions.get()
         # invert and format date
-        exceptions_list = [{"id": a["id"], "date": DateTime(a['date']).strftime('%Y/%M/%d %H:%M:%S')} for a in exceptions_list[::-1]]
+        exceptions_list = [{"id": a["id"], "date": datetime.strptime(a['date'], '%Y-%m-%dT%H:%M:%S.%f').strftime('%Y/%m/%d %H:%M:%S')} for a in exceptions_list[::-1]]
         result = dict(
             api=api,
             exceptions=exceptions_list)
