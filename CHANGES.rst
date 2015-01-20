@@ -1,11 +1,12 @@
 Changelog
 =========
 
-4.0.18 (unreleased)
+4.0.18 (2015-01-20)
 -------------------
 
-- Nothing changed yet.
-
+* Upgrade maxui to 4.1.1 [Carles Bruguera]
+* Update maxui to 4.1 [Carles Bruguera]
+* Fix dates on exception view [Carles Bruguera]
 
 4.0.17 (2014-12-18)
 -------------------
