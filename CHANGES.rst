@@ -1,11 +1,11 @@
 Changelog
 =========
 
-4.0.19 (unreleased)
+4.0.19 (2015-02-20)
 -------------------
 
-- Nothing changed yet.
-
+* Simplify bigmax settings for root resource [Carles Bruguera]
+* Upgrade maxui to 4.1.2 [Carles Bruguera]
 
 4.0.18 (2015-01-20)
 -------------------
