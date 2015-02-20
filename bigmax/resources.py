@@ -92,14 +92,20 @@ class RootMaxServer(MaxServer):
 def get_root(request):
     max_settings = getMAXSettings(request)
 
-    instances = getInstances(request)
+    max_server_url = max_settings['max_default']
+    server_info = MaxClient(max_server_url).server_info
+    oauth_server_url = server_info['max.oauth_server']
+    stomp_server_url = server_info.get('max.stomp_server', '{}/stomp'.format(max_server_url))
+
     root_instance_config = {
-        "name": max_settings['max_server_id'],
-        "max_server": max_settings['max_server'],
-        "stomp_server": max_settings['max_stomp'],
-        "oauth_server": max_settings['max_oauth_server']
+        "name": server_info['max.server_id'],
+        "max_server": max_server_url,
+        "stomp_server": stomp_server_url,
+        "oauth_server": oauth_server_url
     }
     root = RootMaxServer(request, **root_instance_config)
+
+    instances = getInstances(request)
     for instance in instances:
         root[instance["name"]] = MaxServer(request, **instance)
     return root
