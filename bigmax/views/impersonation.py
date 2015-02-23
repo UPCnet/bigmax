@@ -24,24 +24,15 @@ def getMongoDB(server, db_name):
 
 
 def getTokenFor(server, username):
-    if server.startswith('https://oauth.upcnet.es'):
-        domain = re.search(r'oauth\.upcnet\.es\/?(.*)', server).groups()[0]
-        domain = domain if domain else 'upcnet'
-
-        db = getMongoDB('oauth.upcnet.es', 'osiris_{}'.format(domain))
-        token = db.tokens.find_one({'username': username}).get('token', None)
-
-    # Assume that php oauth servers exist only in monolitic environments
-    if server in ['https://oauth-test.upc.edu', 'https://oauth.upc.edu']:
-        payload = {
-            "grant_type": 'password',
-            "client_id": 'MAX',
-            "scope": 'widgetcli',
-            "username": username,
-            "password": "itdoesntmatter"
-        }
-        resp = requests.post('{}/cas-token'.format(server), data=payload, verify=False)
-        token = resp.json()['oauth_token']
+    payload = {
+        "grant_type": 'password',
+        "client_id": 'MAX',
+        "scope": 'widgetcli',
+        "username": username,
+        "password": "itdoesntmatter"
+    }
+    resp = requests.post('{}/token-bypass'.format(server), data=payload, verify=False)
+    token = resp.json()['access_token']
     return token
 
 
