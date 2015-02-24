@@ -1,11 +1,10 @@
 Changelog
 =========
 
-4.0.20 (unreleased)
+4.0.20 (2015-02-24)
 -------------------
 
-- Nothing changed yet.
-
+* Fix impersionation [Carles Bruguera]
 
 4.0.19 (2015-02-20)
 -------------------
