@@ -50,7 +50,7 @@ class MaxServer(dict):
     def __acl__(self):
         security_settings = getMAXSecurity(self.real_maxclient)
         if security_settings:
-            for user in security_settings[0]['roles']['Manager']:
+            for user in security_settings['roles']['Manager']:
                 yield (Allow, user, 'restricted')
         yield self.__DEFAULT_PERMISSIONS__
 
