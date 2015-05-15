@@ -35,7 +35,7 @@ def configView(context, request):
         template = 'bigmax:templates/exceptions.pt'
         exceptions_list = context.maxclient.admin.maintenance.exceptions.get()
         # invert and format date
-        exceptions_list = [{"id": a["id"], "date": datetime.strptime(a['date'], '%Y-%m-%dT%H:%M:%S.%f').strftime('%Y/%m/%d %H:%M:%S')} for a in exceptions_list[::-1]]
+        exceptions_list = [{"id": a["id"], "date": a['date']} for a in exceptions_list[::-1]]
         result = dict(
             api=api,
             exceptions=exceptions_list)
