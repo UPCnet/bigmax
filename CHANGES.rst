@@ -1,11 +1,11 @@
 Changelog
 =========
 
-4.0.21 (unreleased)
+4.0.22 (2015-05-19)
 -------------------
 
-- Nothing changed yet.
-
+* Adapt to new way to store exceptions [Carles Bruguera]
+* Adapt to fixed security endpoint [Carles Bruguera]
 
 4.0.20 (2015-02-24)
 -------------------
